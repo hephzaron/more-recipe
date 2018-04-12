@@ -1,0 +1,39 @@
+body {
+  background-image: url('../images/background-1.jpg');
+  background-repeat: no-repeat;
+  background-size: 100%
+}
+
+.row {
+  padding: 100px 10% 0px 10%;
+  background-color: rgba(49, 32, 32, 0.85);
+  height: 700px
+}
+
+#home-info {
+  text-align: left;
+  color: white;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 200%
+}
+
+#signup-form {
+  margin-top: 20px;
+  padding: 20px 10px;
+  background-color: white;
+  border-radius: 10px;
+}
+
+#signup-form button {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+#signup-form .badge {
+  background-color: rgba(38, 32, 68);
+  font-weight: bold;
+  font-size: 15px;
+  padding: 4px
+}

@@ -17,40 +17,118 @@
 </head>
 
 <body>
-  <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="#">Youth Interact</a>
-      </div>
+  <div class="container-fluid">
+    <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          <a class="navbar-brand" href="#">Youth Interact</a>
+        </div>
 
-      <!-- Content for toggling here -->
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            <form role="search" class="navbar-form">
-              <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search Youth Interact&hellip;">
-                <span class="input-group-btn">
-                    <button type="button" class="btn btn-default">
-                      <span class="glyphicon glyphicon-search"></span>
-                </button>
-                </span>
-              </div>
-            </form>
-          </li>
-          <li class="active"><a href=""><span class="glyphicon glyphicon-home"></span> Home</a></li>
-          <li><a href=""><span class="glyphicon glyphicon-info-sign"></span> About</a></li>
-          <li><a href=""><span class="glyphicon glyphicon-edit"></span> Write Us</a></li>
-        </ul>
+        <!-- Content for toggling here -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li>
+              <form role="search" class="navbar-form">
+                <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search Youth Interact&hellip;">
+                  <span class="input-group-btn">
+                        <button type="button" class="btn btn-default">
+                          <span class="glyphicon glyphicon-search"></span>
+                  </button>
+                  </span>
+                </div>
+              </form>
+            </li>
+            <li class="active"><a href=""><span class="glyphicon glyphicon-home"></span><strong> Home</strong></a></li>
+            <li><a href=""><span class="glyphicon glyphicon-info-sign"></span><strong> About</strong></a></li>
+            <li><a href=""><span class="glyphicon glyphicon-edit"></span><strong> Contact Us</strong></a></li>
+            <li><a href=""><span class="glyphicon glyphicon-log-in"></span><strong> Sign In</strong></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <div id="home-info" class="col-md-7 col-sm-6">
+        <h1>Youth Interact</h1>
+        <p>
+          Let the youth <strong>LEARN</strong>
+          <br/> Let them <strong>LOVE</strong>
+          <br/> Let them <strong>LIVE</strong>
+        </p>
+        <br/>
+        <p>An interactive platform for secondary school students to <i><strong>interact, enhance their learning</strong></i> towards becoming the leader of tommorrow with forthrightness and foresight.
+        </p>
+        <br/>
+        <blockquote>
+          <i>Teach a child, groom a nation</i>
+          <small>by <cite>Tobi John</cite></small>
+        </blockquote>
+      </div>
+      <div class="col-md-5 col-sm-6">
+        <form class="form-horizontal" id="signup-form">
+          <div class="form-group has-success has-feedback">
+            <label class="col-xs-2 control-label" for="firstname">Firstname: </label>
+            <div class="col-xs-10">
+              <input type="text" id="firstname" class="form-control" placeholder="Firstname">
+              <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+              <span class="help-block">OK</span>
+            </div>
+          </div>
+          <div class="form-group has-warning has-feedback">
+            <label class="col-xs-2 control-label" for="lastname">Lastname: </label>
+            <div class="col-xs-10">
+              <input type="text" id="lastname" class="form-control" placeholder="Firstname">
+              <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+              <span class="help-block">Warning</span>
+            </div>
+          </div>
+          <div class="form-group has-error has-feedback">
+            <label class="col-xs-2 control-label" for="email">Email: </label>
+            <div class="col-xs-10">
+              <input type="text" id="email" class="form-control" placeholder="Email">
+              <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+              <span class="help-block">Error</span>
+            </div>
+          </div>
+          <div class="form-group has-success has-feedback">
+            <label class="col-xs-2 control-label" for="password">Password: </label>
+            <div class="col-xs-10">
+              <input type="text" id="password" class="form-control" placeholder="Password">
+              <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+              <span class="help-block">OK</span>
+            </div>
+          </div>
+          <div class="form-group has-error has-feedback">
+            <label class="col-xs-2 control-label" for="confirmPassword">Confirm Password: </label>
+            <div class="col-xs-10">
+              <input type="text" id="confirmPassword" class="form-control" placeholder="Confirm PAssword">
+              <span class="glyphicon glyphicon-remove form-control-feedback"></span>
+              <span class="help-block">Incorrect password</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+              <button type="submit" class="btn btn-primary">Sign Up</button>
+              <span type="submit" class="btn btn-primary badge">facebook</span>
+              <span>OR</span>
+              <span type="submit" class="btn btn-primary badge">google+</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-xs-offset-4 col-xs-10">
+              <strong>Registered ?<a class="btn">Sign In here</a></strong>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
-  </nav>
+  </div>
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->

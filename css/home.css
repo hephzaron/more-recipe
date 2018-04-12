@@ -31,6 +31,10 @@ body {
   margin-right: 10px;
 }
 
+.navbar-form .form-control {
+  min-width: 400px
+}
+
 #signup-form .badge {
   background-color: rgba(38, 32, 68);
   font-weight: bold;

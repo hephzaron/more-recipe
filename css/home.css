@@ -18,6 +18,10 @@ body {
   color: white
 }
 
+#myNavbar .navbar-collapse>ul>li:first-child .glyphicon-search {
+  transform: scale(1.5);
+}
+
 #myNavbar ul.nav-tabs li.active a,
 #myNavbar ul.nav-tabs li a:hover {
   color: rgb(255, 17, 0);

@@ -18,10 +18,21 @@ body {
 }
 
 #signup-form {
-  margin-top: 20px;
   padding: 20px 10px;
   background-color: white;
   border-radius: 10px;
+}
+
+#login-form {
+  padding: 20px 10px;
+  background-color: white;
+  height: 700px
+}
+
+#login-form .form-horizontal {
+  width: 100%;
+  margin-top: 15%;
+  max-width: 600px;
 }
 
 #signup-form button {
@@ -32,6 +43,31 @@ body {
 
 .navbar-form .form-control {
   min-width: 400px
+}
+
+.no-border {
+  border: 0;
+  border-radius: 0
+}
+
+.form-horizontal .form-group {
+  border: 0;
+  margin: 0
+}
+
+#login-form .form-control {
+  border-bottom: 2px solid rgba(29, 28, 28, 0.5);
+  height: 50px;
+  font-size: 120%
+}
+
+#signup-form .form-control {
+  height: 40px;
+  font-size: 110%
+}
+
+#login-form .form-control:focus {
+  border-bottom: 3px solid rgb(130, 130, 233)
 }
 
 #signup-form .badge {

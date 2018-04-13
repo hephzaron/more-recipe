@@ -17,43 +17,43 @@
 </head>
 
 <body>
-  <div class="container-fluid">
-    <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse">
+  <nav id="myNavbar" class="navbar navbar-default navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false" aria-controls="navbar">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-          <a class="navbar-brand" href="#">Youth Interact</a>
-        </div>
+        <a class="navbar-brand" href="#">Youth Interact</a>
+      </div>
 
-        <!-- Content for toggling here -->
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li>
-              <form role="search" class="navbar-form">
-                <div class="input-group">
-                  <input type="text" class="form-control" placeholder="Search Youth Interact&hellip;">
-                  <span class="input-group-btn">
+      <!-- Content for toggling here -->
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="nav nav-tabs navbar-nav navbar-right">
+          <li>
+            <form role="search" class="navbar-form">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search Youth Interact&hellip;">
+                <span class="input-group-btn">
                         <button type="button" class="btn btn-default">
                           <span class="glyphicon glyphicon-search"></span>
-                  </button>
-                  </span>
-                </div>
-              </form>
-            </li>
-            <li class="active"><a href=""><span class="glyphicon glyphicon-home"></span><strong> Home</strong></a></li>
-            <li><a href=""><span class="glyphicon glyphicon-info-sign"></span><strong> About</strong></a></li>
-            <li><a href=""><span class="glyphicon glyphicon-edit"></span><strong> Contact Us</strong></a></li>
-            <li><a href=""><span class="glyphicon glyphicon-log-in"></span><strong> Sign In</strong></a></li>
-          </ul>
-        </div>
+                </button>
+                </span>
+              </div>
+            </form>
+          </li>
+          <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon glyphicon-home"></span><strong> Home</strong></a></li>
+          <li><a data-toggle="tab" href=""><span class="glyphicon glyphicon-info-sign"></span><strong> About</strong></a></li>
+          <li><a data-toggle="tab" href=""><span class="glyphicon glyphicon-edit"></span><strong> Contact Us</strong></a></li>
+          <li><a data-toggle="tab" href="#login-form"><span class="glyphicon glyphicon-log-in"></span><strong> Sign In</strong></a></li>
+        </ul>
       </div>
-    </nav>
-    <div class="row">
+    </div>
+  </nav>
+  <div class="tab-content">
+    <div id="home" class="row tab-pane fade in active">
       <div id="home-info" class="col-md-7 col-sm-6">
         <h1>Youth Interact</h1>
         <p>
@@ -95,14 +95,14 @@
           </div>
           <div class="form-group has-success has-feedback">
             <div class="col-xs-12">
-              <input type="text" name="password" class="form-control" placeholder="Password">
+              <input type="password" name="password" class="form-control" placeholder="Password">
               <span class="glyphicon glyphicon-ok form-control-feedback"></span>
               <span class="help-block">OK</span>
             </div>
           </div>
           <div class="form-group has-error has-feedback">
             <div class="col-xs-12">
-              <input type="text" name="confirmPassword" class="form-control" placeholder="Confirm PAssword">
+              <input type="password" name="confirmPassword" class="form-control" placeholder="Confirm PAssword">
               <span class="glyphicon glyphicon-remove form-control-feedback"></span>
               <span class="help-block">Incorrect password</span>
             </div>
@@ -123,7 +123,30 @@
         </form>
       </div>
     </div>
+
+    <!-- login page begins -->
+    <div id="login-form" class="tab-pane fade">
+      <form class="form-horizontal col-xs-offset-3">
+        <div class="form-group has-success has-feedback">
+          <div class="col-xs-12">
+            <input type="text" name="email" class="form-control no-border" placeholder="Email">
+            <span class="glyphicon glyphicon-ok form-control-feedback"></span>
+            <span class="help-block">OK</span>
+          </div>
+        </div>
+        <div class="form-group has-warning has-feedback">
+          <div class="col-xs-12">
+            <input type="password" name="password" class="form-control no-border" placeholder="Password">
+            <span class="glyphicon glyphicon-warning-sign form-control-feedback"></span>
+            <span class="help-block">Warning</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <!-- login page ends -->
   </div>
+
+
   <!-- Bootstrap core JavaScript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->

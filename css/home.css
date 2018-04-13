@@ -2,6 +2,7 @@ body {
   background-image: url('../images/background-1.jpg');
   background-repeat: no-repeat;
   background-size: 100%;
+  height: 800px
 }
 
 #myNavbar {
@@ -26,10 +27,15 @@ body {
   border: 0;
 }
 
-.row {
+.tab-content>.row {
   padding: 100px 10% 0px 10%;
   background-color: rgba(49, 32, 32, 0.85);
   height: 700px
+}
+
+#home {
+  height: 700px;
+  overflow-y: auto
 }
 
 #home-info {
@@ -46,16 +52,19 @@ body {
 }
 
 #login-form {
-  padding: 20px 10px;
-  background-color: white;
-  background-size: 100%;
-  height: 700px
+  background-color: inherit;
 }
 
 #login-form .form-horizontal {
-  width: 100%;
-  margin-top: 15%;
-  max-width: 600px;
+  position: relative;
+  left: 25%;
+  margin-top: 150px;
+  max-width: 500px;
+}
+
+#login-form input.form-control {
+  background-color: #0C090A;
+  color: white
 }
 
 #signup-form button {
@@ -103,39 +112,54 @@ body {
 
 /*Custom styling for list navigation tab*/
 
+#about-us.container {
+  height: 700px;
+  margin-top: 50px;
+  padding: 10px 50px;
+  background: white
+}
+
 #about-us ul.nav-tabs {
   margin-top: 20px;
-  position: fixed
+  position: fixed;
+  z-index: 1000;
+  background-color: #F87431;
+  border-right: 8px solid black
 }
 
-#about-us .col-sm-8 {
+#about-us .col-md-8 {
   overflow-y: scroll;
-  height: 500px
-}
-
-#about-us.container {
-  background: rgba(250, 248, 248, 0.822)
+  height: 600px
 }
 
 #about-us ul.nav-tabs li a {
   margin: 0;
   padding: 8px 16px;
   border-radius: 0;
-  background-color: none
+  border: 0;
+  background-color: inherit;
+  font-weight: bold;
+  color: #F5F5DC
 }
 
 #about-us ul.nav-tabs li.active a,
 #about-us ul.nav-tabs li a:hover {
-  border-left: 5px solid #0088cc
+  border-bottom: 5px solid #0088cc;
+  cursor: pointer;
+  color: #01405f;
 }
 
 #about-us p,
 #about-us h2 {
-  color: white
+  color: black
 }
 
 .lead {
   margin-top: 10px
+}
+
+#myCarousel {
+  background-color: #E5E4E2
 }
 
 #myCarousel img {
@@ -145,7 +169,7 @@ body {
 }
 
 #myCarousel a {
-  color: white;
+  color: rgba(49, 26, 179, 0.897);
   font-size: 22px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
@@ -157,7 +181,19 @@ body {
 #myCarousel blockquote {
   position: fixed;
   top: 220px;
-  float: right
+  right: 20px;
+  border-left-color: #0088cc
+}
+
+#myCarousel.carousel ol>li.active {
+  background-color: rgba(9, 110, 15, 0.404);
+  border: 3px solid green;
+  width: 15px;
+  height: 15px
+}
+
+#myCarousel.carousel ol>li {
+  background-color: rgba(9, 110, 15, 0.404);
 }
 
 #myCarousel .col-sm-5 {
@@ -170,5 +206,5 @@ body {
 
 #myCarousel .col-sm-7 {
   margin: 0;
-  padding: 0
+  padding: 10px
 }

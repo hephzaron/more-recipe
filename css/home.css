@@ -11,6 +11,13 @@ body {
   background-size: 100%;
 }
 
+#myNavbar .navbar-collapse>ul>li:first-child .btn {
+  background-color: rgba(247, 242, 242, 0.2);
+  border: 1px solid rgba(247, 242, 242, 0.2);
+  font-weight: bold;
+  color: white
+}
+
 #myNavbar ul.nav-tabs li.active a,
 #myNavbar ul.nav-tabs li a:hover {
   color: rgb(255, 17, 0);

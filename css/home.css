@@ -120,6 +120,19 @@ body {
   padding: 4px
 }
 
+.icon-facebook {
+  margin-left: 10px;
+  color: rgb(36, 36, 116);
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.icon-googleplus {
+  color: rgb(117, 30, 30);
+  font-weight: bold;
+  font-size: 20px;
+}
+
 
 /*Custom styling for list navigation tab*/
 

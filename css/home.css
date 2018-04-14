@@ -66,16 +66,38 @@ body {
   background-color: inherit;
 }
 
+#login-form.container {
+  height: 500px;
+  margin-top: 50px;
+  width: 500px;
+  background: rgba(0, 0, 0, 0.7);
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  border: 2px solid #01405f
+}
+
 #login-form .form-horizontal {
   position: relative;
-  left: 30%;
   margin-top: 150px;
   max-width: 500px;
 }
 
 #login-form input.form-control {
-  background-color: #0C090A;
-  color: white
+  background-color: inherit;
+  color: white;
+  font-weight: bold;
+  border-bottom: 2px solid rgb(116, 66, 10)
+}
+
+#login-form button {
+  width: 100%;
+  font-weight: bold;
+  margin-bottom: 10px
+}
+
+#login-form button~a:hover {
+  cursor: pointer;
+  font-weight: bolder
 }
 
 #signup-form button {

@@ -31,7 +31,9 @@ body {
 }
 
 #myNavbar ul.nav-tabs li a {
-  font-weight: bold
+  font-weight: bold;
+  font-size: 18px;
+  color: rgba(245, 237, 237, 0.5)
 }
 
 #myNavbar .nav-tabs {

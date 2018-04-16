@@ -28,12 +28,20 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-        <a class="navbar-brand" href="#">Youth Interact</a>
       </div>
 
       <!-- Content for toggling here -->
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="nav nav-tabs navbar-nav navbar-right">
+          <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon icon-home"></span><strong> Home</strong></a></li>
+          <li><a data-toggle="tab" href="#options"><span class="glyphicon icon-tasks"></span><strong> Options</strong></a></li>
+          <li>
+            <a data-toggle="tab" href="#about-us">
+              <span class="glyphicon icon-bell-o">
+              <span class="badge">4</span>
+              </span><strong>Notifications</strong>
+            </a>
+          </li>
           <li>
             <form role="search" class="navbar-form">
               <div class="input-group">
@@ -46,10 +54,18 @@
               </div>
             </form>
           </li>
-          <li class="active"><a data-toggle="tab" href="#home"><span class="glyphicon icon-home"></span><strong> Home</strong></a></li>
-          <li><a data-toggle="tab" href="#about-us"><span class="glyphicon glyphicon-info-sign"></span><strong> About</strong></a></li>
-          <li><a data-toggle="tab" href=""><span class="glyphicon glyphicon-phone-alt"></span><strong> Contact Us</strong></a></li>
-          <li><a data-toggle="tab" href="#login-form"><span class="glyphicon glyphicon-log-in"></span><strong> Sign In</strong></a></li>
+          <li>
+            <a data-toggle="tab" href="#about-us">
+              <span class="glyphicon glyphicon-envelope">
+                <span class="badge">10</span>
+            </a>
+          </li>
+          <li>
+            <a data-toggle="tab" href="#login-form">
+              <span class="glyphicon glyphicon-off"></span>
+              <strong> Logout</strong>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
@@ -66,7 +82,139 @@
     <!-- login page ends -->
 
     <!-- about us page begins -->
-    <div id="about-us" class="container tab-pane fade">
+    <div id="options" class="container-fluid tab-pane fade">
+      <div class="row container">
+        <div class="col-lg-10 col-md-10 col-sm-12">
+          <div id="recent-recipes" class="row">
+            <h1 style="text-align:center"><strong>
+              <span class="glyphicon glyphicon-triangle-left"  style="float:left"></span> 
+              Recipes 
+              <span class="glyphicon glyphicon-triangle-right" style="float:right"></span>
+            </strong></h1>
+            <ul class="list-inline">
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+                <p>Add</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>Angel</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>Angel</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>Angel</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>Angel</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+              <li>
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <img src="images/user-profile.png" class="media-object img-circle">
+                <p>John</p>
+              </li>
+            </ul>
+          </div>
+          <div id="post-recipe" class="row">
+            <img src="images/user-profile.png" class="media-object img-circle post-recipe-el">
+            <p class="post-recipe-el col-md-10 col-lg-10 col-xs-8">Post a recipe...</p>
+            <span class="glyphicon glyphicon-picture post-recipe-el "></span>
+          </div>
+          <div id="user-recipe" class="row">
+            <img src="images/user-profile.png" class="inline-block">
+            <div class="inline-block">
+              <h1>Akilo Samuel</h1>
+              <p>Just now</p>
+            </div>
+            <span class="inline-block glyphicon glyphicon-chevron-down"></span>
+            <p>I believe there is more than just uploading a recipe, add a description, upload images and videos to depict the how to of making your recipe. it is imperative that the guidelines uploaded by a user in making your favorute recipe be strictly
+              followed
+            </p>
+            <div class="likes">
+              <span class="glyphicon icon-thumbs-up inline-block"></span>
+              <p class="inline-block">6</p>
+              <span class="glyphicon icon-thumbs-down inline-block"></span>
+              <p class="inline-block">2</p>
+              <a class="inline-block">14 comments</a>
+            </div>
+            <div class="reactions">
+              <span class="glyphicon icon-thumbs-o-up inline-block"></span>
+              <p class="inline-block">Like</p>
+              <span class="glyphicon icon-thumbs-o-down inline-block"></span>
+              <p class="inline-block">Dislike</p>
+              <span class="glyphicon icon-comment-o inline-block"></span>
+              <p class="inline-block">Comment</p>
+              <span class="glyphicon glyphicon-edit inline-block"></span>
+              <p class="inline-block">Review</p>
+              <span class="glyphicon icon-share2 inline-block"></span>
+              <p class="inline-block">Share</p>
+            </div>
+            <br>
+            <div class="replies">
+              <img src="images/user-profile.png" class="inline-block">
+              <div class="inline-block">
+                <h1>Akilo Samuel</h1>
+                <p>Well I think apple should be added to any recipe you want to create</p>
+              </div>
+            </div>
+            <br>
+            <div class="comment row">
+              <img src="images/user-profile.png" class="inline-block">
+              <input type="text" class="comment inline-block col-md-10 col-lg-10 col-xs-8" placeholder="Write a comment...">
+              <span class="inline-block glyphicon glyphicon-picture"></span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-12">
+          <div class="row">
+
+          </div>
+        </div>
+      </div>
     </div>
     <!-- about us page ends -->
   </div>

@@ -1437,7 +1437,11 @@ th {
   content: "\f27b"
 }
 
-.icon-users {
+.icon-share2:before {
+  content: "\ec13"
+}
+
+.icon-users:before {
   content: "\eb03"
 }
 

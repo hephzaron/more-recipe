@@ -17,4 +17,5 @@ export default (expressApp) => {
   expressApp.engine('.html', renderFile);
 
   expressApp.use(routes);
+  return expressApp;
 };

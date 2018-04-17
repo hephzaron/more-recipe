@@ -3,7 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
 import expressStaticGzip from 'express-static-gzip';
-import routes from './routes';
+import routes from '../routes';
 
 export default (expressApp) => {
   expressApp.use(logger('dev'));

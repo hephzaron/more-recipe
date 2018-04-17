@@ -2,12 +2,12 @@ import http from 'http';
 import express from 'express';
 import dotEnv from 'dotenv';
 import socketIO from 'socket.io';
-import sockets from './sockets';
+import sockets from '../sockets';
 import expressApp from './expressApp';
 
 dotEnv.config();
 
-const app = expressApp(express);
+const app = expressApp(express());
 const port = parseInt(process.env.SERVER_PORT, 10) || 8000;
 const server = http.createServer(app);
 const io = socketIO(server);
@@ -15,4 +15,6 @@ const io = socketIO(server);
 app.set('port', port);
 sockets(io);
 
-server.listen(port);
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});

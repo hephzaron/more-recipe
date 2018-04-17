@@ -3,7 +3,7 @@ import { user } from '../helpers/dummyData';
 
 const router = express.Router();
 
-router.get('/sample', (req, res) => {
+router.get('/home', (req, res) => {
   res.status(200).send({
     user,
     message: `Hey buddy ${user.username}`

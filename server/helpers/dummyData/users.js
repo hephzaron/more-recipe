@@ -1,11 +1,14 @@
 export default () => {
-  const user = {
+  const userData = {
     id: 1,
     lastName: 'LastName',
     firstName: 'FirstName',
     email: 'email@email.com',
     username: 'Username',
     password: 'password',
+    confirmPassword: 'password',
+    googleOauthID: 'googleOauthID-1',
+    facebookOauthID: 'facebookOauthID-1',
     age: 24,
     sex: 'Male'
   };
@@ -16,7 +19,12 @@ export default () => {
       firstName: 'FirstName',
       email: 'email@email.com',
       username: 'Username',
-      password: 'password',
+      salt: 'passwordSalt-1',
+      hash: 'passwordHash-1',
+      resetPasswordToken: 'resetPasswordToken-1',
+      resetPasswordExpires: 'resetPasswordExpires-1',
+      googleOauthID: 'googleOauthID-1',
+      facebookOauthID: 'facebookOauthID-1',
       age: 24,
       sex: 'Male'
     },
@@ -26,7 +34,12 @@ export default () => {
       firstName: 'FirstName2',
       email: 'email2@email.com',
       username: 'Username2',
-      password: 'password2',
+      salt: 'passwordSalt-1',
+      hash: 'passwordHash-1',
+      resetPasswordToken: 'resetPasswordToken-1',
+      resetPasswordExpires: 'resetPasswordExpires-1',
+      googleOauthID: 'googleOauthID-1',
+      facebookOauthID: 'facebookOauthID-1',
       age: 25,
       sex: 'Female'
     },
@@ -36,13 +49,18 @@ export default () => {
       firstName: 'FirstName3',
       email: 'email3@email.com',
       username: 'Username3',
-      password: 'password3',
+      salt: 'passwordSalt-1',
+      hash: 'passwordHash-1',
+      resetPasswordToken: 'resetPasswordToken-1',
+      resetPasswordExpires: 'resetPasswordExpires-1',
+      googleOauthID: 'googleOauthID-1',
+      facebookOauthID: 'facebookOauthID-1',
       age: 26,
       sex: 'Male'
     }
   };
   return {
-    user,
+    userData,
     users
   };
 };

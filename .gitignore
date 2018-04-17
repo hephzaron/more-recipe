@@ -6,3 +6,4 @@ package-lock.json
 .eslintrc.json
 .babelrc
 .env
+server/dist

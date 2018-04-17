@@ -16,6 +16,6 @@ export default (expressApp) => {
   expressApp.set('views', path.join(__dirname, '../client/build'));
   expressApp.engine('.html', renderFile);
 
-  expressApp.use(routes);
+  expressApp.use('/', routes);
   return expressApp;
 };

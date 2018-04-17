@@ -12,6 +12,10 @@ const port = parseInt(process.env.SERVER_PORT, 10) || 8000;
 const server = http.createServer(app);
 const io = socketIO(server);
 
+app.get('/', (req, res) => {
+  res.status(200).send('This is sample');
+});
+
 app.set('port', port);
 sockets(io);
 

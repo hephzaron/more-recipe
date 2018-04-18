@@ -24,7 +24,7 @@ class Recipes {
     };
     this.lastIndex = 0;
     this.errors = {};
-    this.update = this.update.bind(this);
+    this.create = this.create.bind(this);
   }
 
   /**
@@ -41,7 +41,7 @@ class Recipes {
     if (!isValid) {
       return Promise.reject(typeError.string);
     }
-    const id = this.generateIndex();
+    const id = this.lastIndex + 1;
     this.recipe = {
       ...newRecipe,
       id
@@ -50,6 +50,7 @@ class Recipes {
     if (this.recipes[this.recipes.length - 1] !== this.recipe) {
       return Promise.reject(new Error('An error occured in adding new recipe'));
     }
+    this.lastIndex += 1;
     return Promise.resolve(this.recipe);
   }
 
@@ -103,16 +104,6 @@ class Recipes {
   }
 
   /**
-   * Generate index
-   * @param { object } arr
-   * @returns {object} Iterator object
-   */
-  generateIndex() {
-    this.lastIndex += 1;
-    return this.lastIndex;
-  }
-
-  /**
    * Delete recipe
    * @param { number } id
    * @returns { promise } resolve or reject object
@@ -135,7 +126,7 @@ class Recipes {
    * @param { object } options
    * @returns { array } recipes- An array of recipe
    */
-  static findAll(options = {}) {
+  findAll(options = {}) {
     const {
       where: {
         id

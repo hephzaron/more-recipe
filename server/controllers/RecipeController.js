@@ -5,8 +5,7 @@ import { Recipes as RecipeClass } from '../helpers/in-memory';
  * @class RecipeController
  * @param { null } void
  */
-class RecipeController {
-
+class RecipeController extends RecipeClass {
   /**
    * Adds a new recipe
    * @memberof RecipeController
@@ -14,10 +13,9 @@ class RecipeController {
    * @param { object } res -respone
    * @returns { obejct } server response
    */
-  static addRecipe(req, res) {
+  addRecipe(req, res) {
     const { userId, name, description } = req.body;
-    const Recipes = new RecipeClass();
-    Recipes.create({ userId, name, description })
+    super.create({ userId, name, description })
       .then(recipe => res.status(201).send({
         recipe,
         message: `${recipe.name} added successfully`

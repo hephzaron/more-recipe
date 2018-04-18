@@ -1,13 +1,8 @@
 import express from 'express';
-import { user } from '../helpers/dummyData';
+import { RecipeController } from '../controllers';
 
 const router = express.Router();
 
-router.get('/home', (req, res) => {
-  res.status(200).send({
-    user,
-    message: `Hey buddy ${user.username}`
-  });
-});
+router.post('/recipes', RecipeController.addRecipe);
 
 export default router;

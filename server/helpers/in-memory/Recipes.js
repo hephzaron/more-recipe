@@ -1,3 +1,4 @@
+import 'babel-polyfill';
 import validateEntries from './validateEntries';
 
 /**
@@ -21,6 +22,7 @@ class Recipes {
       downVotes: 0,
       imageURL: 'my/image/url'
     };
+    this.lastIndex = 0;
     this.errors = {};
     this.update = this.update.bind(this);
   }
@@ -30,7 +32,7 @@ class Recipes {
    * @param { object } newRecipe
    * @returns { promise } createdRecipe
    */
-  static create(newRecipe) {
+  create(newRecipe) {
     if (typeof(newRecipe.name) !== 'string') {
       return Promise.reject(new Error('Entry not of type string'));
     }
@@ -39,10 +41,7 @@ class Recipes {
     if (!isValid) {
       return Promise.reject(typeError.string);
     }
-
-    const genObj = this.generateIndex(this.recipes);
-    const nextIndex = genObj.next();
-    const id = nextIndex;
+    const id = this.generateIndex();
     this.recipe = {
       ...newRecipe,
       id
@@ -59,7 +58,7 @@ class Recipes {
    * @param {object} recipe
    * @returns { promise } recipe - modified recipe
    */
-  static update(recipe) {
+  update(recipe) {
     if (typeof(recipe) !== 'object') {
       return Promise.reject(new Error('Entry not of object type'));
     }
@@ -93,7 +92,7 @@ class Recipes {
    * @param { object } options
    * @returns { promise } recipe
    */
-  static findOne(options) {
+  findOne(options) {
     const where = options.where || {};
     const { id } = where;
     const recipe = this.recipes.filter(item => item.id === id);
@@ -108,11 +107,9 @@ class Recipes {
    * @param { object } arr
    * @returns {object} Iterator object
    */
-  static * generateIndex(arr) {
-    let index = 0;
-    while (arr.length) {
-      yield index += 1;
-    }
+  generateIndex() {
+    this.lastIndex += 1;
+    return this.lastIndex;
   }
 
   /**
@@ -120,7 +117,7 @@ class Recipes {
    * @param { number } id
    * @returns { promise } resolve or reject object
    */
-  static delete(id) {
+  delete(id) {
     const { isValid, typeError } = validateEntries(id, 'number');
     if (!isValid) {
       return Promise.reject(typeError.number);
@@ -129,7 +126,8 @@ class Recipes {
       .then((recipe) => {
         delete this.recipes[recipe.id - 1];
         return Promise.resolve(this.recipes);
-      }).catch(error => Promise.reject(error));
+      })
+      .catch(error => Promise.reject(error));
   }
 
   /**

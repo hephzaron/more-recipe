@@ -11,37 +11,47 @@ class Recipes {
    */
   constructor() {
     this.recipes = [];
+    this.recipe = {
+      id: 0,
+      userId: 0,
+      name: 'My recipe',
+      description: 'How to make my recipe',
+      reviews: [],
+      upVotes: 0,
+      downVotes: 0,
+      imageURL: 'my/image/url'
+    };
     this.errors = {};
+    this.update = this.update.bind(this);
   }
 
   /**
    * Adds recipe to array
-   * @param { object } recipe
+   * @param { object } newRecipe
    * @returns { promise } createdRecipe
    */
-  static create(recipe) {
-    if (typeof(recipe.name) !== 'string') {
+  static create(newRecipe) {
+    if (typeof(newRecipe.name) !== 'string') {
       return Promise.reject(new Error('Entry not of type string'));
     }
 
-    const { isValid, typeError } = validateEntries(recipe.description, 'string');
+    const { isValid, typeError } = validateEntries(newRecipe.description, 'string');
     if (!isValid) {
       return Promise.reject(typeError.string);
     }
 
-    const genObj = this.generateIndex();
+    const genObj = this.generateIndex(this.recipes);
     const nextIndex = genObj.next();
     const id = nextIndex;
-    const indexedRecipe = {
-      ...recipe,
+    this.recipe = {
+      ...newRecipe,
       id
     };
-    this.recipes.push(indexedRecipe);
-    this.findOne(nextIndex).then((createdRecipe) => {
-      if (createdRecipe) {
-        return Promise.resolve(createdRecipe);
-      }
-    }).catch(error => Promise.reject(error));
+    this.recipes.push(this.recipe);
+    if (this.recipes[this.recipes.length - 1] !== this.recipe) {
+      return Promise.reject(new Error('An error occured in adding new recipe'));
+    }
+    return Promise.resolve(this.recipe);
   }
 
   /**
@@ -64,7 +74,10 @@ class Recipes {
     }).then(() => {
       this.recipes.map((item, index) => {
         if (item.id === recipe.id) {
-          this.recipes.splice(index, 1, recipe);
+          this.recipes.splice(index, 1, {
+            ...item,
+            ...recipe
+          });
         }
         return this.recipes;
       });
@@ -92,11 +105,12 @@ class Recipes {
 
   /**
    * Generate index
+   * @param { object } arr
    * @returns {object} Iterator object
    */
-  static * generateIndex() {
+  static * generateIndex(arr) {
     let index = 0;
-    while (this.recipes.length) {
+    while (arr.length) {
       yield index += 1;
     }
   }

@@ -37,6 +37,7 @@ class Recipes {
     const id = this.lastIndex + 1;
     const indexedRecipe = {
       ...newRecipe,
+      userId: parseInt(newRecipe.userId, 10),
       id
     };
     this.recipe = Object.assign({}, {...this.recipe }, indexedRecipe);

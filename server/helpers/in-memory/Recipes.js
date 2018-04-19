@@ -20,7 +20,6 @@ class Recipes {
       name: 'My recipe',
       description: 'How to make my recipe',
       reviews: [],
-      ingredients: [],
       upVotes: 0,
       downVotes: 0,
       imageURL: 'my/image/url'
@@ -99,10 +98,8 @@ class Recipes {
    */
   findOne({ where }) {
     const { id } = where;
-    console.log(this.recipes);
     const recipeIndex = this.recipes.findIndex(item => item.id === parseInt(id, 10));
     if (recipeIndex === -1) {
-      console.log('Recipe does not exist');
       return Promise.reject(new Error('Recipe does not exist'));
     }
     return Promise.resolve(recipeIndex);

@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.post('/recipes', (req, res) => Recipe.addRecipe(req, res));
 router.put('/recipes/:recipeId', (req, res) => Recipe.modifyRecipe(req, res));
+router.delete('/recipes/:recipeId', (req, res) => Recipe.deleteRecipe(req, res));
 
 export default router;

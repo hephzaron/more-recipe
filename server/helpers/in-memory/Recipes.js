@@ -102,10 +102,10 @@ class Recipes {
    * @returns { promise } resolve or reject object
    */
   delete(id) {
-    this.findOne({ where: { id } })
+    return this.findOne({ where: { id } })
       .then((recipeIndex) => {
-        delete this.recipes[recipeIndex];
-        return Promise.resolve(this.recipes);
+        const deletedRecipe = this.recipes.splice(recipeIndex, 1);
+        return Promise.resolve(deletedRecipe[0]);
       })
       .catch(error => Promise.reject(error));
   }

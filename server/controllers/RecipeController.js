@@ -48,6 +48,22 @@ class RecipeController extends RecipeClass {
       message: 'Internal Server Error'
     }));
   }
+
+  /**
+   * Deletes a Recipe
+   * @memberof RecipeController
+   * @param { object } req
+   * @param { object } res
+   * @returns { object } response
+   */
+  deleteRecipe(req, res) {
+    const id = req.params.recipeId;
+    super.delete(id)
+      .then(deletedRecipe => res.status(200).send({
+        message: `${deletedRecipe.name} have been successfully removed`
+      }))
+      .catch(() => res.status(500).send('Internal Server Error'));
+  }
 }
 
 export default RecipeController;

@@ -20,9 +20,33 @@ class RecipeController extends RecipeClass {
         recipe,
         message: `${recipe.name} added successfully`
       }))
-      .catch(() => res.status(500).send({
+      .catch(error => res.status(500).send({
+        error,
         message: 'Internal Server Error'
       }));
+  }
+
+  /**
+   * Modify a Recipe
+   * @param {object} req
+   * @param {object} res
+   * @returns { promise } response
+   */
+  modifyRecipe(req, res) {
+    const { userId, name, description } = req.body;
+    const id = req.params.recipeId;
+    super.update({
+      id,
+      userId,
+      name,
+      description
+    }).then(modifiedRecipe => res.status(200).send({
+      recipe: modifiedRecipe,
+      message: `Changes made on ${modifiedRecipe.name} is succesful`
+    })).catch(error => res.status(500).send({
+      error,
+      message: 'Internal Server Error'
+    }));
   }
 }
 

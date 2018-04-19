@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import validateEntries from './validateEntries';
+import { recipe } from '../dummyData/index';
 
 /**
  * Recipes in-memory data
@@ -18,13 +19,13 @@ class Recipes {
       name: 'My recipe',
       description: 'How to make my recipe',
       reviews: [],
+      ingredients: [],
       upVotes: 0,
       downVotes: 0,
       imageURL: 'my/image/url'
     };
     this.lastIndex = 0;
     this.errors = {};
-    this.create = this.create.bind(this);
   }
 
   /**
@@ -33,19 +34,12 @@ class Recipes {
    * @returns { promise } createdRecipe
    */
   create(newRecipe) {
-    if (typeof(newRecipe.name) !== 'string') {
-      return Promise.reject(new Error('Entry not of type string'));
-    }
-
-    const { isValid, typeError } = validateEntries(newRecipe.description, 'string');
-    if (!isValid) {
-      return Promise.reject(typeError.string);
-    }
     const id = this.lastIndex + 1;
-    this.recipe = {
+    const indexedRecipe = {
       ...newRecipe,
       id
     };
+    this.recipe = Object.assign({}, {...this.recipe }, indexedRecipe);
     this.recipes.push(this.recipe);
     if (this.recipes[this.recipes.length - 1] !== this.recipe) {
       return Promise.reject(new Error('An error occured in adding new recipe'));
@@ -56,51 +50,49 @@ class Recipes {
 
   /**
    * Modifies a recipe
-   * @param {object} recipe
+   * @param {object} options
    * @returns { promise } recipe - modified recipe
    */
-  update(recipe) {
-    if (typeof(recipe) !== 'object') {
-      return Promise.reject(new Error('Entry not of object type'));
-    }
-    const { isValid, typeError } = validateEntries(recipe.id, 'number');
-    if (!isValid) {
-      return Promise.reject(typeError.number);
-    }
-    this.findOne({
-      where: {
-        id: recipe.id
-      }
-    }).then(() => {
-      this.recipes.map((item, index) => {
-        if (item.id === recipe.id) {
-          this.recipes.splice(index, 1, {
-            ...item,
-            ...recipe
-          });
-        }
-        return this.recipes;
-      });
-      return Promise.resolve(this.findOne(recipe.id));
-    }).catch((error) => {
-      this.errors.findError = error.message;
-      return Promise.reject(error);
-    });
+  update(options) {
+    const {
+      id,
+      name,
+      description,
+      upVotes,
+      downVotes,
+      reviews,
+      imageURL
+    } = options;
+    return this.findOne({ where: { id } })
+      .then((recipeIndex) => {
+        this.recipes.splice(
+          recipeIndex, 1,
+          Object.assign({}, {...this.recipes[recipeIndex] }, {
+            name: name || this.recipes[recipeIndex].name,
+            description: description || this.recipes[recipeIndex].description,
+            upVotes: upVotes || this.recipes[recipeIndex].upVotes,
+            downVotes: downVotes || this.recipes[recipeIndex].downVotes,
+            reviews: reviews || this.recipes[recipeIndex].reviews,
+            imageURL: imageURL || this.recipes[recipeIndex].imageURL
+          })
+        );
+        return Promise.resolve(this.recipes[recipeIndex]);
+      })
+      .catch(error => Promise.reject(error));
   }
 
   /**
    * Finds a recipe
-   * @param { object } options
-   * @returns { promise } recipe
+   * @param { object } where
+   * @returns { promise } recipeIndex
    */
-  findOne(options) {
-    const where = options.where || {};
+  findOne({ where }) {
     const { id } = where;
-    const recipe = this.recipes.filter(item => item.id === id);
-    if (!recipe) {
+    const recipeIndex = this.recipes.findIndex(item => item.id === parseInt(id, 10));
+    if (recipeIndex === -1) {
       return Promise.reject(new Error('Recipe does not exist'));
     }
-    return Promise.resolve(recipe);
+    return Promise.resolve(recipeIndex);
   }
 
   /**
@@ -109,13 +101,9 @@ class Recipes {
    * @returns { promise } resolve or reject object
    */
   delete(id) {
-    const { isValid, typeError } = validateEntries(id, 'number');
-    if (!isValid) {
-      return Promise.reject(typeError.number);
-    }
     this.findOne({ where: { id } })
-      .then((recipe) => {
-        delete this.recipes[recipe.id - 1];
+      .then((recipeIndex) => {
+        delete this.recipes[recipeIndex];
         return Promise.resolve(this.recipes);
       })
       .catch(error => Promise.reject(error));

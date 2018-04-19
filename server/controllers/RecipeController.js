@@ -64,6 +64,21 @@ class RecipeController extends RecipeClass {
       }))
       .catch(() => res.status(500).send('Internal Server Error'));
   }
+
+  /**
+   * Gets all Recipe
+   * @memberof RecipeController
+   * @param { object } req
+   * @param { object } res
+   * @returns { object } response
+   */
+  getAllRecipe(req, res) {
+    super.findAll({})
+      .then(recipes => res.status(200).send({ recipes }))
+      .catch(() => res.status(500).send({
+        message: 'Internal Server Error'
+      }));
+  }
 }
 
 export default RecipeController;

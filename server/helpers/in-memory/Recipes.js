@@ -112,31 +112,24 @@ class Recipes {
 
   /**
    * Get all recipe
-   * @param { object } options
+   * @param { object } order:order of fetch
    * @returns { array } recipes- An array of recipe
    */
-  findAll(options = {}) {
-    const {
-      where: {
-        id
-      },
-      order
-    } = options;
-    const { isValid, typeError } = validateEntries(id, 'number');
-    if (!isValid) {
-      return Promise.reject(typeError.number);
-    }
-    if (!Array.isArray(order)) {
-      return Promise.reject(new Error('order must be of type array'));
-    }
+  findAll({ order }) {
     if (!this.recipes) {
       return Promise.reject(new Error('No item exists in this section'));
     }
-    const sortedArray = this.sortArray(this.recipes, order[0]);
-    if (Object.keys(sortedArray) === 'error') {
-      Promise.reject(sortedArray);
+    if (order) {
+      if (!Array.isArray(order)) {
+        return Promise.reject(new Error('order must be of type array'));
+      }
+      const sortedArray = this.sortArray(this.recipes, order[0]);
+      if (Object.keys(sortedArray) === 'error') {
+        return Promise.reject(sortedArray);
+      }
+      return Promise.resolve(sortedArray);
     }
-    Promise.resolve(sortedArray);
+    return Promise.resolve(this.recipes);
   }
 
   /**

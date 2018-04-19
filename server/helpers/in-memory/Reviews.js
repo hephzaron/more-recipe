@@ -15,7 +15,7 @@ class Reviews extends Recipes {
    */
   constructor() {
     super();
-    this.reviews = this.recipes.reviews;
+    this.reviews = [];
     this.review = {
       id: 0,
       userId: 0,
@@ -23,6 +23,7 @@ class Reviews extends Recipes {
       description: 'Review description',
       imageURL: 'my/review/image/url'
     };
+    this.lastIndex = 0;
   }
 
   /**
@@ -32,17 +33,24 @@ class Reviews extends Recipes {
    * @returns { promise } review
    */
   create(newReview) {
-    this.generateIndex.call(this, this.reviews);
+    const id = this.lastIndex + 1;
+    this.lastIndex += 1;
+    const indexedReview = {
+      ...newReview,
+      userId: parseInt(newReview.userId, 10),
+      id
+    };
     this.review = {
-      ...newReview
+      ...this.review,
+      ...indexedReview
     };
     this.reviews.push(this.review);
     try {
       if (this.reviews[this.reviews.length - 1] !== this.review) {
-        return Promise.reject(new Error('Recipe could not be reviewed'));
+        return Promise.reject(new Error('Review could not be created'));
       }
-      this.updateRecipeWithReview(this.review, this.review.recipeId)
-        .then(() => Promise.resolve(this.reviews[this.reviews.length - 1]));
+      return this.updateRecipeWithReview(this.review, this.review.recipeId)
+        .then(recipeReview => Promise.resolve(recipeReview));
     } catch (e) {
       return Promise.reject(e);
     }
@@ -54,8 +62,8 @@ class Reviews extends Recipes {
    * @param { number } recipeId
    * @returns { promise } recipe review
    */
-  static updateRecipeWithReview(newReview, recipeId) {
-    this.update({ id: recipeId, reviews: [...this.reviews, newReview] })
+  updateRecipeWithReview(newReview, recipeId) {
+    return super.update({ id: parseInt(recipeId, 10), reviews: this.reviews })
       .then(recipe => Promise.resolve(recipe))
       .catch(error => Promise.reject(error));
   }

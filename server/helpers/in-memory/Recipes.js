@@ -71,8 +71,8 @@ class Recipes {
           Object.assign({}, {...this.recipes[recipeIndex] }, {
             name: name || this.recipes[recipeIndex].name,
             description: description || this.recipes[recipeIndex].description,
-            upVotes: upVotes || this.recipes[recipeIndex].upVotes,
-            downVotes: downVotes || this.recipes[recipeIndex].downVotes,
+            upVotes: parseInt(upVotes, 10) || this.recipes[recipeIndex].upVotes,
+            downVotes: parseInt(downVotes, 10) || this.recipes[recipeIndex].downVotes,
             reviews: reviews || this.recipes[recipeIndex].reviews,
             imageURL: imageURL || this.recipes[recipeIndex].imageURL
           })
@@ -89,8 +89,10 @@ class Recipes {
    */
   findOne({ where }) {
     const { id } = where;
+    console.log(this.recipes);
     const recipeIndex = this.recipes.findIndex(item => item.id === parseInt(id, 10));
     if (recipeIndex === -1) {
+      console.log('Recipe does not exist');
       return Promise.reject(new Error('Recipe does not exist'));
     }
     return Promise.resolve(recipeIndex);

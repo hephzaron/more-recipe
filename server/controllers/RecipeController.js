@@ -15,7 +15,7 @@ class RecipeController extends RecipeClass {
    */
   addRecipe(req, res) {
     const { userId, name, description } = req.body;
-    super.create({ userId, name, description })
+    return super.create({ userId, name, description })
       .then(recipe => res.status(201).send({
         recipe,
         message: `${recipe.name} added successfully`
@@ -33,20 +33,15 @@ class RecipeController extends RecipeClass {
    * @returns { promise } response
    */
   modifyRecipe(req, res) {
-    const { userId, name, description } = req.body;
     const id = req.params.recipeId;
-    super.update({
-      id,
-      userId,
-      name,
-      description
-    }).then(modifiedRecipe => res.status(200).send({
-      recipe: modifiedRecipe,
-      message: `Changes made on ${modifiedRecipe.name} is succesful`
-    })).catch(error => res.status(500).send({
-      error,
-      message: 'Internal Server Error'
-    }));
+    return super.update({ id, ...req.body })
+      .then(modifiedRecipe => res.status(200).send({
+        recipe: modifiedRecipe,
+        message: `Changes made on ${modifiedRecipe.name} is succesful`
+      })).catch(error => res.status(500).send({
+        error,
+        message: 'Internal Server Error'
+      }));
   }
 
   /**
@@ -58,7 +53,7 @@ class RecipeController extends RecipeClass {
    */
   deleteRecipe(req, res) {
     const id = req.params.recipeId;
-    super.delete(id)
+    return super.delete(id)
       .then(deletedRecipe => res.status(200).send({
         message: `${deletedRecipe.name} have been successfully removed`
       }))
@@ -73,7 +68,7 @@ class RecipeController extends RecipeClass {
    * @returns { object } response
    */
   getAllRecipe(req, res) {
-    super.findAll({})
+    return super.findAll({})
       .then(recipes => res.status(200).send({ recipes }))
       .catch(() => res.status(500).send({
         message: 'Internal Server Error'

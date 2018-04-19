@@ -13,6 +13,7 @@ class Recipes {
    */
   constructor() {
     this.recipes = [];
+    this.reviews = [];
     this.recipe = {
       id: 0,
       userId: 0,
@@ -24,7 +25,15 @@ class Recipes {
       downVotes: 0,
       imageURL: 'my/image/url'
     };
+    this.review = {
+      id: 0,
+      userId: 0,
+      recipeId: 0,
+      description: 'Review description',
+      imageURL: 'my/review/image/url'
+    };
     this.lastIndex = 0;
+    this.reviewIndex = 0;
     this.errors = {};
   }
 
@@ -66,15 +75,16 @@ class Recipes {
     } = options;
     return this.findOne({ where: { id } })
       .then((recipeIndex) => {
+        const recipeFound = this.recipes[recipeIndex];
         this.recipes.splice(
           recipeIndex, 1,
-          Object.assign({}, {...this.recipes[recipeIndex] }, {
-            name: name || this.recipes[recipeIndex].name,
-            description: description || this.recipes[recipeIndex].description,
-            upVotes: parseInt(upVotes, 10) || this.recipes[recipeIndex].upVotes,
-            downVotes: parseInt(downVotes, 10) || this.recipes[recipeIndex].downVotes,
-            reviews: reviews || this.recipes[recipeIndex].reviews,
-            imageURL: imageURL || this.recipes[recipeIndex].imageURL
+          Object.assign({}, {...recipeFound }, {
+            name: name || recipeFound.name,
+            description: description || recipeFound.description,
+            upVotes: parseInt(upVotes, 10) || recipeFound.upVotes,
+            downVotes: parseInt(downVotes, 10) || recipeFound.downVotes,
+            reviews: [...recipeFound.reviews, reviews] || recipeFound.reviews,
+            imageURL: imageURL || recipeFound.imageURL
           })
         );
         return Promise.resolve(this.recipes[recipeIndex]);
@@ -170,6 +180,35 @@ class Recipes {
           next[sortBy].localeCompare(prev[sortBy]));
     }
     return new Error('Invalid sort type specified');
+  }
+
+  /**
+   * Adds review to recipe
+   * @method createReview
+   * @memberof Reviews Class
+   * @param { object } newReview
+   * @returns { promise } review
+   */
+  createReview(newReview) {
+    const id = this.reviewIndex + 1;
+    this.reviewIndex += 1;
+    const indexedReview = {
+      ...newReview,
+      userId: parseInt(newReview.userId, 10),
+      recipeId: parseInt(newReview.recipeId, 10),
+      id
+    };
+    this.review = Object.assign({}, {...this.review }, indexedReview);
+    this.reviews.push(this.review);
+    if (this.reviews[this.reviews.length - 1] !== this.review) {
+      return Promise.reject(new Error('Review could not be created'));
+    }
+    return this.update({
+      id: this.review.recipeId,
+      reviews: this.review
+    }).then(reviewedRecipe =>
+      Promise.resolve(reviewedRecipe)).catch(error =>
+      Promise.reject(error));
   }
 }
 

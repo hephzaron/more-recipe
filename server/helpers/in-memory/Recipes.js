@@ -14,6 +14,7 @@ class Recipes {
   constructor() {
     this.recipes = [];
     this.reviews = [];
+    this.voters = [];
     this.recipe = {
       id: 0,
       userId: 0,

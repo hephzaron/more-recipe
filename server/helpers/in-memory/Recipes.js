@@ -1,6 +1,5 @@
 import 'babel-polyfill';
-import validateEntries from './validateEntries';
-import { recipe } from '../dummyData/index';
+import { ManageVotes } from '../../middlewares';
 
 /**
  * Recipes in-memory data
@@ -23,6 +22,7 @@ class Recipes {
       reviews: [],
       upVotes: 0,
       downVotes: 0,
+      totalVotes: 0,
       imageURL: 'my/image/url'
     };
     this.review = {
@@ -67,6 +67,7 @@ class Recipes {
     const {
       id,
       name,
+      userId,
       description,
       upVotes,
       downVotes,
@@ -76,17 +77,42 @@ class Recipes {
     return this.findOne({ where: { id } })
       .then((recipeIndex) => {
         const recipeFound = this.recipes[recipeIndex];
+        const { shouldVote } = ManageVotes.restrictCreator(recipeFound, userId);
+
+        const {
+          upVotesCount,
+          downVotesCount,
+          userVotes,
+          canVote
+        } = ManageVotes.validateVotes({
+          upCount: recipeFound.upVotes,
+          downCount: recipeFound.downVotes,
+          userId: recipeFound.userId,
+          recipeId: recipeFound.id,
+          upVotes,
+          downVotes
+        }, this.voters);
+
+        if (!canVote && (upVotes || downVotes)) {
+          return Promise.reject(new Error('Sorry! You have voted before'));
+        }
+
+        if (!shouldVote && (upVotes || downVotes)) {
+          return Promise.reject(new Error('The Creator of a recipe is not allowed to vote'))
+        }
         this.recipes.splice(
           recipeIndex, 1,
           Object.assign({}, {...recipeFound }, {
             name: name || recipeFound.name,
             description: description || recipeFound.description,
-            upVotes: parseInt(upVotes, 10) || recipeFound.upVotes,
-            downVotes: parseInt(downVotes, 10) || recipeFound.downVotes,
+            upVotes: upVotesCount || recipeFound.upVotes,
+            downVotes: downVotesCount || recipeFound.downVotes,
+            totalVotes: upVotesCount + downVotesCount,
             reviews: [...recipeFound.reviews, reviews] || recipeFound.reviews,
             imageURL: imageURL || recipeFound.imageURL
           })
         );
+        this.voters = userVotes;
         return Promise.resolve(this.recipes[recipeIndex]);
       })
       .catch(error => Promise.reject(error));

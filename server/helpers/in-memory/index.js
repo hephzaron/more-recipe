@@ -1,7 +1,7 @@
-import Recipes from './Recipes';
-import Users from './Users';
+import Recipe from './Recipe';
+import User from './User';
 
 export {
-  Recipes,
-  Users
+  Recipe,
+  User
 };

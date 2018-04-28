@@ -19,10 +19,12 @@ export const hashPassword = (password) => {
  * @param { string } password - User password
  * @param { string } userSalt - User random string saved on database
  * @param { string } userHash  - User hashed password saved on database
- * @returns { boolean } password validity
+ * @returns { boolean } validPassword
  */
 
 export const verifyPassword = (password, userSalt, userHash) => {
   const hash = Crypto.pbkdf2Sync(password, userSalt, 1000, 64, 'SHA1').toString('hex');
-  return userHash === hash;
+  return {
+    validPassword: userHash === hash
+  };
 };

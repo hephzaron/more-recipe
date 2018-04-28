@@ -1,10 +1,9 @@
-import 'babel-polyfill';
 import { ManageVotes } from '../../middlewares';
 
 /**
  * Recipes in-memory data
  */
-class Recipes {
+class Recipe {
   /**
    * Creates class instance
    * @param { null } void
@@ -98,7 +97,7 @@ class Recipes {
         }
 
         if (!shouldVote && (upVotes || downVotes)) {
-          return Promise.reject(new Error('The Creator of a recipe is not allowed to vote'))
+          return Promise.reject(new Error('The Creator of a recipe is not allowed to vote'));
         }
         this.recipes.splice(
           recipeIndex, 1,
@@ -236,4 +235,4 @@ class Recipes {
   }
 }
 
-export default Recipes;
+export default Recipe;

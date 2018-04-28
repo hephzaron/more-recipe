@@ -1,4 +1,4 @@
-import { Recipes as RecipeClass } from '../helpers/in-memory';
+import { Recipe as RecipeClass } from '../helpers/in-memory';
 
 /**
  * Handles Recipe request operations
@@ -67,20 +67,21 @@ class RecipeController extends RecipeClass {
    * @returns { object } response
    */
   getAllRecipe(req, res) {
-      return super.findAll({})
-        .then(recipes => res.status(200).send({ recipes }))
-        .catch(() => res.status(500).send({
-          message: 'Internal Server Error'
-        }));
-    }
-    /**
-     * Adds a new review to recipe
-     * @method addReview
-     * @memberof ReviewController
-     * @param { object } req
-     * @param { object } res
-     * @returns { object } response
-     */
+    return super.findAll({})
+      .then(recipes => res.status(200).send({ recipes }))
+      .catch(() => res.status(500).send({
+        message: 'Internal Server Error'
+      }));
+  }
+
+  /**
+   * Adds a new review to recipe
+   * @method addReview
+   * @memberof ReviewController
+   * @param { object } req
+   * @param { object } res
+   * @returns { object } response
+   */
   addReview(req, res) {
     const { recipeId } = req.params;
     return super.createReview({ recipeId, ...req.body })

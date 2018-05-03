@@ -1,11 +1,9 @@
 import jwt from 'jsonwebtoken';
-import moment from 'moment';
 import dotEnv from 'dotenv';
 
 dotEnv.config();
 
 const secret = process.env.JWT_SECRET;
-const timeZone = process.env.TIME_ZONE;
 
 /**
  * Generate unique identifier
@@ -29,7 +27,7 @@ export default (req) => {
     auth: GUID,
     agent: req.headers['user-agent'],
     exp: expiresDefault,
-    username: req.body.username
+    username: req.body.email
   };
 
   const token = jwt.sign(payload, secret, { algorithm: 'HS256' });

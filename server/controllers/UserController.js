@@ -1,6 +1,7 @@
 import { User as UserClass } from '../helpers/in-memory';
 import { verifyPassword } from '../helpers/passwordHash';
 import signToken from '../helpers/signToken';
+import removeKeys from '../helpers/removekeys';
 
 /**
  * Handles User(s) related function
@@ -78,7 +79,9 @@ class UserController extends UserClass {
       email,
       password
     } = req.body;
-    super.findOne({ where: email }).then((user) => {
+    super.findOne({
+      where: { email }
+    }).then((user) => {
       const { validPassword } = verifyPassword(password, user.salt, user.hash);
       const { token } = signToken(req);
       if (!user) {
@@ -91,13 +94,14 @@ class UserController extends UserClass {
           message: 'Email or password incorrect'
         });
       }
+      const userObject = removeKeys(user, ['salt', 'hash']);
       return res.status(200).send({
         token,
-        user,
+        user: userObject,
         message: 'Login successful'
       });
-    }).catch(error => res.status(400).send({
-      message: error.message
+    }).catch(() => res.status(404).send({
+      message: 'Email or password incorrect'
     }));
   }
 

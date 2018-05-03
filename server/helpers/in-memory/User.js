@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import generateIndex from '../generateIndex';
 import { hashPassword } from '../passwordHash';
 import { validateUser } from '../validation';
@@ -60,7 +61,7 @@ class User {
     if (this.users[this.users.length - 1] !== this.user) {
       return Promise.reject(new Error('An error occured in creating a new user'));
     }
-    const withoutHash = removeKeys(this.user, ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
+    const withoutHash = removeKeys({...this.user }, ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
     return Promise.resolve(withoutHash);
   }
 
@@ -70,13 +71,7 @@ class User {
    * @returns { promise } user
    */
   findOne({ where }) {
-    const {...params } = where;
-    const userIndex = this.users.findIndex((item) => {
-      if (params.id) {
-        return item.id === parseInt(params.id, 10);
-      }
-      return item[Object.keys(params)[0]] === Object.keys(params)[0];
-    });
+    const userIndex = _.findIndex(this.users, {...where });
     if (userIndex === -1) {
       return Promise.reject(new Error('User does not exist'));
     }
@@ -129,13 +124,14 @@ class User {
    * @returns { promise } users
    */
   list() {
-    const users = {...this.users };
+    const users = [...this.users];
     if (!this.users) {
       return Promise.reject(new Error('Users list not available'));
     }
     if (this.users.length === 0) {
       return Promise.resolve({ users, message: 'No user created yet' });
     }
+    users.map(user => removeKeys(user, ['salt', 'hash']));
     return Promise.resolve(users);
   }
 }

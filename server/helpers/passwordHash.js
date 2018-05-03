@@ -23,8 +23,14 @@ export const hashPassword = (password) => {
  */
 
 export const verifyPassword = (password, userSalt, userHash) => {
-  const hash = Crypto.pbkdf2Sync(password, userSalt, 1000, 64, 'SHA1').toString('hex');
+  let validPassword = false;
+  if (password && userSalt && userHash) {
+    const hash = Crypto.pbkdf2Sync(password, userSalt, 1000, 64, 'SHA1').toString('hex');
+    if (hash === userHash) {
+      validPassword = true;
+    }
+  }
   return {
-    validPassword: userHash === hash
+    validPassword
   };
 };

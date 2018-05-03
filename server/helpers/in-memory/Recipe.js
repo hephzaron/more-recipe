@@ -215,7 +215,7 @@ class Recipe {
    * @returns { promise } review
    */
   createReview(newReview) {
-    const id = this.reviewIndex + 1;
+    const id = this.recipes[parseInt(newReview.recipeId, 10) - 1].reviews.length + 1;
     this.reviewIndex += 1;
     const indexedReview = {
       ...newReview,

@@ -109,14 +109,11 @@ class Recipe {
             upVotes: upVotesCount,
             downVotes: downVotesCount,
             totalVotes: upVotesCount - downVotesCount,
-            reviews: [...recipeFound.reviews, reviews] || recipeFound.reviews,
+            reviews: reviews ? [...recipeFound.reviews, reviews] : recipeFound.reviews,
             imageURL: imageURL || recipeFound.imageURL
           })
         );
         this.voters = userVotes;
-        console.log(this.voters.length);
-        console.log(shouldVote);
-        console.log(canVote);
         return Promise.resolve(this.recipes[recipeIndex]);
       })
       .catch(error => Promise.reject(error));

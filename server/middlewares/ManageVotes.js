@@ -46,10 +46,6 @@ class ManageVotes {
       recipeId: parseInt(recipeId, 10),
       up: false
     });
-    console.log(userUpVoteIndex);
-    console.log(userDownVoteIndex);
-    console.log(userId);
-
     let upVotesCount = upCount;
     let downVotesCount = downCount;
     let userVotes = voters;

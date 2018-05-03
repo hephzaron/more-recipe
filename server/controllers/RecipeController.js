@@ -19,9 +19,8 @@ class RecipeController extends RecipeClass {
         recipe,
         message: `${recipe.name} added successfully`
       }))
-      .catch(error => res.status(500).send({
-        error,
-        message: 'Internal Server Error'
+      .catch(error => res.status(400).send({
+        message: error.message
       }));
   }
 
@@ -37,9 +36,8 @@ class RecipeController extends RecipeClass {
       .then(modifiedRecipe => res.status(200).send({
         recipe: modifiedRecipe,
         message: `Changes made on ${modifiedRecipe.name} is successfull`
-      })).catch(error => res.status(500).send({
-        error,
-        message: 'Internal Server Error'
+      })).catch(error => res.status(404).send({
+        message: error.message
       }));
   }
 
@@ -56,7 +54,9 @@ class RecipeController extends RecipeClass {
       .then(deletedRecipe => res.status(200).send({
         message: `${deletedRecipe.name} have been successfully removed`
       }))
-      .catch(() => res.status(500).send('Internal Server Error'));
+      .catch(error => res.status(404).send({
+        error: error.messsage
+      }));
   }
 
   /**
@@ -69,8 +69,8 @@ class RecipeController extends RecipeClass {
   getAllRecipe(req, res) {
     return super.findAll({})
       .then(recipes => res.status(200).send({ recipes }))
-      .catch(() => res.status(500).send({
-        message: 'Internal Server Error'
+      .catch(error => res.status(404).send({
+        message: error.message
       }));
   }
 
@@ -88,8 +88,8 @@ class RecipeController extends RecipeClass {
       .then(reviewedRecipe => res.status(201).send({
         recipe: reviewedRecipe,
         message: `You added a review to ${reviewedRecipe.name}`
-      })).catch(() => res.status(500).send({
-        message: 'Internal Server Error'
+      })).catch(error => res.status(404).send({
+        message: error.message
       }));
   }
 }

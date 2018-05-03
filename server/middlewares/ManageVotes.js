@@ -36,8 +36,19 @@ class ManageVotes {
       userId,
       recipeId
     } = opts;
-    const userUpVoteIndex = _.findIndex(voters, { userId, recipeId, up: true });
-    const userDownVoteIndex = _.findIndex(voters, { userId, recipeId, up: false });
+    const userUpVoteIndex = _.findIndex(voters, {
+      userId: parseInt(userId, 10),
+      recipeId: parseInt(recipeId, 10),
+      up: true
+    });
+    const userDownVoteIndex = _.findIndex(voters, {
+      userId: parseInt(userId, 10),
+      recipeId: parseInt(recipeId, 10),
+      up: false
+    });
+    console.log(userUpVoteIndex);
+    console.log(userDownVoteIndex);
+    console.log(userId);
 
     let upVotesCount = upCount;
     let downVotesCount = downCount;
@@ -49,12 +60,18 @@ class ManageVotes {
         upVotesCount = upCount + 1;
         downVotesCount = downCount - 1;
         newVoters = voters.filter((voter, index) => index !== userDownVoteIndex);
-        userVotes = newVoters.concat([{ userId, recipeId, up: true }]);
-        canVote = true;
+        userVotes = newVoters.concat([{
+          userId: parseInt(userId, 10),
+          recipeId: parseInt(recipeId, 10),
+          up: true
+        }]);
       } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
         upVotesCount = upCount + 1;
-        userVotes = voters.concat([{ userId, recipeId, up: true }]);
-        canVote = true;
+        userVotes = voters.concat([{
+          userId: parseInt(userId, 10),
+          recipeId: parseInt(recipeId, 10),
+          up: true
+        }]);
       } else {
         canVote = false;
       }
@@ -63,12 +80,18 @@ class ManageVotes {
         upVotesCount = upCount - 1;
         downVotesCount = downCount + 1;
         newVoters = voters.filter((voter, index) => index !== userUpVoteIndex);
-        userVotes = newVoters.concat([{ userId, recipeId, up: false }]);
-        canVote = true;
+        userVotes = newVoters.concat([{
+          userId: parseInt(userId, 10),
+          recipeId: parseInt(recipeId, 10),
+          up: false
+        }]);
       } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
         downVotesCount = downCount + 1;
-        userVotes = voters.concat([{ userId, recipeId, up: false }]);
-        canVote = true;
+        userVotes = voters.concat([{
+          userId: parseInt(userId, 10),
+          recipeId: parseInt(recipeId, 10),
+          up: false
+        }]);
       } else {
         canVote = false;
       }

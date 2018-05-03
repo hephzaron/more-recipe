@@ -46,6 +46,8 @@ class Recipe {
     const indexedRecipe = {
       ...newRecipe,
       userId: parseInt(newRecipe.userId, 10),
+      upVotes: 0,
+      downVotes: 0,
       id
     };
     this.recipe = Object.assign({}, {...this.recipe }, indexedRecipe);
@@ -86,8 +88,8 @@ class Recipe {
         } = ManageVotes.validateVotes({
           upCount: recipeFound.upVotes,
           downCount: recipeFound.downVotes,
-          userId: recipeFound.userId,
           recipeId: recipeFound.id,
+          userId,
           upVotes,
           downVotes
         }, this.voters);
@@ -112,7 +114,7 @@ class Recipe {
           })
         );
         this.voters = userVotes;
-        console.log(this.voters);
+        console.log(this.voters.length);
         console.log(shouldVote);
         console.log(canVote);
         return Promise.resolve(this.recipes[recipeIndex]);

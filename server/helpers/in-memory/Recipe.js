@@ -104,14 +104,17 @@ class Recipe {
           Object.assign({}, {...recipeFound }, {
             name: name || recipeFound.name,
             description: description || recipeFound.description,
-            upVotes: upVotesCount || recipeFound.upVotes,
-            downVotes: downVotesCount || recipeFound.downVotes,
-            totalVotes: upVotesCount + downVotesCount,
+            upVotes: upVotesCount,
+            downVotes: downVotesCount,
+            totalVotes: upVotesCount - downVotesCount,
             reviews: [...recipeFound.reviews, reviews] || recipeFound.reviews,
             imageURL: imageURL || recipeFound.imageURL
           })
         );
         this.voters = userVotes;
+        console.log(this.voters);
+        console.log(shouldVote);
+        console.log(canVote);
         return Promise.resolve(this.recipes[recipeIndex]);
       })
       .catch(error => Promise.reject(error));

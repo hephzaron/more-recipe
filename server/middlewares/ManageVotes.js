@@ -1,3 +1,4 @@
+import _ from 'lodash';
 /**
  * Controls and manage upVotes downVotes
  * @class ManageVotes
@@ -35,10 +36,8 @@ class ManageVotes {
       userId,
       recipeId
     } = opts;
-    const userUpVoteIndex = voters.findIndex(upvote =>
-      upvote === { userId, recipeId, up: true });
-    const userDownVoteIndex = voters.findIndex(downvote =>
-      downvote === { userId, recipeId, up: false });
+    const userUpVoteIndex = _.findIndex(voters, { userId, recipeId, up: true });
+    const userDownVoteIndex = _.findIndex(voters, { userId, recipeId, up: false });
 
     let upVotesCount = upCount;
     let downVotesCount = downCount;

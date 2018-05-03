@@ -67,6 +67,14 @@ class RecipeController extends RecipeClass {
    * @returns { object } response
    */
   getAllRecipe(req, res) {
+    const { sort, order } = req.query;
+    if (sort && order) {
+      return super.findAll({ opts: [sort, order] })
+        .then(recipes => res.status(200).send({ recipes }))
+        .catch(error => res.status(404).send({
+          message: error.message
+        }));
+    }
     return super.findAll({})
       .then(recipes => res.status(200).send({ recipes }))
       .catch(error => res.status(404).send({

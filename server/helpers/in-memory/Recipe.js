@@ -152,15 +152,15 @@ class Recipe {
    * @param { object } order:order of fetch
    * @returns { array } recipes- An array of recipe
    */
-  findAll({ order }) {
+  findAll({ opts }) {
     if (!this.recipes) {
       return Promise.reject(new Error('No item exists in this section'));
     }
-    if (order) {
-      if (!Array.isArray(order)) {
-        return Promise.reject(new Error('order must be of type array'));
+    if (opts) {
+      const sortedArray = Recipe.sortArray(this.recipes, opts);
+      if (!Array.isArray(opts)) {
+        return Promise.reject(new Error('options must be of type array'));
       }
-      const sortedArray = this.sortArray(this.recipes, order[0]);
       if (Object.keys(sortedArray) === 'error') {
         return Promise.reject(sortedArray);
       }
@@ -184,7 +184,7 @@ class Recipe {
      * @returns { boolean } order
      */
     function cbASC(option) {
-      return option === 'ASC';
+      return (/^(ASC)$/i).test(option.trim());
     }
 
     /**
@@ -193,18 +193,32 @@ class Recipe {
      * @returns { boolean } order
      */
     function cbDESC(option) {
-      return option === 'DESC';
+      return (/^(DESC||DES)$/i).test(option.trim());
     }
     if (options.some(cbASC) && !options.some(cbDESC)) {
       return array
-        .sort((prev, next) =>
-          prev[sortBy].localeCompare(next[sortBy]));
+        .sort((prev, next) => {
+          const dataType = typeof prev[sortBy];
+          if (dataType === 'string') {
+            return prev[sortBy].localeCompare(next[sortBy]);
+          } else if (dataType === 'number') {
+            return prev[sortBy] - next[sortBy];
+          }
+          return true;
+        });
     } else if (!options.some(cbASC) && options.some(cbDESC)) {
       return array
-        .sort((prev, next) =>
-          next[sortBy].localeCompare(prev[sortBy]));
+        .sort((prev, next) => {
+          const dataType = typeof prev[sortBy];
+          if (dataType === 'string') {
+            return next[sortBy].localeCompare(prev[sortBy]);
+          } else if (dataType === 'number') {
+            return next[sortBy] - prev[sortBy];
+          }
+          return true;
+        });
     }
-    return new Error('Invalid sort type specified');
+    return new Error('Invalid sorting options specified');
   }
 
   /**
@@ -215,6 +229,9 @@ class Recipe {
    * @returns { promise } review
    */
   createReview(newReview) {
+    if (this.recipes.length === 0 || this.recipes[parseInt(newReview.recipeId, 10) - 1] === 'undefined') {
+      return Promise.reject(new Error('No recipe to review yet'));
+    }
     const id = this.recipes[parseInt(newReview.recipeId, 10) - 1].reviews.length + 1;
     this.reviewIndex += 1;
     const indexedReview = {

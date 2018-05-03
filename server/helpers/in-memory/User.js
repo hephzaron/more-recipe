@@ -1,5 +1,6 @@
 import generateIndex from '../generateIndex';
 import { hashPassword } from '../passwordHash';
+import { validateUser } from '../validation';
 /**
  * User in-memory data
  */
@@ -32,23 +33,34 @@ class User {
    * @returns { promise } createdUser
    */
   create(newUser) {
-    const lastIndex = this.index;
-    const { nextIndex } = generateIndex({ lastIndex });
-    this.index = nextIndex;
-    const { salt, hash } = hashPassword(newUser.password);
-    const indexedUser = {
-      ...newUser,
-      id: nextIndex,
-      password: '',
-      salt,
-      hash
-    };
-    this.user = Object.assign({}, {...this.user }, indexedUser);
-    this.users.push(this.user);
-    if (this.users[this.users.length - 1] !== this.user) {
-      return Promise.reject(new Error('An error occured in creating a new user'));
+    const { isValid, errors } = validateUser(newUser);
+    if (!isValid) {
+      return Promise.reject(errors);
     }
-    return Promise.resolve(this.user);
+    this.findOne({ where: { email: newUser.email } })
+      .then((user) => {
+        if (user) {
+          return Promise.reject(new Error('User already exists'));
+        }
+        const lastIndex = this.index;
+        const { nextIndex } = generateIndex({ lastIndex });
+        this.index = nextIndex;
+        const { salt, hash } = hashPassword(newUser.password);
+        const indexedUser = {
+          ...newUser,
+          id: nextIndex,
+          password: '',
+          salt,
+          hash
+        };
+        this.user = Object.assign({}, {...this.user }, indexedUser);
+        this.users.push(this.user);
+        if (this.users[this.users.length - 1] !== this.user) {
+          return Promise.reject(new Error('An error occured in creating a new user'));
+        }
+        return Promise.resolve(this.user);
+      })
+      .catch(error => Promise.reject(error));
   }
 
   /**

@@ -1,7 +1,7 @@
 /**
  * Generate indexes for object creation
  * @param {object} lastIndex
- * @returns { object } nextIndex
+ * @returns { number } nextIndex
  */
 const generateIndex = ({ lastIndex }) => {
   const nextIndex = lastIndex + 1;

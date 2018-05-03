@@ -1,7 +1,6 @@
 import { User as UserClass } from '../helpers/in-memory';
-import { hashPassword, verifyPassword } from '../helpers/passwordHash';
+import { verifyPassword } from '../helpers/passwordHash';
 import signToken from '../helpers/signToken';
-
 
 /**
  * Handles User(s) related function
@@ -20,7 +19,6 @@ class UserController extends UserClass {
    */
   signup(req, res) {
     const { password, confirmPassword } = req.body;
-    const { salt, hash } = hashPassword(password);
     const firstName = req.body.firstName || '';
     const lastName = req.body.lastName || '';
     const email = req.body.email || '';
@@ -30,17 +28,16 @@ class UserController extends UserClass {
     const facebookOauthID = req.body.facebookOauthID || '';
     const googleOauthID = req.body.googleOauthID || '';
 
-    if (password === confirmPassword) {
+    if (password !== confirmPassword) {
       return res.status(400).send({
         message: 'Password does not match'
       });
     }
 
-    return this.create({
+    return super.create({
       firstName,
       lastName,
-      salt,
-      hash,
+      password,
       email,
       username,
       age,
@@ -51,14 +48,21 @@ class UserController extends UserClass {
       const { token } = signToken(req);
       return res.status(201).send({
         userPayload: {
-          userId: user.id,
+          user,
           token
         },
         message: 'Your account has been created successfully'
       });
-    }).catch(() => res.status(500).send({
-      message: 'Internal Server Error'
-    }));
+    }).catch((error) => {
+      if (Object.keys(error).length >= 1) {
+        return res.status(400).send({
+          errors: {...error }
+        });
+      }
+      return res.status(400).send({
+        message: error.message
+      });
+    });
   }
 
   /**
@@ -74,7 +78,7 @@ class UserController extends UserClass {
       email,
       password
     } = req.body;
-    this.findOne({ where: email }).then((user) => {
+    super.findOne({ where: email }).then((user) => {
       const { validPassword } = verifyPassword(password, user.salt, user.hash);
       const { token } = signToken(req);
       if (!user) {
@@ -92,7 +96,9 @@ class UserController extends UserClass {
         user,
         message: 'Login successful'
       });
-    }).catch(() => res.status(500).send({ message: 'Internal Server Error' }));
+    }).catch(error => res.status(400).send({
+      message: error.message
+    }));
   }
 
   /**
@@ -102,10 +108,10 @@ class UserController extends UserClass {
    * @return { promise } response
    */
   getAllUsers(req, res) {
-    this.list()
+    super.list()
       .then(users => res.status(200).send({ users }))
-      .catch(() => res.status(500).send({
-        message: 'Internal Server Error'
+      .catch(error => res.status(400).send({
+        message: error.message
       }));
   }
 
@@ -117,7 +123,7 @@ class UserController extends UserClass {
    */
   editUser(req, res) {
     const { userId } = req.param;
-    this.update({ user: req.body, userId })
+    super.update({ user: req.body, userId })
       .then((user) => {
         if (!user) {
           return res.status(404).send({
@@ -126,8 +132,8 @@ class UserController extends UserClass {
         }
         return res.status(200).send({ user });
       })
-      .catch(() => res.status(500).send({
-        message: 'Internal Server Error'
+      .catch(error => res.status(400).send({
+        message: error.message
       }));
   }
 }

@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import removeKeys from '../removekeys';
 
 /**
  * Validate user entries
@@ -20,11 +21,11 @@ const validateUser = (user) => {
   const isEmail = /@\w*(.com)$/i;
   if (!salt || !hash || !facebookOauthID || !googleOauthID) {
     Object.keys(user).forEach((key) => {
-      if (isEmpty(user[key])) {
-        errors.key = `${key} cannot be empty`;
+      if (isEmpty(user[key.toString()])) {
+        errors[key.toString()] = `${key} cannot be empty`;
       }
-      if (!isAlphaNumeric.test(user[key])) {
-        errors.key = `${key} must be alphanumeric`;
+      if (!isAlphaNumeric.test(user[key.toString()]) && (key.toString() !== 'email')) {
+        errors[key.toString()] = `${key} must be alphanumeric`;
       }
     });
     if (!isEmail.test(email)) {
@@ -33,13 +34,16 @@ const validateUser = (user) => {
     if (Number.isNaN(age)) {
       errors.age = 'Age is not a number';
     }
-    if (sex.toLowerCase() !== ('male' || 'female')) {
+    if (!(/^(male||female)$/i).test(sex)) {
       errors.sex = 'Sex must be a male or female';
     }
   }
+  const object = removeKeys(errors, [
+    'salt', 'hash', 'facebookOauthID', 'googleOauthID'
+  ]);
   return {
     isValid: isEmpty(errors),
-    errors
+    errors: object
   };
 };
 

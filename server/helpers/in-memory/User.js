@@ -1,6 +1,8 @@
 import generateIndex from '../generateIndex';
 import { hashPassword } from '../passwordHash';
 import { validateUser } from '../validation';
+import removeKeys from '../removekeys';
+
 /**
  * User in-memory data
  */
@@ -14,6 +16,7 @@ class User {
     this.index = 0;
     this.users = [];
     this.user = {
+      id: 0,
       firstName: '',
       lastName: '',
       salt: '',
@@ -37,30 +40,28 @@ class User {
     if (!isValid) {
       return Promise.reject(errors);
     }
-    this.findOne({ where: { email: newUser.email } })
-      .then((user) => {
-        if (user) {
-          return Promise.reject(new Error('User already exists'));
-        }
-        const lastIndex = this.index;
-        const { nextIndex } = generateIndex({ lastIndex });
-        this.index = nextIndex;
-        const { salt, hash } = hashPassword(newUser.password);
-        const indexedUser = {
-          ...newUser,
-          id: nextIndex,
-          password: '',
-          salt,
-          hash
-        };
-        this.user = Object.assign({}, {...this.user }, indexedUser);
-        this.users.push(this.user);
-        if (this.users[this.users.length - 1] !== this.user) {
-          return Promise.reject(new Error('An error occured in creating a new user'));
-        }
-        return Promise.resolve(this.user);
-      })
-      .catch(error => Promise.reject(error));
+    const userExists = this.users.findIndex(user => user.email === newUser.email);
+    if (userExists >= 0) {
+      return Promise.reject(new Error('User already exists'));
+    }
+    const lastIndex = this.index;
+    const { nextIndex } = generateIndex({ lastIndex });
+    this.index = nextIndex;
+    const { salt, hash } = hashPassword(newUser.password);
+    const withoutPassword = removeKeys(newUser, ['password']);
+    const indexedUser = {
+      id: nextIndex,
+      salt,
+      hash,
+      ...withoutPassword
+    };
+    this.user = Object.assign({}, {...this.user }, indexedUser);
+    this.users.push(this.user);
+    if (this.users[this.users.length - 1] !== this.user) {
+      return Promise.reject(new Error('An error occured in creating a new user'));
+    }
+    const withoutHash = removeKeys(this.user, ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
+    return Promise.resolve(withoutHash);
   }
 
   /**
@@ -70,7 +71,7 @@ class User {
    */
   findOne({ where }) {
     const {...params } = where;
-    const userIndex = this.recipes.findIndex((item) => {
+    const userIndex = this.users.findIndex((item) => {
       if (params.id) {
         return item.id === parseInt(params.id, 10);
       }

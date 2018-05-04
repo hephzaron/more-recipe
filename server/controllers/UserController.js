@@ -126,7 +126,7 @@ class UserController extends UserClass {
    * @returns { object } response
    */
   editUser(req, res) {
-    const { userId } = req.param;
+    const { userId } = req.params;
     super.update({ user: req.body, userId })
       .then((user) => {
         if (!user) {

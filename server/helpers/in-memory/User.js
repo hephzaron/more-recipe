@@ -97,7 +97,7 @@ class User {
       facebookOauthID,
       googleOauthID
     } = user;
-    return this.findOne({ where: { id: userId } })
+    return this.findOne({ where: { id: parseInt(userId, 10) } })
       .then((userFound) => {
         this.users.splice(
           userFound.id - 1, 1,
@@ -114,7 +114,8 @@ class User {
             googleOauthID: googleOauthID || userFound.googleOauthID
           })
         );
-        return Promise.resolve(this.users[userFound.id]);
+        const withoutHash = removeKeys(this.users[userFound.id - 1], ['salt', 'hash']);
+        return Promise.resolve(withoutHash);
       }).catch(error => Promise.reject(error));
   }
 

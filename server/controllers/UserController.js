@@ -55,12 +55,12 @@ class UserController extends UserClass {
         message: 'Your account has been created successfully'
       });
     }).catch((error) => {
-      if (Object.keys(error).length >= 1) {
+      if (Object.keys(error).length >= 1 && !error.statusCode) {
         return res.status(400).send({
           errors: {...error }
         });
       }
-      return res.status(400).send({
+      return res.status(error.statusCode).send({
         message: error.message
       });
     });
@@ -100,8 +100,8 @@ class UserController extends UserClass {
         user: userObject,
         message: 'Login successful'
       });
-    }).catch(() => res.status(404).send({
-      message: 'Email or password incorrect'
+    }).catch(error => res.status(error.statusCode).send({
+      message: error.message
     }));
   }
 
@@ -114,7 +114,7 @@ class UserController extends UserClass {
   getAllUsers(req, res) {
     super.list()
       .then(users => res.status(200).send({ users }))
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(error.statusCode).send({
         message: error.message
       }));
   }
@@ -136,7 +136,7 @@ class UserController extends UserClass {
         }
         return res.status(200).send({ user });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(error.statusCode).send({
         message: error.message
       }));
   }

@@ -1,4 +1,5 @@
 import { ManageVotes } from '../../middlewares';
+import ErrorHandler from '../ErrorHandler';
 
 /**
  * Recipes in-memory data
@@ -53,7 +54,9 @@ class Recipe {
     this.recipe = Object.assign({}, {...this.recipe }, indexedRecipe);
     this.recipes.push(this.recipe);
     if (this.recipes[this.recipes.length - 1] !== this.recipe) {
-      return Promise.reject(new Error('An error occured in adding new recipe'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        message: 'An error occured in adding new recipe'
+      }));
     }
     this.lastIndex += 1;
     return Promise.resolve(this.recipe);
@@ -95,11 +98,17 @@ class Recipe {
         }, this.voters);
 
         if (!canVote && (upVotes || downVotes)) {
-          return Promise.reject(new Error('Sorry! You have voted before'));
+          return Promise.reject(ErrorHandler.handleErrors({
+            name: 'Conflict',
+            message: 'Sorry! You have voted before'
+          }));
         }
 
         if (!shouldVote && (upVotes || downVotes)) {
-          return Promise.reject(new Error('The Creator of a recipe is not allowed to vote'));
+          return Promise.reject(ErrorHandler.handleErrors({
+            name: 'Conflict',
+            message: 'The Creator of a recipe is not allowed to vote'
+          }));
         }
         this.recipes.splice(
           recipeIndex, 1,
@@ -128,7 +137,10 @@ class Recipe {
     const { id } = where;
     const recipeIndex = this.recipes.findIndex(item => item.id === parseInt(id, 10));
     if (recipeIndex === -1) {
-      return Promise.reject(new Error('Recipe does not exist'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Conflict',
+        message: 'Recipe does not exist'
+      }));
     }
     return Promise.resolve(recipeIndex);
   }
@@ -154,12 +166,18 @@ class Recipe {
    */
   findAll({ opts }) {
     if (!this.recipes) {
-      return Promise.reject(new Error('No item exists in this section'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Not Found',
+        message: 'No item exists in this section'
+      }));
     }
     if (opts) {
       const sortedArray = Recipe.sortArray(this.recipes, opts);
       if (!Array.isArray(opts)) {
-        return Promise.reject(new Error('options must be of type array'));
+        return Promise.reject(ErrorHandler.handleErrors({
+          name: 'Invalid Request',
+          message: 'options must be of type array'
+        }));
       }
       if (Object.keys(sortedArray) === 'error') {
         return Promise.reject(sortedArray);
@@ -218,7 +236,10 @@ class Recipe {
           return true;
         });
     }
-    return new Error('Invalid sorting options specified');
+    return ErrorHandler.handleErrors({
+      name: 'Invalid Request',
+      message: 'Invalid sorting options specified'
+    });
   }
 
   /**
@@ -230,7 +251,10 @@ class Recipe {
    */
   createReview(newReview) {
     if (this.recipes.length === 0 || this.recipes[parseInt(newReview.recipeId, 10) - 1] === 'undefined') {
-      return Promise.reject(new Error('No recipe to review yet'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Not Found',
+        message: 'No recipe to review yet'
+      }));
     }
     const id = this.recipes[parseInt(newReview.recipeId, 10) - 1].reviews.length + 1;
     this.reviewIndex += 1;
@@ -243,7 +267,9 @@ class Recipe {
     this.review = Object.assign({}, {...this.review }, indexedReview);
     this.reviews.push(this.review);
     if (this.reviews[this.reviews.length - 1] !== this.review) {
-      return Promise.reject(new Error('Review could not be created'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        message: 'Review could not be created'
+      }));
     }
     return this.update({
       id: this.review.recipeId,

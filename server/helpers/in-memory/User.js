@@ -3,6 +3,7 @@ import generateIndex from '../generateIndex';
 import { hashPassword } from '../passwordHash';
 import { validateUser } from '../validation';
 import removeKeys from '../removekeys';
+import ErrorHandler from '../ErrorHandler';
 
 /**
  * User in-memory data
@@ -43,7 +44,10 @@ class User {
     }
     const userExists = this.users.findIndex(user => user.email === newUser.email);
     if (userExists >= 0) {
-      return Promise.reject(new Error('User already exists'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Conflict',
+        message: 'User already exists'
+      }));
     }
     const lastIndex = this.index;
     const { nextIndex } = generateIndex({ lastIndex });
@@ -59,7 +63,9 @@ class User {
     this.user = Object.assign({}, {...this.user }, indexedUser);
     this.users.push(this.user);
     if (this.users[this.users.length - 1] !== this.user) {
-      return Promise.reject(new Error('An error occured in creating a new user'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        message: 'An error occured in creating a new user'
+      }));
     }
     const withoutHash = removeKeys({...this.user }, ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
     return Promise.resolve(withoutHash);
@@ -73,7 +79,10 @@ class User {
   findOne({ where }) {
     const userIndex = _.findIndex(this.users, {...where });
     if (userIndex === -1) {
-      return Promise.reject(new Error('User does not exist'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Not Found',
+        message: 'User does not exist'
+      }));
     }
     return Promise.resolve(this.users[userIndex]);
   }
@@ -127,7 +136,10 @@ class User {
   list() {
     const users = [...this.users];
     if (!this.users) {
-      return Promise.reject(new Error('Users list not available'));
+      return Promise.reject(ErrorHandler.handleErrors({
+        name: 'Not Found',
+        message: 'Users list not available'
+      }));
     }
     if (this.users.length === 0) {
       return Promise.resolve({ users, message: 'No user created yet' });

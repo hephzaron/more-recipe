@@ -1,15 +1,14 @@
 export default () => {
-  const userData = {
-    id: 1,
+  const user = {
     lastName: 'LastName',
     firstName: 'FirstName',
     email: 'email@email.com',
     username: 'Username',
     password: 'password',
+    age: '24',
     confirmPassword: 'password',
     googleOauthID: 'googleOauthID-1',
     facebookOauthID: 'facebookOauthID-1',
-    age: 24,
     sex: 'Male'
   };
   const users = [{
@@ -56,7 +55,7 @@ export default () => {
     sex: 'Male'
   }];
   return {
-    userData,
+    user,
     users
   };
 };

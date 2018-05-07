@@ -18,7 +18,7 @@ class UserAuth {
    */
   static verifyUser(req, res, next) {
     try {
-      const token = req.headers['x-access-token'];
+      const token = req.headers.authorization;
       const decoded = jwt.decode(token, process.env.JWT_SECRET, { algorithm: 'HS256' });
       /** Insert code to find user payload from user list */
       if (!decoded) {

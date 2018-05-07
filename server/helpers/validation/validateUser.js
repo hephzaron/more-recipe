@@ -24,7 +24,8 @@ const validateUser = (user) => {
       if (isEmpty(user[key.toString()])) {
         errors[key.toString()] = `${key} cannot be empty`;
       }
-      if (!isAlphaNumeric.test(user[key.toString()]) && (key.toString() !== 'email')) {
+      if (!isAlphaNumeric.test(user[key.toString()]) &&
+        (key.toString() !== 'email') && (key.toString() !== 'age')) {
         errors[key.toString()] = `${key} must be alphanumeric`;
       }
     });

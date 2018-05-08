@@ -20,14 +20,9 @@ checks:
     enabled: false
   identical-code:
     enabled: false
-
-eslint:
-  enabled: true
-  config:
-    extensions:
-    - .js
-    - .jsx
-
+plugins:
+  eslint:
+    enabled: true
 ratings:
   paths:
   - "**.js"

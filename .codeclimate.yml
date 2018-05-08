@@ -1,4 +1,4 @@
-engines:
+version: 2
 checks:
   argument-count:
     enabled: false
@@ -23,10 +23,7 @@ checks:
 plugins:
   eslint:
     enabled: true
-ratings:
-  paths:
-  - "**.js"
-exclude_paths:
+exclude_patterns:
 - "server/tests"
 - "node_modules/"
 - "server/dist/"

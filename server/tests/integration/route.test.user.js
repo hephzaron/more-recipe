@@ -23,7 +23,7 @@ describe('/POST User', () => {
         expect(message).to.equal('Your account has been created successfully');
         expect(userPayload).to.be.an('object');
         expect(userPayload).to.have.keys(['user', 'token']);
-        expect(userPayload.user.id).to.be.equal(1);
+        expect(userPayload.user.id).to.be.equal(2);
         expect(userPayload.user.email).to.be.equal(user.email);
         done();
       });
@@ -58,9 +58,9 @@ describe('/POST User', () => {
         expect(res.statusCode).to.be.equal(200);
         expect(res.body).to.be.an('object');
         expect(users).to.be.an('array');
-        expect(users.length).to.be.equal(1);
+        expect(users.length).to.be.equal(2);
         expect(users[0].id).to.be.equal(1);
-        expect(users[0].email).to.be.equal(user.email);
+        expect(users[1].email).to.be.equal(user.email);
         done();
       });
   });

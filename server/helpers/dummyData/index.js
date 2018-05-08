@@ -5,13 +5,13 @@ import Reviews from './reviews';
 
 const { user, users } = User();
 const { recipeIngredients, ingredient, ingredients } = Ingredients();
-const { recipe, recipes, usersRecipes } = Recipes();
+const { recipeDetails, recipes, usersRecipes } = Recipes();
 const { review, userReviews } = Reviews();
 
 export {
   user,
   users,
-  recipe,
+  recipeDetails,
   recipes,
   usersRecipes,
   recipeIngredients,

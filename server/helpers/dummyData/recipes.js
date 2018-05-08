@@ -1,15 +1,13 @@
 export default () => {
-  const recipe = {
-    id: 1,
+  const recipeDetails = {
+    userId: 1,
     name: 'RecipeName',
     description: 'Describe your recipe in details',
     imageURL: 'images/recipe/url',
     upvotes: 5,
-    favorites: 4,
     downvotes: 6,
     numberOfReviews: 4,
-    replies: JSON.stringify({}),
-    ingredients: JSON.stringify([])
+    replies: JSON.stringify({})
   };
 
   const recipes = [{
@@ -92,7 +90,7 @@ export default () => {
     recipeId: 3
   }];
   return {
-    recipe,
+    recipeDetails,
     recipes,
     usersRecipes
   };

@@ -1,8 +1,8 @@
-[![Build Status](https://travis-ci.org/hephzaron/youth-interact.svg?branch=master)](https://travis-ci.org/hephzaron/youth-interact)
-[![Code Climate](https://codeclimate.com/github/hephzaron/youth-interact/badges/gpa.svg)](https://codeclimate.com/github/hephzaron/youth-interact)
-[![Test Coverage](https://codeclimate.com/github/hephzaron/youth-interact/badges/coverage.svg)](https://codeclimate.com/github/hephzaron/youth-interact/coverage)
-[![Coverage Status](https://coveralls.io/repos/github/hephzaron/youth-interact/badge.svg?branch=master)](https://coveralls.io/github/hephzaron/youth-interact?branch=master)
-[![Issue Count](https://codeclimate.com/github/hephzaron/youth-interact/badges/issue_count.svg)](https://codeclimate.com/github/hephzaron/youth-interact)
+[![Build Status](https://travis-ci.org/hephzaron/more-recipe.svg?branch=master)](https://travis-ci.org/hephzaron/more-recipe)
+[![Code Climate](https://codeclimate.com/github/hephzaron/more-recipe/badges/gpa.svg)](https://codeclimate.com/github/hephzaron/more-recipe)
+[![Test Coverage](https://codeclimate.com/github/hephzaron/more-recipe/badges/coverage.svg)](https://codeclimate.com/github/hephzaron/more-recipe/coverage)
+[![Coverage Status](https://coveralls.io/repos/github/hephzaron/more-recipe/badge.svg?branch=master)](https://coveralls.io/github/hephzaron/more-recipe?branch=master)
+[![Issue Count](https://codeclimate.com/github/hephzaron/more-recipe/badges/issue_count.svg)](https://codeclimate.com/github/hephzaron/more-recipe)
 
 # Youth-Interact
 
@@ -31,7 +31,7 @@ Ensure the underlisted are installed on your PC before running this application
 
 ### Installing
 
-1. Download or clone this branch at https://github.com/hephzaron/youth-interact.git"
+1. Download or clone this branch at https://github.com/hephzaron/more-recipe.git"
 2. Navigate to working directory and install dependencies:
 
 ```
@@ -50,7 +50,7 @@ sequelize db:migrate
 
 ```
 PRIVATE_KEY=myprivatekey
-TEST_DATABASE_URL=postgres://127.0.0.1:5432/youth-interact-test
+TEST_DATABASE_URL=postgres://127.0.0.1:5432/more-recipe-test
 ```
 
 5. Start the server:

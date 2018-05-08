@@ -138,7 +138,7 @@ class Recipe {
     const recipeIndex = this.recipes.findIndex(item => item.id === parseInt(id, 10));
     if (recipeIndex === -1) {
       return Promise.reject(ErrorHandler.handleErrors({
-        name: 'Conflict',
+        name: 'Not Found',
         message: 'Recipe does not exist'
       }));
     }
@@ -250,7 +250,9 @@ class Recipe {
    * @returns { promise } review
    */
   createReview(newReview) {
-    if (this.recipes.length === 0 || this.recipes[parseInt(newReview.recipeId, 10) - 1] === 'undefined') {
+    if (this.recipes.length === 0 ||
+      !this.recipes[parseInt(newReview.recipeId, 10) - 1] ||
+      !this.recipes) {
       return Promise.reject(ErrorHandler.handleErrors({
         name: 'Not Found',
         message: 'No recipe to review yet'

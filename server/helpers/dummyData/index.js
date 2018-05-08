@@ -6,7 +6,7 @@ import Reviews from './reviews';
 const { user, users } = User();
 const { recipeIngredients, ingredient, ingredients } = Ingredients();
 const { recipeDetails, recipes, usersRecipes } = Recipes();
-const { review, userReviews } = Reviews();
+const { reviewDetails, userReviews } = Reviews();
 
 export {
   user,
@@ -17,6 +17,6 @@ export {
   recipeIngredients,
   ingredient,
   ingredients,
-  review,
+  reviewDetails,
   userReviews
 };

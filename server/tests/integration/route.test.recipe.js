@@ -1,7 +1,7 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import app from '../../src';
-import { user, recipeDetails } from '../../helpers/dummyData';
+import { user, recipeDetails, reviewDetails } from '../../helpers/dummyData';
 
 const { expect } = chai;
 const request = supertest(app);
@@ -72,6 +72,48 @@ describe('Recipe', () => {
       });
   });
 
+  it('it should post a third recipe', (done) => {
+    request
+      .post('/api/v1/recipes')
+      .set('authorization', authorization)
+      .send({...recipeDetails, name: 'ThirdRecipe' })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const { recipe, message } = res.body;
+        expect(res.statusCode).to.equal(201);
+        expect(res.body).to.be.an('object');
+        expect(message).to.equal('ThirdRecipe added successfully');
+        expect(recipe).to.be.an('object');
+        expect(recipe.id).to.be.equal(3);
+        expect(recipe.userId).to.be.equal(1);
+        done();
+      });
+  });
+
+  it('it should review second recipe', (done) => {
+    request
+      .post('/api/v1/recipes/2/reviews')
+      .set('authorization', authorization)
+      .send(reviewDetails)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const { recipe, message } = res.body;
+        expect(res.statusCode).to.equal(201);
+        expect(res.body).to.be.an('object');
+        expect(message).to.be.equal('You added a review to SecondRecipe');
+        expect(recipe.reviews).to.be.an('array');
+        expect(recipe.reviews.length).to.be.equal(1);
+        expect(recipe.reviews[0].id).to.be.equal(1);
+        expect(recipe.reviews[0].description).to.be.equal(reviewDetails.description);
+        expect(recipe.name).to.be.equal('SecondRecipe');
+        done();
+      });
+  });
+
   it('it should get all recipes', (done) => {
     request
       .get('/api/v1/recipes')
@@ -83,11 +125,13 @@ describe('Recipe', () => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
         expect(recipes).to.be.an('array');
-        expect(recipes.length).to.be.equal(2);
+        expect(recipes.length).to.be.equal(3);
         expect(recipes[0].id).to.be.equal(1);
         expect(recipes[1].id).to.be.equal(2);
+        expect(recipes[2].id).to.be.equal(3);
         expect(recipes[0].name).to.be.equal(recipeDetails.name);
         expect(recipes[1].name).to.be.equal('SecondRecipe');
+        expect(recipes[2].name).to.be.equal('ThirdRecipe');
         done();
       });
   });
@@ -96,7 +140,7 @@ describe('Recipe', () => {
     request
       .put('/api/v1/recipes/1')
       .set('authorization', authorization)
-      .send({...recipeDetails, name: 'RecipeNameChanged' })
+      .send({ name: 'RecipeNameChanged' })
       .end((err, res) => {
         if (err) {
           return done(err);
@@ -141,9 +185,80 @@ describe('Recipe', () => {
         expect(res.statusCode).to.equal(200);
         expect(res.body).to.be.an('object');
         expect(recipes).to.be.an('array');
-        expect(recipes.length).to.be.equal(1);
+        expect(recipes.length).to.be.equal(2);
         expect(recipes[0].id).to.be.equal(2);
+        expect(recipes[1].id).to.be.equal(3);
         expect(recipes[0].name).to.be.equal('SecondRecipe');
+        expect(recipes[1].name).to.be.equal('ThirdRecipe');
+        done();
+      });
+  });
+});
+
+describe('Recipe Votes', () => {
+  it('it should upvote recipe 2', (done) => {
+    request
+      .put('/api/v1/recipes/2')
+      .set('authorization', authorization)
+      .send({ userId: 2, upVotes: 1 })
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const { recipe, message } = res.body;
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(message).to.equal('Changes made on SecondRecipe is successfull');
+        expect(recipe).to.be.an('object');
+        expect(recipe.id).to.be.equal(2);
+        expect(recipe.upVotes).to.be.equal(1);
+        expect(recipe.userId).to.be.equal(1);
+        done();
+      });
+  });
+
+  it('it should sort recipe in descending order by upvotes', (done) => {
+    request
+      .get('/api/v1/recipes?sort=upVotes&order=desc')
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const { recipes } = res.body;
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(recipes).to.be.an('array');
+        expect(recipes.length).to.be.equal(2);
+        expect(recipes[0].id).to.be.equal(2);
+        expect(recipes[1].id).to.be.equal(3);
+        expect(recipes[0].upVotes).to.be.equal(1);
+        expect(recipes[1].upVotes).to.be.equal(0);
+        expect(recipes[0].name).to.be.equal('SecondRecipe');
+        expect(recipes[1].name).to.be.equal('ThirdRecipe');
+        done();
+      });
+  });
+
+  it('it should sort recipe in ascending order by upvotes', (done) => {
+    request
+      .get('/api/v1/recipes?sort=upVotes&order=asc')
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        const { recipes } = res.body;
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(recipes).to.be.an('array');
+        expect(recipes.length).to.be.equal(2);
+        console.log(recipes[0].upVotes);
+        console.log(recipes[1].upVotes);
+        expect(recipes[0].id).to.be.equal(3);
+        expect(recipes[1].id).to.be.equal(2);
+        expect(recipes[0].upVotes).to.be.equal(0);
+        expect(recipes[1].upVotes).to.be.equal(1);
+        expect(recipes[0].name).to.be.equal('ThirdRecipe');
+        expect(recipes[1].name).to.be.equal('SecondRecipe');
         done();
       });
   });

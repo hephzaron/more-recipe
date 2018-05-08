@@ -1,9 +1,8 @@
 export default () => {
-  const review = {
-    id: 1,
+  const reviewDetails = {
     userId: 1,
-    recipeId: 1,
-    modifiedRecipe: ''
+    description: 'Review description',
+    imageURL: 'my/review/image/url'
   };
   const userReviews = [{
     id: 1,
@@ -22,7 +21,7 @@ export default () => {
     modifiedRecipe: ''
   }];
   return {
-    review,
+    reviewDetails,
     userReviews
   };
 };

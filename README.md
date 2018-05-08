@@ -4,9 +4,9 @@
 [![Coverage Status](https://coveralls.io/repos/github/hephzaron/more-recipe/badge.svg?branch=master)](https://coveralls.io/github/hephzaron/more-recipe?branch=master)
 [![Issue Count](https://codeclimate.com/github/hephzaron/more-recipe/badges/issue_count.svg)](https://codeclimate.com/github/hephzaron/more-recipe)
 
-# Youth-Interact
+# More-Recipe
 
-Youth-Interact is an online recipe mannagement application, where users can upload their choiced recipe and help/encourage the young ones to be better cook
+More-Recipe is an online recipe mannagement application, where users can upload their choiced recipe and help/encourage the young ones to be better cook
 
 ## Table of Contents
 

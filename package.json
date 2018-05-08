@@ -1,0 +1,78 @@
+{
+  "name": "pre-andela",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.js\" --timeout 100000 --exit",
+    "lint": "eslint *.js",
+    "clean": "rimraf server/dist && mkdirp server/dist",
+    "build-babel": "babel server/ --out-dir server/dist",
+    "build": "npm run clean && npm run build-babel",
+    "start:dev": "babel-watch server/src/index.js -L",
+    "coveralls": "NODE_ENV=test nyc npm test && nyc report --reporter=lcov --reporter=text --reporter=json",
+    "deploy:page": "git subtree push --prefix template origin gh-pages"
+  },
+  "nyc": {
+    "exclude": [
+      "server/tests/**/**.js",
+      "client/**/**.js",
+      "server/dist/**/**.js",
+      "server/helpers/dummyData/**.js"
+    ]
+  },
+  "cacheDirectories": [
+    "node_modules"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hephzaron/more-recipe.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hephzaron/more-recipe/issues"
+  },
+  "author": "Daramola Tobi",
+  "license": "MIT",
+  "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "chai-http": "^4.0.0",
+    "cross-env": "^5.1.4",
+    "dotenv": "^5.0.0",
+    "ejs": "^2.5.8",
+    "express": "^4.16.3",
+    "express-static-gzip": "^0.3.2",
+    "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "jsonwebtoken": "^8.2.1",
+    "lodash": "^4.17.5",
+    "moment": "^2.22.1",
+    "morgan": "^1.9.0",
+    "nyc": "^11.7.1",
+    "path": "^0.12.7",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^4.37.6",
+    "sequelize-cli": "^4.0.0",
+    "socket.io": "^2.1.0",
+    "supertest": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-register": "^6.26.0",
+    "babel-watch": "^2.0.7",
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.10.0",
+    "eslint-plugin-react": "^7.6.1",
+    "mkdirp": "^0.5.1",
+    "mocha": "^5.0.5",
+    "nodemon": "^1.17.3",
+    "rimraf": "^2.6.2"
+  }
+}

@@ -1,7 +1,3 @@
 node_modules
-.eslintrc
-.eslintignore
-.eslintrc.json
-.babelrc
 .env
 server/dist

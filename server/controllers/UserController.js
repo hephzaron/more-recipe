@@ -47,6 +47,11 @@ class UserController extends UserClass {
       googleOauthID
     }).then((user) => {
       const { token } = signToken(req);
+      if (!token) {
+        return res.status(500).send({
+          message: 'Internal Server Error'
+        });
+      }
       return res.status(201).send({
         userPayload: {
           user,
@@ -60,7 +65,6 @@ class UserController extends UserClass {
           errors: {...error }
         });
       }
-      console.log(error.message);
       return res.status(error.statusCode).send({
         message: error.message
       });
@@ -85,6 +89,11 @@ class UserController extends UserClass {
     }).then((user) => {
       const { validPassword } = verifyPassword(password, user.salt, user.hash);
       const { token } = signToken(req);
+      if (!token) {
+        return res.status(500).send({
+          message: 'Internal Server Error'
+        });
+      }
       if (!user) {
         return res.status(400).send({
           message: 'Email or password incorrect'

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotEnv from 'dotenv';
+import ErrorHandler from './ErrorHandler';
 
 dotEnv.config();
 
@@ -21,6 +22,9 @@ function generateGUID() {
  * @returns { object } token- signed token
  */
 export default (req) => {
+  if (!secret) {
+    return Promise.reject(ErrorHandler.handleErrors({}));
+  }
   const GUID = generateGUID();
   const expiresDefault = Math.floor(new Date().getTime() / 1000) + (24 * 60 * 60);
   const payload = {

@@ -106,7 +106,7 @@ class Recipe {
 
         if (!shouldVote && (upVotes || downVotes)) {
           return Promise.reject(ErrorHandler.handleErrors({
-            name: 'Conflict',
+            name: 'Forbidden',
             message: 'The Creator of a recipe is not allowed to vote'
           }));
         }

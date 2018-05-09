@@ -500,4 +500,68 @@ describe('Recipe', () => {
       }
     );
   });
+
+  /**
+   * @function Recipe votes suite
+   */
+  describe('Unauthenticated user', () => {
+    it(
+      'it should not create recipe for unauthenticated user',
+      (done) => {
+        request
+          .post('/api/v1/recipes')
+          .set('authorization', 'unauth-token')
+          .send(recipeDetails)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            const { message } = res.body;
+            expect(res.statusCode).to.equal(401);
+            expect(res.body).to.be.an('object');
+            expect(message).to.equal('Token invalid or expired-user not found');
+            done();
+          });
+      }
+    );
+
+    it(
+      'it should not modify or vote recipe for unauthenticated user',
+      (done) => {
+        request
+          .put('/api/v1/recipes/2')
+          .set('authorization', 'unauth-token')
+          .send(recipeDetails)
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            const { message } = res.body;
+            expect(res.statusCode).to.equal(401);
+            expect(res.body).to.be.an('object');
+            expect(message).to.equal('Token invalid or expired-user not found');
+            done();
+          });
+      }
+    );
+
+    it(
+      'it should not delete recipe for unauthenticated user',
+      (done) => {
+        request
+          .delete('/api/v1/recipes/1')
+          .set('authorization', 'unauth-token')
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            const { message } = res.body;
+            expect(res.statusCode).to.equal(401);
+            expect(res.body).to.be.an('object');
+            expect(message).to.equal('Token invalid or expired-user not found');
+            done();
+          });
+      }
+    );
+  });
 });

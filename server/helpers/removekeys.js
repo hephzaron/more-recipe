@@ -5,10 +5,16 @@
  * @returns { object } object
  */
 export default function removeKeys(object, keys) {
-  if (Array.isArray(keys) && typeof object === 'object') {
+  if (!keys) {
+    if (!object) {
+      return null;
+    }
+    return object;
+  }
+  if (Array.isArray(keys) && (typeof object === 'object')) {
     const obj = object;
     keys.map(key => delete obj[key]);
     return obj;
   }
-  return { object };
+  return object;
 }

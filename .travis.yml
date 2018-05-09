@@ -6,20 +6,9 @@ env:
 language: node_js
 node_js:
   - node
-notifications:
-  email: false
-  webhooks: ["https://coveralls.io/webhook?repo_token=COVERALLS_REPO_TOKEN"]
-services:
-  - postgresql
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
-  - npm install
-  - npm install -g codeclimate-test-reporter coveralls sequelize istanbul-combine
-  - psql -c 'drop database if exists testdb;' -U postgres
-  - psql -c 'create database testdb;' -U postgres
-  - psql -c "CREATE USER tobi WITH PASSWORD '1234';" -U postgres
-  - npm run build
 script:
   - bundle exec rspec
   # Preferably you will run test-reporter on branch update events. But
@@ -29,6 +18,19 @@ script:
   # In the case where travis is setup to build PR updates only,
   # uncomment the line below
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+notifications:
+  email: false
+  webhooks: ["https://coveralls.io/webhook?repo_token=COVERALLS_REPO_TOKEN"]
+services:
+  - postgresql
+before_script:
+  - npm install
+  - npm install -g codeclimate-test-reporter coveralls sequelize istanbul-combine
+  - psql -c 'drop database if exists testdb;' -U postgres
+  - psql -c 'create database testdb;' -U postgres
+  - psql -c "CREATE USER tobi WITH PASSWORD '1234';" -U postgres
+  - npm run build
+script:
   - npm run coveralls
 after_success:
   - istanbul-combine -d merged-coverage -p summary -r lcov client/coverage/coverage-*.json coverage/coverage-*.json

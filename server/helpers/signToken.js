@@ -22,7 +22,8 @@ function generateGUID() {
  * @returns { object } token- signed token
  */
 export default (req) => {
-  if (!secret) {
+  if (!secret || !req ||
+    !req.body.username || req.body.username.length === 0) {
     return Promise.reject(ErrorHandler.handleErrors({}));
   }
   const GUID = generateGUID();

@@ -62,7 +62,8 @@ class User {
     };
     this.user = Object.assign({}, {...this.user }, indexedUser);
     this.users.push(this.user);
-    if (this.users[this.users.length - 1].email !== this.user.email) {
+    if (this.users[this.users.length - 1].email !== this.user.email ||
+      !this.user) {
       return Promise.reject(ErrorHandler.handleErrors({
         message: 'An error occured in creating a new user'
       }));

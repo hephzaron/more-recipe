@@ -85,12 +85,12 @@ class UserController extends UserClass {
       const { validPassword } = verifyPassword(password, user.salt, user.hash);
       const { token } = signToken(req);
       if (!user) {
-        return res.status(404).send({
+        return res.status(400).send({
           message: 'Email or password incorrect'
         });
       }
       if (!validPassword) {
-        return res.status(404).send({
+        return res.status(400).send({
           message: 'Email or password incorrect'
         });
       }

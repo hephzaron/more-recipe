@@ -24,7 +24,7 @@ describe('/POST Authorize User', () => {
         expect(message).to.equal('Your account has been created successfully');
         expect(userPayload).to.be.an('object');
         expect(userPayload).to.have.keys(['user', 'token']);
-        expect(userPayload.user.id).to.be.equal(1);
+        expect(userPayload.user.id).to.be.equal(2);
         expect(userPayload.user.email).to.be.equal('mymail@mail.com');
         done();
       });
@@ -251,8 +251,6 @@ describe('Recipe Votes', () => {
         expect(res.body).to.be.an('object');
         expect(recipes).to.be.an('array');
         expect(recipes.length).to.be.equal(2);
-        console.log(recipes[0].upVotes);
-        console.log(recipes[1].upVotes);
         expect(recipes[0].id).to.be.equal(3);
         expect(recipes[1].id).to.be.equal(2);
         expect(recipes[0].upVotes).to.be.equal(0);

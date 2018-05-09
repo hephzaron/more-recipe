@@ -12,8 +12,13 @@ class ErrorHandler extends Error {
   static handleErrors(options) {
     const error = {};
     const { name, message } = options;
-    error.name = name;
+    error.name = name || 'Server Error';
     error.message = message;
+    if (!name) {
+      error.statusCode = 500;
+      error.message = 'Internal Server Error';
+      return error;
+    }
     switch (name) {
       case 'Invalid Request':
         error.statusCode = 400;

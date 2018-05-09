@@ -60,6 +60,7 @@ class UserController extends UserClass {
           errors: {...error }
         });
       }
+      console.log(error.message);
       return res.status(error.statusCode).send({
         message: error.message
       });

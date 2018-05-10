@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.js\" --timeout 100000 --exit",
     "lint": "eslint *.js",
     "clean": "rimraf server/dist && mkdirp server/dist",
     "build-babel": "babel server/ --out-dir server/dist",
     "build": "npm run clean && npm run build-babel",
     "start:dev": "babel-watch server/src/index.js -L",
+    "start": "cross-env NODE_ENV=production node ./server/dist/src/index.js",
     "coveralls": "cross-env NODE_ENV=test nyc npm test && nyc report --reporter=lcov --reporter=text --reporter=json",
-    "deploy:page": "git subtree push --prefix template origin gh-pages"
+    "deploy:page": "git subtree push --prefix template origin gh-pages",
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit"
   },
   "nyc": {
     "exclude": [

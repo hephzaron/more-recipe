@@ -16,10 +16,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.get('/', function (req, res) {
-  res.status(200).send('Welcome to More-Recipe');
-});
-
 router.post('/signup', function (req, res) {
   return _controllers.User.signup(req, res);
 });

@@ -33,12 +33,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 _dotenv2.default.config();
 
 var app = (0, _expressApp2.default)((0, _express2.default)());
-var port = parseInt(process.env.SERVER_PORT, 10) || 8000;
+var port = parseInt(process.env.PORT, 10) || 5000;
 var server = _http2.default.createServer(app);
 var io = (0, _socket2.default)(server);
 
 app.set('port', port);
 (0, _sockets2.default)(io);
+
+app.get('/', function (req, res) {
+  return res.status(200).send('Welcome to More-Recipe');
+});
 
 server.listen(port, function () {
   console.log('Server listening on port ' + port);

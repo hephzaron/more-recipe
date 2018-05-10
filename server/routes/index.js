@@ -4,6 +4,10 @@ import { UserAuth } from '../middlewares';
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.status(200).send('Welcome to More-Recipe');
+});
+
 router.post('/signup', (req, res) => User.signup(req, res));
 router.post('/login', (req, res) => User.login(req, res));
 router.get('/users', (req, res) => User.getAllUsers(req, res));

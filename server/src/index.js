@@ -8,7 +8,7 @@ import expressApp from './expressApp';
 dotEnv.config();
 
 const app = expressApp(express());
-const port = parseInt(process.env.SERVER_PORT, 10) || 5000;
+const port = parseInt(process.env.PORT, 10) || 5000;
 const server = http.createServer(app);
 const io = socketIO(server);
 

@@ -44,7 +44,7 @@ This endpoint creates a new recipe
 
 ### HTTP Response
 
-`201 OK`
+`201 Created`
 
 ## Edit a recipe
 

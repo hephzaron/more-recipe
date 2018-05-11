@@ -45,7 +45,7 @@ This endpoint creates a user record.
 
 ### HTTP Response
 
-`201 OK`
+`201 Created`
 
 ## Edit a user
 

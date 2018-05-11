@@ -19,7 +19,8 @@
       "server/tests/**/**.js",
       "client/**/**.js",
       "server/dist/**/**.js",
-      "server/helpers/dummyData/**.js"
+      "server/helpers/dummyData/**.js",
+      "slate/**/**.js"
     ]
   },
   "cacheDirectories": [

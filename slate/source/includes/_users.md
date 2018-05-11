@@ -158,7 +158,7 @@ token | undefined | The reset token sent to user email
 The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> is a randomly generates number
 </aside>
 
-## Change password 
+## Change password
 
 > Request body
 

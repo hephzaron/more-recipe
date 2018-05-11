@@ -13,6 +13,7 @@
     "coveralls": "cross-env NODE_ENV=test nyc npm test && nyc report --reporter=lcov --reporter=text --reporter=json",
     "deploy:page": "git subtree push --prefix template origin gh-pages",
     "slate:install": "cd ./slate && bundle install",
+    "slate:start": "cd ./slate && bundle exec middleman server",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit"
   },
   "nyc": {

@@ -14,7 +14,7 @@ describe('Sign Token', () => {
           'user-agent': 'Mozilla'
         },
         body: {
-          username: 'username'
+          email: 'email'
         }
       };
       const { token } = signToken(req);
@@ -26,13 +26,13 @@ describe('Sign Token', () => {
    * @function Invalid entries suite
    */
   describe('# Invalid Entries', () => {
-    it('it should not sign token with empty username', (done) => {
+    it('it should not sign token with empty email', (done) => {
       const req = {
         headers: {
           'user-agent': 'Mozilla'
         },
         body: {
-          username: ''
+          email: ''
         }
       };
       const { token } = signToken(req);
@@ -44,7 +44,7 @@ describe('Sign Token', () => {
       });
     });
 
-    it('it should not sign token with no username', (done) => {
+    it('it should not sign token with no email', (done) => {
       const req = {
         headers: {
           'user-agent': 'Mozilla'

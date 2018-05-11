@@ -24,7 +24,7 @@ You can view code example in the dark area to the right.
 
 HTTP Request url must be prepended with base url
 
-* [BASE URL] - https://waw-recipe.herokuapp.com/api/v1
+`BASE URL = https://waw-recipe.herokuapp.com/api/v1`
 
 # Authentication
 
@@ -39,7 +39,7 @@ Waw-Recipe uses JWT to authenticate a user. The JWT token must be signed by the 
 
 Waw-Recipe expects that the token is included in every request like:
 
-* [authorization] - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+`authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...`
 
 <aside class="notice">
 You must replace <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> with the signed token.
@@ -60,13 +60,19 @@ You must replace <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> with the s
 
 ```javascript
 {
-  "message": "Authentication successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9....",
   "user": {
+    "id": 1,
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "email": "myemail@email.com",
     "username": "username",
-    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "userId": 1,
-    "admin": false
-  }
+    "age": 18,
+    "sex": "female",
+    "facebookOauthID": "",
+    "googleOauthID": ""
+    },
+    "message": "Login successful"
 }
 ```
 
@@ -74,7 +80,7 @@ This endpoint logs a user into the application. The token should be included in 
 
 ### HTTP Request
 
-`POST /users/signin`
+`POST /login`
 
 ### HTTP Response
 

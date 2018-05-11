@@ -6,7 +6,7 @@
 
 # More-Recipe
 
-More-Recipe is an online recipe mannagement application, where users can upload their choiced recipe and help/encourage the young ones to be better cook
+More-Recipe is an online recipe mannagement application, where users can upload their choiced recipe, vote, review and can save their most favorite recipe
 
 ## Table of Contents
 
@@ -20,6 +20,39 @@ More-Recipe is an online recipe mannagement application, where users can upload 
 * [Acknowledgement](#acknowledgement)
 
 ## Installation and setup
+
+1. Download or clone this branch at https://github.com/hephzaron/more-recipe.git"
+2. Navigate to working directory and install dependencies:
+
+```
+npm install 
+```
+
+3. Install sequelize-cli, Create Postgresql database, Navigate to server directory and run migrations:
+
+```
+npm install -g seqeulize-cli
+cd server
+sequelize db:migrate
+```
+
+4. Create a `.env` file in the root directory of the application. Use a different database for your testing and development. Example of the content of a .env file looks like this
+
+```
+PRIVATE_KEY=myprivatekey
+TEST_DATABASE_URL=postgres://127.0.0.1:5000/more-recipe-test
+```
+
+5. Start the server:
+
+```
+npm run start:dev
+```
+
+The server listens on port '5000' which can be changed by setting environment variable 'PORT'
+
+Visit `http://localhost:5000/api`  to access the `api` endpoint.
+
 
 ### Pre-requisites
 
@@ -63,11 +96,32 @@ The server listens on port '3000' which can be changed by setting environment va
 
 Visit `http://localhost:3000/api/v1`  to access the `api` endpoint.
 
-## Authentication 
+## Authentication
+
+The application uses JSON web token to sign and authenticate users. A signed token expires after 24 hours.
 
 ## API Documentation
 
+> Ensure Ruby is installed on your PC then run gem install bundler in your terminal
+
+- Install Slate dependencies by running `npm slate:install`
+- To deploy generated files into your application run `npm run slate:build`
+- To start slate run `npm run slate:start`
+
 ## Testing
+
+You can run three different kind of test on this application:`server`,`client` and `end-to-end` test.
+
+**Server test**
+run:
+```
+npm run test
+```
+- To get coverage result, run
+```
+npm run coveralls
+```
+> Other tests will be available soon
 
 ## License
 
@@ -79,7 +133,7 @@ This project is authored by **Daramola Tobi** (hephzaron@gmail.com) and is licen
 
 ## Author
 
-**Daramola Tobi** (hephzaron@gmail.com)is an aspiring developer passionate about building real apps to enhance his learning and sharpen his programming skills.
+**Daramola Tobi** (hephzaron@gmail.com)is an aspiring developer passionate about building real apps to enhance his learning and sharpen his programming skills, programming is what I do with my spare time
 
 ## Contributing Guide
 

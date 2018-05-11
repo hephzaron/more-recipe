@@ -23,7 +23,7 @@ function generateGUID() {
  */
 export default (req) => {
   if (!secret || !req ||
-    !req.body.username || req.body.username.length === 0) {
+    !req.body.email || req.body.email.length === 0) {
     return Promise.reject(ErrorHandler.handleErrors({}));
   }
   const GUID = generateGUID();
@@ -32,7 +32,7 @@ export default (req) => {
     auth: GUID,
     agent: req.headers['user-agent'],
     exp: expiresDefault,
-    username: req.body.email
+    email: req.body.email
   };
 
   const token = jwt.sign(payload, secret, { algorithm: 'HS256' });

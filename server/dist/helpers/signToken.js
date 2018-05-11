@@ -39,7 +39,7 @@ function generateGUID() {
  */
 
 exports.default = function (req) {
-  if (!secret || !req || !req.body.username || req.body.username.length === 0) {
+  if (!secret || !req || !req.body.email || req.body.email.length === 0) {
     return Promise.reject(_ErrorHandler2.default.handleErrors({}));
   }
   var GUID = generateGUID();
@@ -48,7 +48,7 @@ exports.default = function (req) {
     auth: GUID,
     agent: req.headers['user-agent'],
     exp: expiresDefault,
-    username: req.body.email
+    email: req.body.email
   };
 
   var token = _jsonwebtoken2.default.sign(payload, secret, { algorithm: 'HS256' });

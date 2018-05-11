@@ -11,6 +11,7 @@ toc_footers:
 includes:
   - users
   - recipes
+  - reviews
   - errors
 
 search: true

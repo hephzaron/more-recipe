@@ -66,9 +66,9 @@ This endpoint creates a new recipe
     "name": "name of recipe",
     "description": "describe recipe",
     "reviews": [],
-    "upVotes": 0,
+    "upVotes": 1,
     "downVotes": 0,
-    "totalVotes": 0,
+    "totalVotes": 1,
     "imageURL": "imageFile"
     },
     "message": "Changes made on name of recipe is successfull"

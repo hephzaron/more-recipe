@@ -1,6 +1,6 @@
 # Errors
 
-> The Waw-Recipe API uses the following error codes:
+**The Waw-Recipe API uses the following error codes:**
 
 Error Code | Meaning
 ---------- | -------

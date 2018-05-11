@@ -14,6 +14,7 @@
     "deploy:page": "git subtree push --prefix template origin gh-pages",
     "slate:install": "cd ./slate && bundle install",
     "slate:start": "cd ./slate && bundle exec middleman server",
+    "slate:build": "cd ./slate && deploy.sh",
     "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit"
   },
   "nyc": {

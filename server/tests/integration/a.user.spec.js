@@ -1,6 +1,6 @@
 import chai from 'chai';
 import supertest from 'supertest';
-import app from '../../src';
+import app from '../../src/server';
 import { user } from '../../helpers/dummyData';
 
 const { expect } = chai;

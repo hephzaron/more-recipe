@@ -10,9 +10,9 @@ var _supertest = require('supertest');
 
 var _supertest2 = _interopRequireDefault(_supertest);
 
-var _src = require('../../src');
+var _server = require('../../src/server');
 
-var _src2 = _interopRequireDefault(_src);
+var _server2 = _interopRequireDefault(_server);
 
 var _dummyData = require('../../helpers/dummyData');
 
@@ -20,7 +20,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var expect = _chai2.default.expect;
 
-var request = (0, _supertest2.default)(_src2.default);
+var request = (0, _supertest2.default)(_server2.default);
 
 describe('User account', function () {
   var newUser = void 0;

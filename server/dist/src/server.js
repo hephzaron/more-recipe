@@ -40,10 +40,6 @@ var io = (0, _socket2.default)(server);
 app.set('port', port);
 (0, _sockets2.default)(io);
 
-app.get('/', function (req, res) {
-  return res.status(200).send('Welcome to More-Recipe');
-});
-
 server.listen(port, function () {
   console.log('Server listening on port ' + port);
 });

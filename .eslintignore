@@ -7,4 +7,5 @@ package-lock.json
 .babelrc
 .travis.yml
 server/dist
+server/docs
 slate

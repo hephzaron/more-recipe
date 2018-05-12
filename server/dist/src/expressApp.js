@@ -6,6 +6,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _ejs = require('ejs');
 
+var _express = require('express');
+
+var _express2 = _interopRequireDefault(_express);
+
 var _morgan = require('morgan');
 
 var _morgan2 = _interopRequireDefault(_morgan);
@@ -35,8 +39,14 @@ exports.default = function (expressApp) {
     extended: false
   }));
 
+  expressApp.get('/api/', function (req, res) {
+    return res.status(200).send({
+      message: 'Welcome to WAW-Recipe'
+    });
+  });
+
   expressApp.use((0, _expressStaticGzip2.default)(_path2.default.join(__dirname, '../client/build')));
-  expressApp.set('views', _path2.default.join(__dirname, '../client/build'));
+  expressApp.use('/docs/v1', _express2.default.static(_path2.default.join(__dirname, '../docs/v1')));
   expressApp.engine('.html', _ejs.renderFile);
 
   expressApp.use('/api/v1', _routes2.default);

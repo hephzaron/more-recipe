@@ -30,4 +30,6 @@ exclude_patterns:
 - "server/dummyData/"
 - "server/migrations/"
 - "server/seeders/"
+- "server/docs/"
 - "client"
+- "slate"

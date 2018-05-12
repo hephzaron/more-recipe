@@ -6,10 +6,10 @@
   "scripts": {
     "lint": "eslint *.js",
     "clean": "rimraf server/dist && mkdirp server/dist",
-    "build-babel": "babel server/ --out-dir server/dist",
+    "build-babel": "babel server/ --out-dir server/dist --copy-files",
     "build": "npm run clean && npm run build-babel",
-    "start:dev": "babel-watch server/src/index.js -L",
-    "start": "cross-env NODE_ENV=production node ./server/dist/src/index.js",
+    "start:dev": "babel-watch server/src/server.js -L",
+    "start": "cross-env NODE_ENV=production node ./server/dist/src/server.js",
     "coveralls": "cross-env NODE_ENV=test nyc npm test && nyc report --reporter=lcov --reporter=text --reporter=json",
     "deploy:page": "git subtree push --prefix template origin gh-pages",
     "slate:install": "cd ./slate && bundle install",
@@ -23,7 +23,8 @@
       "client/**/**.js",
       "server/dist/**/**.js",
       "server/helpers/dummyData/**.js",
-      "slate/**/**.js"
+      "slate/**/**.js",
+      "server/docs"
     ]
   },
   "cacheDirectories": [

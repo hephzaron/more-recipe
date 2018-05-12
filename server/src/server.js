@@ -15,10 +15,6 @@ const io = socketIO(server);
 app.set('port', port);
 sockets(io);
 
-
-app.get('/', (req, res) =>
-  res.status(200).send('Welcome to More-Recipe'));
-
 server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });

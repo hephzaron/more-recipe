@@ -24,7 +24,9 @@
       "server/dist/**/**.js",
       "server/helpers/dummyData/**.js",
       "slate/**/**.js",
-      "server/docs"
+      "server/docs",
+      "server/models/index.js",
+      "server/config/db.js"
     ]
   },
   "cacheDirectories": [
@@ -64,7 +66,7 @@
     "path": "^0.12.7",
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.37.6",
+    "sequelize": "^4.37.7",
     "sequelize-cli": "^4.0.0",
     "socket.io": "^2.1.0",
     "supertest": "^3.0.0"

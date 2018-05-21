@@ -7,7 +7,7 @@ import { OrderReviews } from '../middlewares';
  * @param { object } res
  * @returns { promise } res
  */
-export default function(req, res) {
+export default (req, res) => {
   const inst = new OrderReviews();
   return res.status(200).send(inst.structure(userReviews));
 };

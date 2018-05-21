@@ -8,6 +8,18 @@ import { hashPassword, verifyPassword } from '../helpers/passwordHash';
  */
 export default (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      validate: {
+        not: {
+          args: /^[A-Z]+$/i,
+          msg: 'Recipe Id must be integer'
+        }
+      }
+    },
     firstName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -119,11 +131,6 @@ export default (sequelize, DataTypes) => {
     resetPasswordExpires: {
       type: DataTypes.DATE,
       allowNull: true
-    },
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
     }
   });
 
@@ -151,6 +158,19 @@ export default (sequelize, DataTypes) => {
   User.prototype.validPassword = (password) => {
     const { validPassword } = verifyPassword(password, this.salt, this.hash);
     return validPassword;
+  };
+
+  User.associate = (models) => {
+    User.belongsToMany(models.Recipe, {
+      through: models.SavedRecipe,
+      foreignKey: 'userId',
+      as: 'savedRecipe',
+      onDelete: 'CASCADE'
+    });
+    User.hasMany(models.Recipe, {
+      foreignKey: 'userId',
+      onDelete: 'CASCADE'
+    });
   };
   return User;
 };

@@ -1,9 +1,10 @@
 import express from 'express';
-import { Recipe, User } from '../controllers';
+import { Recipe, User, ping } from '../controllers';
 import { UserAuth } from '../middlewares';
 
 const router = express.Router();
 
+router.get('/ping', (req, res) => ping(req, res));
 router.post('/signup', (req, res) => User.signup(req, res));
 router.post('/login', (req, res) => User.login(req, res));
 router.get('/users', (req, res) => User.getAllUsers(req, res));

@@ -6,18 +6,33 @@ export default () => {
   };
   const userReviews = [{
     id: 1,
-    userId: 1,
+    userId: 2,
     recipeId: 1,
+    parentId: 0,
     modifiedRecipe: ''
   }, {
     id: 2,
     userId: 1,
-    recipeId: 2,
+    recipeId: 1,
+    parentId: 1,
     modifiedRecipe: ''
   }, {
     id: 3,
     userId: 2,
     recipeId: 1,
+    parentId: 2,
+    modifiedRecipe: ''
+  }, {
+    id: 4,
+    userId: 1,
+    recipeId: 1,
+    parentId: 2,
+    modifiedRecipe: ''
+  }, {
+    id: 5,
+    userId: 1,
+    recipeId: 1,
+    parentId: 1,
     modifiedRecipe: ''
   }];
   return {

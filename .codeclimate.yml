@@ -33,5 +33,8 @@ exclude_patterns:
 - "server/seeders/"
 - "server/docs/"
 - "server/config"
+- "server/middlewares/OrderReviews.js"
+- "server/helpers/GenerateTreeStructure.js"
+- "server/controllers/ping.js"
 - "client"
 - "slate"

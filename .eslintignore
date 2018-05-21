@@ -6,6 +6,8 @@ package-lock.json
 .eslintrc.json
 .babelrc
 .travis.yml
+.sequelizerc
 server/dist
 server/docs
+server/config
 slate

@@ -25,8 +25,13 @@
       "server/helpers/dummyData/**.js",
       "slate/**/**.js",
       "server/docs",
-      "server/models/index.js",
-      "server/config/db.js"
+      "server/models/**.js",
+      "server/migrations/**.js",
+      "server/seeders/**.js",
+      "server/config/db.js",
+      "server/middlewares/OrderReviews.js",
+      "server/controllers/ping.js",
+      "server/helpers/GenerateTreeStructure.js"
     ]
   },
   "cacheDirectories": [

@@ -23,7 +23,7 @@ class UserAuth {
       /** Insert code to find user payload from user list */
       if (!decoded) {
         return res.status(401).send({
-          message: 'Token invalid or expired-user not found'
+          message: 'You are not authorized to perform this action'
         });
       }
       next();

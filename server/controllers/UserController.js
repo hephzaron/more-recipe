@@ -124,8 +124,18 @@ class UserController {
    * @param { object } res -response
    * @return { promise } response
    */
-  static getAllUsers(req, res) {
-    return User.list()
+  static getUsers(req, res) {
+    const { userId } = req.params;
+    return User
+      .findAll({
+        where: userId ? { id: userId } : null,
+        attributes: {
+          exclude: ['salt', 'hash']
+        },
+        order: [
+          ['updatedAt', 'DESC']
+        ]
+      })
       .then(users => res.status(200).send({ users }))
       .catch((error) => {
         const e = ErrorHandler.handleErrors(error);
@@ -143,15 +153,59 @@ class UserController {
    */
   static editUser(req, res) {
     const { userId } = req.params;
-    return User.update({ user: req.body, userId })
+    const { password, oldPassword, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res.status(400).send({
+        message: 'The passwords are not the same. Please try again'
+      });
+    }
+    return User
+      .findById(userId, {
+        attributes: {
+          exclude: ['salt', 'hash']
+        }
+      })
       .then((user) => {
         if (!user) {
           return res.status(404).send({
-            message: 'Oops! User details could not be updated'
+            message: 'This user does not exist'
           });
         }
-        return res.status(200).send({ user });
-      }).catch((error) => {
+        if (oldPassword && !user.validPassword(oldPassword)) {
+          return res.status(400).send({
+            message: 'Your password does not match the current password'
+          });
+        }
+        const { salt, hash } = User.generateHash(password);
+        return User
+          .update(password ? {
+            salt,
+            hash
+          } : {
+            ...req.body
+          }, {
+            where: { id: userId },
+            returning: true,
+            plain: true
+          })
+          .then(() => {
+            if (!password) {
+              return res.status(200).send({
+                message: 'Your profile has been updated successfully'
+              });
+            }
+            return res.status(200).send({
+              message: 'Your password has been changed succesfully'
+            });
+          })
+          .catch((error) => {
+            const e = ErrorHandler.handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+      })
+      .catch((error) => {
         const e = ErrorHandler.handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message

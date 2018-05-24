@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/ping', (req, res) => ping(req, res));
 router.post('/signup', UserController.signup);
 router.post('/login', UserController.login);
-router.get('/users', UserController.getAllUsers);
+router.get('/users', UserController.getUsers);
 router.put('/users/:userId', UserAuth.verifyUser, UserController.editUser);
 router.post('/recipes', UserAuth.verifyUser, (req, res) => Recipe.addRecipe(req, res));
 router.put('/recipes/:recipeId', UserAuth.verifyUser, (req, res) => Recipe.modifyRecipe(req, res));

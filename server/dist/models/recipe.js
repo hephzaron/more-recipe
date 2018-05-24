@@ -1,11 +1,17 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 /**
  * Recipe Model
  * @param { object } sequelize
  * @param { object } DataTypes
  * @returns { object } Recipe
  */
-export default (sequelize, DataTypes) => {
-  const Recipe = sequelize.define('Recipe', {
+exports.default = function (sequelize, DataTypes) {
+  var Recipe = sequelize.define('Recipe', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -119,10 +125,10 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
-  Recipe.prototype.totalVotes = () => (
-    parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10)
-  );
-  Recipe.associate = (models) => {
+  Recipe.prototype.totalVotes = function () {
+    return parseInt(undefined.upVotes, 10) - parseInt(undefined.downVotes, 10);
+  };
+  Recipe.associate = function (models) {
     Recipe.belongsTo(models.User, {
       foreignKey: 'userId',
       as: 'Creator',
@@ -135,7 +141,7 @@ export default (sequelize, DataTypes) => {
       onDelete: 'CASCADE'
     });
     Recipe.hasMany(models.Review, {
-      foreignKey: 'recipeId',
+      foreignKey: 'recipeId'
     });
   };
   return Recipe;

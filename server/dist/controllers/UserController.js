@@ -4,15 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+var _models = require('../models');
 
-var _inMemory = require('../helpers/in-memory');
-
-var _passwordHash = require('../helpers/passwordHash');
+var _models2 = _interopRequireDefault(_models);
 
 var _signToken3 = require('../helpers/signToken');
 
@@ -22,13 +18,15 @@ var _removekeys = require('../helpers/removekeys');
 
 var _removekeys2 = _interopRequireDefault(_removekeys);
 
+var _ErrorHandler = require('../helpers/ErrorHandler');
+
+var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var User = _models2.default.User;
 
 /**
  * Handles User(s) related function
@@ -36,16 +34,13 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
  * @param { null } void
  * @returns {null} void
  */
-var UserController = function (_UserClass) {
-  _inherits(UserController, _UserClass);
 
+var UserController = function () {
   function UserController() {
     _classCallCheck(this, UserController);
-
-    return _possibleConstructorReturn(this, (UserController.__proto__ || Object.getPrototypeOf(UserController)).apply(this, arguments));
   }
 
-  _createClass(UserController, [{
+  _createClass(UserController, null, [{
     key: 'signup',
 
     /**
@@ -65,6 +60,13 @@ var UserController = function (_UserClass) {
       var lastName = req.body.lastName || '';
       var email = req.body.email || '';
       var username = req.body.username || '';
+
+      var _ref = User.generateHash(password) || '',
+          salt = _ref.salt;
+
+      var _ref2 = User.generateHash(password) || '',
+          hash = _ref2.hash;
+
       var age = req.body.age || 0;
       var sex = req.body.sex || 'Male';
       var facebookOauthID = req.body.facebookOauthID || '';
@@ -75,13 +77,14 @@ var UserController = function (_UserClass) {
           message: 'Password does not match'
         });
       }
-
-      return _get(UserController.prototype.__proto__ || Object.getPrototypeOf(UserController.prototype), 'create', this).call(this, {
+      console.log('m:', Object.getOwnPropertyNames(User.prototype));
+      return User.create({
         firstName: firstName,
         lastName: lastName,
-        password: password,
         email: email,
         username: username,
+        salt: salt,
+        hash: hash,
         age: age,
         sex: sex,
         facebookOauthID: facebookOauthID,
@@ -95,21 +98,19 @@ var UserController = function (_UserClass) {
             message: 'Internal Server Error'
           });
         }
+        var userObject = (0, _removekeys2.default)(user.dataValues, ['salt', 'hash']);
+        console.log('k:', Object.getOwnPropertyNames(user.dataValues));
         return res.status(201).send({
           userPayload: {
-            user: user,
+            user: userObject,
             token: token
           },
           message: 'Your account has been created successfully'
         });
       }).catch(function (error) {
-        if (Object.keys(error).length >= 1 && !error.statusCode) {
-          return res.status(400).send({
-            errors: _extends({}, error)
-          });
-        }
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = _ErrorHandler2.default.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
@@ -130,11 +131,11 @@ var UserController = function (_UserClass) {
           email = _req$body2.email,
           password = _req$body2.password;
 
-      _get(UserController.prototype.__proto__ || Object.getPrototypeOf(UserController.prototype), 'findOne', this).call(this, {
+      return User.findOne({
         where: { email: email }
       }).then(function (user) {
-        var _verifyPassword = (0, _passwordHash.verifyPassword)(password, user.salt, user.hash),
-            validPassword = _verifyPassword.validPassword;
+        var _user$validPassword = user.validPassword(password),
+            validPassword = _user$validPassword.validPassword;
 
         var _signToken2 = (0, _signToken4.default)(req),
             token = _signToken2.token;
@@ -154,15 +155,18 @@ var UserController = function (_UserClass) {
             message: 'Email or password incorrect'
           });
         }
-        var userObject = (0, _removekeys2.default)(user, ['salt', 'hash']);
+        console.log(Object.getOwnPropertyNames(user.prototype));
+        var userObject = (0, _removekeys2.default)(user.dataValues, ['salt', 'hash']);
         return res.status(200).send({
           token: token,
           user: userObject,
           message: 'Login successful'
         });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        console.log(error.name, error.message);
+        var e = _ErrorHandler2.default.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
@@ -177,11 +181,12 @@ var UserController = function (_UserClass) {
   }, {
     key: 'getAllUsers',
     value: function getAllUsers(req, res) {
-      _get(UserController.prototype.__proto__ || Object.getPrototypeOf(UserController.prototype), 'list', this).call(this).then(function (users) {
+      return User.list().then(function (users) {
         return res.status(200).send({ users: users });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = _ErrorHandler2.default.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
@@ -198,7 +203,7 @@ var UserController = function (_UserClass) {
     value: function editUser(req, res) {
       var userId = req.params.userId;
 
-      _get(UserController.prototype.__proto__ || Object.getPrototypeOf(UserController.prototype), 'update', this).call(this, { user: req.body, userId: userId }).then(function (user) {
+      return User.update({ user: req.body, userId: userId }).then(function (user) {
         if (!user) {
           return res.status(404).send({
             message: 'Oops! User details could not be updated'
@@ -206,14 +211,15 @@ var UserController = function (_UserClass) {
         }
         return res.status(200).send({ user: user });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = _ErrorHandler2.default.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
   }]);
 
   return UserController;
-}(_inMemory.User);
+}();
 
 exports.default = UserController;

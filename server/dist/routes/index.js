@@ -16,18 +16,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var router = _express2.default.Router();
 
-router.post('/signup', function (req, res) {
-  return _controllers.User.signup(req, res);
+router.get('/ping', function (req, res) {
+  return (0, _controllers.ping)(req, res);
 });
-router.post('/login', function (req, res) {
-  return _controllers.User.login(req, res);
-});
-router.get('/users', function (req, res) {
-  return _controllers.User.getAllUsers(req, res);
-});
-router.put('/users/:userId', _middlewares.UserAuth.verifyUser, function (req, res) {
-  return _controllers.User.editUser(req, res);
-});
+router.post('/signup', _controllers.UserController.signup);
+router.post('/login', _controllers.UserController.login);
+router.get('/users', _controllers.UserController.getAllUsers);
+router.put('/users/:userId', _middlewares.UserAuth.verifyUser, _controllers.UserController.editUser);
 router.post('/recipes', _middlewares.UserAuth.verifyUser, function (req, res) {
   return _controllers.Recipe.addRecipe(req, res);
 });

@@ -1,7 +1,9 @@
-import { User as UserClass } from '../helpers/in-memory';
-import { verifyPassword } from '../helpers/passwordHash';
+import models from '../models';
 import signToken from '../helpers/signToken';
 import removeKeys from '../helpers/removekeys';
+import ErrorHandler from '../helpers/ErrorHandler';
+
+const { User } = models;
 
 /**
  * Handles User(s) related function
@@ -9,7 +11,7 @@ import removeKeys from '../helpers/removekeys';
  * @param { null } void
  * @returns {null} void
  */
-class UserController extends UserClass {
+class UserController {
   /**
    * Registers a new user
    * @method signup
@@ -18,12 +20,13 @@ class UserController extends UserClass {
    * @param {object} res -response object
    * @returns { promise } response
    */
-  signup(req, res) {
+  static signup(req, res) {
     const { password, confirmPassword } = req.body;
     const firstName = req.body.firstName || '';
     const lastName = req.body.lastName || '';
     const email = req.body.email || '';
     const username = req.body.username || '';
+    const { salt, hash } = User.generateHash(password) || '';
     const age = req.body.age || 0;
     const sex = req.body.sex || 'Male';
     const facebookOauthID = req.body.facebookOauthID || '';
@@ -34,17 +37,17 @@ class UserController extends UserClass {
         message: 'Password does not match'
       });
     }
-
-    return super.create({
+    return User.create({
       firstName,
       lastName,
-      password,
       email,
       username,
+      salt,
+      hash,
       age,
       sex,
       facebookOauthID,
-      googleOauthID
+      googleOauthID,
     }).then((user) => {
       const { token } = signToken(req);
       if (!token) {
@@ -52,21 +55,18 @@ class UserController extends UserClass {
           message: 'Internal Server Error'
         });
       }
+      const userObject = removeKeys(user.dataValues, ['salt', 'hash']);
       return res.status(201).send({
         userPayload: {
-          user,
+          user: userObject,
           token
         },
         message: 'Your account has been created successfully'
       });
     }).catch((error) => {
-      if (Object.keys(error).length >= 1 && !error.statusCode) {
-        return res.status(400).send({
-          errors: {...error }
-        });
-      }
-      return res.status(error.statusCode).send({
-        message: error.message
+      const e = ErrorHandler.handleErrors(error);
+      return res.status(e.statusCode).send({
+        message: e.message
       });
     });
   }
@@ -79,15 +79,15 @@ class UserController extends UserClass {
    * @param {object} res -response object
    * @returns { null } void
    */
-  login(req, res) {
+  static login(req, res) {
     const {
       email,
       password
     } = req.body;
-    super.findOne({
+    return User.findOne({
       where: { email }
     }).then((user) => {
-      const { validPassword } = verifyPassword(password, user.salt, user.hash);
+      const validPassword = user.validPassword(password);
       const { token } = signToken(req);
       if (!token) {
         return res.status(500).send({
@@ -104,15 +104,18 @@ class UserController extends UserClass {
           message: 'Email or password incorrect'
         });
       }
-      const userObject = removeKeys(user, ['salt', 'hash']);
+      const userObject = removeKeys(user.dataValues, ['salt', 'hash']);
       return res.status(200).send({
         token,
         user: userObject,
         message: 'Login successful'
       });
-    }).catch(error => res.status(error.statusCode).send({
-      message: error.message
-    }));
+    }).catch((error) => {
+      const e = ErrorHandler.handleErrors(error);
+      return res.status(e.statusCode).send({
+        message: e.message
+      });
+    });
   }
 
   /**
@@ -121,12 +124,15 @@ class UserController extends UserClass {
    * @param { object } res -response
    * @return { promise } response
    */
-  getAllUsers(req, res) {
-    super.list()
+  static getAllUsers(req, res) {
+    return User.list()
       .then(users => res.status(200).send({ users }))
-      .catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
+      .catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 
   /**
@@ -135,9 +141,9 @@ class UserController extends UserClass {
    * @param { object } res -response
    * @returns { object } response
    */
-  editUser(req, res) {
+  static editUser(req, res) {
     const { userId } = req.params;
-    super.update({ user: req.body, userId })
+    return User.update({ user: req.body, userId })
       .then((user) => {
         if (!user) {
           return res.status(404).send({
@@ -145,10 +151,12 @@ class UserController extends UserClass {
           });
         }
         return res.status(200).send({ user });
-      })
-      .catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
+      }).catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 }
 

@@ -1,4 +1,10 @@
-import { hashPassword, verifyPassword } from '../helpers/passwordHash';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _passwordHash = require('../helpers/passwordHash');
 
 /**
  * User Model
@@ -6,8 +12,8 @@ import { hashPassword, verifyPassword } from '../helpers/passwordHash';
  * @param { object } DataTypes
  * @returns { object } User
  */
-export default (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
+exports.default = function (sequelize, DataTypes) {
+  var User = sequelize.define('User', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -70,11 +76,11 @@ export default (sequelize, DataTypes) => {
           args: true,
           msg: 'Email entry not valid'
         },
-        isUnique(email, next) {
+        isUnique: function isUnique(email, next) {
           return User.find({
-            where: { email },
+            where: { email: email },
             attributes: ['id']
-          }).done((error) => {
+          }).done(function (error) {
             if (!error) {
               next();
             }
@@ -141,11 +147,17 @@ export default (sequelize, DataTypes) => {
    * @param { string } password
    * @return { object } salt and hash
    */
-  User.generateHash = (password) => {
+  User.generateHash = function (password) {
     if (password === null || password === undefined) return '';
-    const { salt, hash } = hashPassword(password);
-    console.log('a:', typeof password);
-    return { salt, hash };
+
+    var _hashPassword = (0, _passwordHash.hashPassword)(password),
+        salt = _hashPassword.salt,
+        hash = _hashPassword.hash;
+
+    return {
+      salt: salt,
+      hash: hash
+    };
   };
 
   /**
@@ -155,16 +167,14 @@ export default (sequelize, DataTypes) => {
    * @param { string } password
    * @returns { boolean } validPassword
    */
-  User.prototype.validPassword = function validatePassword(password) {
-    console.log(this.salt);
-    console.log(this.hash);
-    console.log(password);
-    console.log('b:', typeof password);
-    const { validPassword } = verifyPassword(password, this.salt, this.hash);
+  User.prototype.validPassword = function (password) {
+    var _verifyPassword = (0, _passwordHash.verifyPassword)(password, undefined.salt, undefined.hash),
+        validPassword = _verifyPassword.validPassword;
+
     return validPassword;
   };
 
-  User.associate = (models) => {
+  User.associate = function (models) {
     User.belongsToMany(models.Recipe, {
       through: models.SavedRecipe,
       foreignKey: 'userId',

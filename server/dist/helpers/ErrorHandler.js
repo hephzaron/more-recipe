@@ -36,19 +36,29 @@ var ErrorHandler = function (_Error) {
      */
     value: function handleErrors(options) {
       var error = {};
-      if (!options || !options.name) {
-        error.name = 'Server Error';
+      try {
+        if (options || options.name) {
+          var name = options.name,
+              message = options.message;
+
+          if (/^(Sequelize)/i.test(name)) {
+            error.statusCode = 400;
+            error.name = 'Bad Request';
+            error.message = message;
+          } else {
+            error.statusCode = 500;
+            error.message = 'Internal Server Error';
+            error.name = 'Server Error';
+          }
+        }
+      } catch (e) {
         error.statusCode = 500;
         error.message = 'Internal Server Error';
-        return error;
+        error.name = 'Server Error';
       }
-      var name = options.name,
-          message = options.message;
-
-      error.message = message;
-      error.name = name;
-      switch (name) {
-        case 'Invalid Request':
+      /**
+       * switch (name) {
+        case 'Bad Request':
           error.statusCode = 400;
           break;
         case 'Unauthorized':
@@ -67,7 +77,7 @@ var ErrorHandler = function (_Error) {
           error.name = 'Server Error';
           error.statusCode = 500;
           error.message = 'Internal Server Error';
-      }
+      }* */
       return error;
     }
   }]);

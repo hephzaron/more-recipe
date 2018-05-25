@@ -87,16 +87,17 @@ class UserController {
     return User.findOne({
       where: { email }
     }).then((user) => {
+      if (!user) {
+        return res.status(404)
+          .send({
+            message: 'This email does not exist. Please try again or create an account if not registered'
+          });
+      }
       const validPassword = user.validPassword(password);
       const { token } = signToken(req);
       if (!token) {
         return res.status(500).send({
           message: 'Internal Server Error'
-        });
-      }
-      if (!user) {
-        return res.status(400).send({
-          message: 'Email or password incorrect'
         });
       }
       if (!validPassword) {

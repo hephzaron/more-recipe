@@ -111,11 +111,13 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    imageUrl: {
+    photoUrl: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isUrl: true
+        isUrl: {
+          msg: 'Invalid photo url'
+        }
       }
     }
   });

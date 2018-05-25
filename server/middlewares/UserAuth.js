@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import dotEnv from 'dotenv';
+import models from '../models';
+import ErrorHandler from '../helpers/ErrorHandler';
 
+const { User } = models;
 dotEnv.config();
 /**
  * @class UserAuth
@@ -26,7 +29,25 @@ class UserAuth {
           message: 'You are not authorized to perform this action'
         });
       }
-      next();
+      const { email } = decoded;
+      User
+        .findOne({
+          where: { email }
+        })
+        .then((user) => {
+          if (!user) {
+            return res.status(404).send({
+              message: 'Token invalid or expired-user not found'
+            });
+          }
+          next();
+        })
+        .catch((error) => {
+          const e = ErrorHandler.handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
+        });
     } catch (e) {
       return res.status(401).send({
         message: 'Token invalid or expired-user not found'

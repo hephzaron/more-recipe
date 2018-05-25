@@ -28,20 +28,20 @@ module.exports = {
       defaultValue: 0
     },
     favorites: {
-      type: Sequelize.INTEGER
+      allowNull: false,
+      type: Sequelize.INTEGER,
+      defaultValue: 0
     },
     likes: {
-      allowNull: false,
       type: Sequelize.INTEGER,
       defaultValue: 0
     },
     dislikes: {
-      allowNull: false,
       type: Sequelize.INTEGER,
       defaultValue: 0
     },
-    imageUrl: {
-      type: Sequelize.INTEGER
+    photoUrl: {
+      type: Sequelize.STRING
     },
     createdAt: {
       allowNull: false,

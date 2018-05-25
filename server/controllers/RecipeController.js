@@ -1,11 +1,13 @@
-import { Recipe as RecipeClass } from '../helpers/in-memory';
+import models from '../models';
+import ErrorHandler from '../helpers/ErrorHandler';
 
+const { Recipe, Review } = models;
 /**
  * Handles Recipe request operations
  * @class RecipeController
  * @param { null } void
  */
-class RecipeController extends RecipeClass {
+class RecipeController {
   /**
    * Adds a new recipe
    * @memberof RecipeController
@@ -13,32 +15,88 @@ class RecipeController extends RecipeClass {
    * @param { object } res -respone
    * @returns { obejct } server response
    */
-  addRecipe(req, res) {
-    return super.create({...req.body })
-      .then(recipe => res.status(201).send({
-        recipe,
-        message: `${recipe.name} added successfully`
-      }))
-      .catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
+  static addRecipe(req, res) {
+    const { name } = req.body;
+    return Recipe
+      .findOne({
+        where: {
+          name
+        }
+      })
+      .then((recipe) => {
+        if (recipe) {
+          return res.status(409).send({
+            message: 'A recipe with the same name already exist, you can add a review to existing recipe '
+          });
+        }
+        Recipe
+          .create(req.body, {
+            fields: [
+              'userId',
+              'name',
+              'description',
+              'photoUrl'
+            ],
+            returning: true
+          })
+          .then(newRecipe => res.status(201).send({
+            recipe: newRecipe,
+            message: `${newRecipe.name} added succesfully`
+          }))
+          .catch((error) => {
+            const e = ErrorHandler.handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+      })
+      .catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 
   /**
-   * Modify a Recipe
+   * Edit a Recipe
    * @param {object} req
    * @param {object} res
    * @returns { promise } response
    */
-  modifyRecipe(req, res) {
-    const id = req.params.recipeId;
-    return super.update({ id, ...req.body })
-      .then(modifiedRecipe => res.status(200).send({
-        recipe: modifiedRecipe,
-        message: `Changes made on ${modifiedRecipe.name} is successfull`
-      })).catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
+  static editRecipe(req, res) {
+    const { recipeId, userId } = req.params;
+    return Recipe
+      .findById(recipeId)
+      .then((recipe) => {
+        if (!recipe) {
+          return res.status(404).send({
+            message: 'Recipe does not exist'
+          });
+        }
+        if (recipe.userId !== parseInt(userId, 10)) {
+          return res.status(403).send({
+            message: 'You are not allowed to modify this recipe. Please add a review instead'
+          });
+        }
+        return recipe
+          .update(req.body)
+          .then(updatedRecipe => res.status(200).send({
+            updatedRecipe,
+            message: `${updatedRecipe.name} have been updated successfully`
+          }))
+          .catch((error) => {
+            const e = ErrorHandler.handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+      }).catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 
   /**
@@ -48,57 +106,90 @@ class RecipeController extends RecipeClass {
    * @param { object } res
    * @returns { object } response
    */
-  deleteRecipe(req, res) {
-    const id = req.params.recipeId;
-    return super.delete(id)
-      .then(deletedRecipe => res.status(200).send({
-        message: `${deletedRecipe.name} have been successfully removed`
-      }))
-      .catch(error => res.status(error.statusCode).send({
-        error: error.messsage
-      }));
+  static deleteRecipe(req, res) {
+    const { userId, recipeId } = req.params;
+    return Recipe
+      .findById(recipeId)
+      .then((recipe) => {
+        if (!recipe) {
+          return res.status(404).send({
+            message: 'Recipe does not exist'
+          });
+        }
+        if (recipe.userId !== parseInt(userId, 10)) {
+          return res.status(403).send({
+            message: 'You are not allowed to delete this recipe.'
+          });
+        }
+        return Recipe
+          .destroy({
+            where: {
+              id: recipeId
+            }
+          }).then(() => res.status(200).send({
+            message: 'Recipe deleted successfully'
+          }))
+          .catch((error) => {
+            const e = ErrorHandler.handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+      })
+      .catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 
   /**
-   * Gets all Recipe
+   * Gets Recipe
    * @memberof RecipeController
    * @param { object } req
    * @param { object } res
    * @returns { object } response
    */
-  getAllRecipe(req, res) {
-    const { sort, order } = req.query;
-    if (sort && order) {
-      return super.findAll({ opts: [sort, order] })
-        .then(recipes => res.status(200).send({ recipes }))
-        .catch(error => res.status(error.statusCode).send({
-          message: error.message
-        }));
-    }
-    return super.findAll({})
-      .then(recipes => res.status(200).send({ recipes }))
-      .catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
-  }
-
-  /**
-   * Adds a new review to recipe
-   * @method addReview
-   * @memberof ReviewController
-   * @param { object } req
-   * @param { object } res
-   * @returns { object } response
-   */
-  addReview(req, res) {
+  static getRecipes(req, res) {
+    const {
+      sort,
+      order,
+      limit,
+      offset
+    } = req.query;
     const { recipeId } = req.params;
-    return super.createReview({ recipeId, ...req.body })
-      .then(reviewedRecipe => res.status(201).send({
-        recipe: reviewedRecipe,
-        message: `You added a review to ${reviewedRecipe.name}`
-      })).catch(error => res.status(error.statusCode).send({
-        message: error.message
-      }));
+    const options = {
+      where: recipeId ? {
+        id: recipeId
+      } : {},
+      limit: limit || 4,
+      offset: offset || 0,
+      order: [
+        [
+          sort || 'id',
+          order || 'ASC'
+        ]
+      ],
+      include: [{
+        model: Review
+      }]
+    };
+    return Recipe
+      .findAll(options)
+      .then((recipes) => {
+        if (!recipes || recipes.length === 0) {
+          return res.status(200).send({
+            message: 'Oops! No recipe exists in this selection'
+          });
+        }
+        return res.status(200).send({ recipes });
+      }).catch((error) => {
+        const e = ErrorHandler.handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
   }
 }
 

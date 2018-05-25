@@ -10,7 +10,8 @@ class ErrorHandler extends Error {
    * @return { object } error
    */
   static handleErrors(options) {
-    console.log(options.name);
+    console.log(options.name, options.message);
+    console.log(options);
     const error = {};
     try {
       if (options || options.name) {
@@ -19,6 +20,11 @@ class ErrorHandler extends Error {
           error.statusCode = 400;
           error.name = 'Bad Request';
           error.message = message;
+          if (message.endsWith('belongs to a user')) {
+            error.statusCode = 409;
+            error.name = 'Conflict';
+            error.message = message;
+          }
         } else {
           error.statusCode = 500;
           error.message = 'Internal Server Error';

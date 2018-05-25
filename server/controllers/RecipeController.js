@@ -29,7 +29,7 @@ class RecipeController {
             message: 'A recipe with the same name already exist, you can add a review to existing recipe '
           });
         }
-        Recipe
+        return Recipe
           .create(req.body, {
             fields: [
               'userId',
@@ -39,10 +39,21 @@ class RecipeController {
             ],
             returning: true
           })
-          .then(newRecipe => res.status(201).send({
-            recipe: newRecipe,
-            message: `${newRecipe.name} added succesfully`
-          }))
+          .then(newRecipe =>
+            Review.create({
+              parentId: 0,
+              recipeId: parseInt(newRecipe.id, 10),
+              userId: parseInt(newRecipe.userId, 10),
+              description: newRecipe.description
+            }).then(() => res.status(201).send({
+              recipe: newRecipe,
+              message: `${newRecipe.name} added succesfully`
+            })).catch((error) => {
+              const e = ErrorHandler.handleErrors(error);
+              return res.status(e.statusCode).send({
+                message: e.message
+              });
+            }))
           .catch((error) => {
             const e = ErrorHandler.handleErrors(error);
             return res.status(e.statusCode).send({
@@ -66,6 +77,12 @@ class RecipeController {
    */
   static editRecipe(req, res) {
     const { recipeId, userId } = req.params;
+    const {
+      upVotes,
+      downVotes,
+      likes,
+      dislikes
+    } = req.body;
     return Recipe
       .findById(recipeId)
       .then((recipe) => {
@@ -74,13 +91,26 @@ class RecipeController {
             message: 'Recipe does not exist'
           });
         }
-        if (recipe.userId !== parseInt(userId, 10)) {
+        if ((recipe.userId !== parseInt(userId, 10)) &&
+          !(upVotes || downVotes || likes || dislikes)) {
           return res.status(403).send({
             message: 'You are not allowed to modify this recipe. Please add a review instead'
           });
         }
         return recipe
-          .update(req.body)
+          .update(req.body, {
+            fields: [
+              'name',
+              'description',
+              'photoUrl',
+              'upVotes',
+              'downVotes',
+              'likes',
+              'dislikes',
+              'favorites'
+            ],
+            returning: true
+          })
           .then(updatedRecipe => res.status(200).send({
             updatedRecipe,
             message: `${updatedRecipe.name} have been updated successfully`

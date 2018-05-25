@@ -1,5 +1,10 @@
 import express from 'express';
-import { RecipeController, UserController, ping } from '../controllers';
+import {
+  RecipeController,
+  UserController,
+  ReviewController,
+  ping
+} from '../controllers';
 import { UserAuth } from '../middlewares';
 
 const router = express.Router();
@@ -15,5 +20,8 @@ router.delete('/recipes/:userId/:recipeId', UserAuth.verifyUser, RecipeControlle
 // To sort recipes, append '?sort=[Object key]&order=[desc or asc]'
 router.get('/recipes', RecipeController.getRecipes);
 router.get('/recipes/:recipeId', RecipeController.getRecipes);
+router.post('/recipes/:recipeId/reviews', UserAuth.verifyUser, ReviewController.addReview);
+router.put('/recipes/:recipeId/reviews/:reviewId', UserAuth.verifyUser, ReviewController.editReview);
+router.delete('/recipes/:recipeId/reviews/:reviewId', UserAuth.verifyUser, ReviewController.deleteReview);
 
 export default router;

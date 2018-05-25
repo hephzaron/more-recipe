@@ -144,7 +144,6 @@ export default (sequelize, DataTypes) => {
   User.generateHash = (password) => {
     if (password === null || password === undefined) return '';
     const { salt, hash } = hashPassword(password);
-    console.log('a:', typeof password);
     return { salt, hash };
   };
 
@@ -156,10 +155,6 @@ export default (sequelize, DataTypes) => {
    * @returns { boolean } validPassword
    */
   User.prototype.validPassword = function validatePassword(password) {
-    console.log(this.salt);
-    console.log(this.hash);
-    console.log(password);
-    console.log('b:', typeof password);
     const { validPassword } = verifyPassword(password, this.salt, this.hash);
     return validPassword;
   };

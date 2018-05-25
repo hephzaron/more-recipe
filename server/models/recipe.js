@@ -64,6 +64,9 @@ export default (sequelize, DataTypes) => {
     upVotes: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      set() {
+        this.setDataValue('upVotes', this.upVotes + 1);
+      },
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -74,6 +77,9 @@ export default (sequelize, DataTypes) => {
     downVotes: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      set() {
+        this.setDataValue('downVotes', this.downVotes + 1);
+      },
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -84,6 +90,9 @@ export default (sequelize, DataTypes) => {
     likes: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      set() {
+        this.setDataValue('likes', this.likes + 1);
+      },
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -94,6 +103,9 @@ export default (sequelize, DataTypes) => {
     dislikes: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      set() {
+        this.setDataValue('dislikes', this.dislikes + 1);
+      },
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -104,6 +116,9 @@ export default (sequelize, DataTypes) => {
     favorites: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      set() {
+        this.setDataValue('favorites', this.favorites + 1);
+      },
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -121,9 +136,9 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
-  Recipe.prototype.totalVotes = () => (
-    parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10)
-  );
+  Recipe.prototype.totalVotes = function calcTotalVotes() {
+    return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
+  };
   Recipe.associate = (models) => {
     Recipe.belongsTo(models.User, {
       foreignKey: 'userId',

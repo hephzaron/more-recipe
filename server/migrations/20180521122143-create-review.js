@@ -13,6 +13,7 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     parentId: {
+      allowNull: false,
       type: Sequelize.INTEGER
     },
     description: {
@@ -40,7 +41,7 @@ module.exports = {
       defaultValue: 0
     },
     imageUrl: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     createdAt: {
       allowNull: false,

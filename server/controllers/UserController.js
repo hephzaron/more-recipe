@@ -3,7 +3,7 @@ import signToken from '../helpers/signToken';
 import removeKeys from '../helpers/removekeys';
 import ErrorHandler from '../helpers/ErrorHandler';
 
-const { User } = models;
+const { User, Recipe, Review } = models;
 
 /**
  * Handles User(s) related function
@@ -135,7 +135,13 @@ class UserController {
         },
         order: [
           ['updatedAt', 'DESC']
-        ]
+        ],
+        include: [{
+          model: Recipe,
+          include: [{
+            model: Review
+          }]
+        }]
       })
       .then(users => res.status(200).send({ users }))
       .catch((error) => {

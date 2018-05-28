@@ -1,4 +1,8 @@
-import _ from 'lodash';
+import models from '../models';
+import ErrorHandler from '../helpers/ErrorHandler';
+
+const { RecipeVote } = models;
+const { handleErrors } = ErrorHandler;
 /**
  * Controls and manage upVotes downVotes
  * @class ManageVotes
@@ -23,81 +27,77 @@ class ManageVotes {
    * Validates and control user votes
    * @method validateVotes
    * @memberof ManageVotes
-   * @param { object } opts
-   * @param { array } voters
+   * @param { object } req -request object
+   * @param { object } res -response object
    * @returns { object } voters parameter
    */
-  static validateVotes(opts, voters) {
+  static validateVotes(req, res) {
+    const { recipeId, userId } = req.params;
     const {
-      upCount,
-      downCount,
       upVotes,
       downVotes,
-      userId,
-      recipeId
-    } = opts;
-    const userUpVoteIndex = _.findIndex(voters, {
-      userId: parseInt(userId, 10),
-      recipeId: parseInt(recipeId, 10),
-      up: true
-    });
-    const userDownVoteIndex = _.findIndex(voters, {
-      userId: parseInt(userId, 10),
-      recipeId: parseInt(recipeId, 10),
-      up: false
-    });
-    let upVotesCount = upCount;
-    let downVotesCount = downCount;
-    let userVotes = voters;
-    let newVoters;
-    let canVote = true;
-    if (upVotes) {
-      if (userUpVoteIndex === -1 && userDownVoteIndex >= 0) {
-        upVotesCount = upCount + 1;
-        downVotesCount = downCount - 1;
-        newVoters = voters.filter((voter, index) => index !== userDownVoteIndex);
-        userVotes = newVoters.concat([{
-          userId: parseInt(userId, 10),
-          recipeId: parseInt(recipeId, 10),
-          up: true
-        }]);
-      } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
-        upVotesCount = upCount + 1;
-        userVotes = voters.concat([{
-          userId: parseInt(userId, 10),
-          recipeId: parseInt(recipeId, 10),
-          up: true
-        }]);
-      } else {
-        canVote = false;
-      }
-    } else if (downVotes) {
-      if (userUpVoteIndex >= 0 && userDownVoteIndex === -1) {
-        upVotesCount = upCount - 1;
-        downVotesCount = downCount + 1;
-        newVoters = voters.filter((voter, index) => index !== userUpVoteIndex);
-        userVotes = newVoters.concat([{
-          userId: parseInt(userId, 10),
-          recipeId: parseInt(recipeId, 10),
-          up: false
-        }]);
-      } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
-        downVotesCount = downCount + 1;
-        userVotes = voters.concat([{
-          userId: parseInt(userId, 10),
-          recipeId: parseInt(recipeId, 10),
-          up: false
-        }]);
-      } else {
-        canVote = false;
-      }
+      likes,
+      dislikes
+    } = req.body;
+    if (upVotes && downVotes) {
+      return res.status(403).send({
+        message: 'You can only upVote or downVote one at a time'
+      });
     }
-    return {
-      upVotesCount,
-      downVotesCount,
-      userVotes,
-      canVote
-    };
+    if (likes && dislikes) {
+      return res.status(403).send({
+        message: 'You can only like or dislike one at a time'
+      });
+    }
+    return RecipeVote
+      .findOne({
+        where: {
+          userId,
+          recipeId
+        }
+      })
+      .then((vote) => {
+        if (!vote) {
+          RecipeVote
+            .create({
+              userId,
+              recipeId,
+              upVotes: !!upVotes || false,
+              downVotes: !!downVotes || false,
+              likes: !!likes || false,
+              dislikes: !!dislikes || false
+            })
+            .then(userVote => res.status(200).send({
+              userVote,
+              message: 'Voting successful'
+            }))
+            .catch((error) => {
+              const e = handleErrors(error);
+              return res.status(e.statusCode).send({
+                message: e.message
+              });
+            });
+        }
+        const { upvotes, downvotes } = vote.handleVotes({ upVotes, downVotes });
+        const { like, dislike } = vote.handleLikes({ likes, dislikes });
+        return vote
+          .update({
+            upVotes: upvotes,
+            downVotes: downvotes,
+            likes: like || vote.likes,
+            dislikes: dislike || vote.dislikes
+          })
+          .then(userVote => res.status(200).send({
+            userVote,
+            message: 'Voting successful'
+          }))
+          .catch((error) => {
+            const e = handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+      });
   }
 }
 export default ManageVotes;

@@ -61,58 +61,6 @@ export default (sequelize, DataTypes) => {
         escape: true
       }
     },
-    upVotes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      set() {
-        this.setDataValue('upVotes', this.upVotes + 1);
-      },
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Upvotes must be an integer'
-        }
-      }
-    },
-    downVotes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      set() {
-        this.setDataValue('downVotes', this.downVotes + 1);
-      },
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Downvotes must be an integer'
-        }
-      }
-    },
-    likes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      set() {
-        this.setDataValue('likes', this.likes + 1);
-      },
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Likes must be an integer'
-        }
-      }
-    },
-    dislikes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      set() {
-        this.setDataValue('dislikes', this.dislikes + 1);
-      },
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'dislikes must be an integer'
-        }
-      }
-    },
     favorites: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -153,6 +101,9 @@ export default (sequelize, DataTypes) => {
     });
     Recipe.hasMany(models.Review, {
       foreignKey: 'recipeId',
+    });
+    Recipe.hasMany(models.RecipeVote, {
+      foreignKey: 'recipeId'
     });
   };
   return Recipe;

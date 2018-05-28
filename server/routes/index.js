@@ -5,23 +5,43 @@ import {
   ReviewController,
   ping
 } from '../controllers';
-import { UserAuth } from '../middlewares';
+import { UserAuth, ManageVotes } from '../middlewares';
+
+const {
+  signup,
+  login,
+  getUsers,
+  editUser
+} = UserController;
+const {
+  addRecipe,
+  editRecipe,
+  deleteRecipe,
+  getRecipes
+} = RecipeController;
+const {
+  addReview,
+  editReview,
+  deleteReview
+} = ReviewController;
+const { verifyUser } = UserAuth;
+const { validateVotes } = ManageVotes;
 
 const router = express.Router();
 
 router.get('/ping', (req, res) => ping(req, res));
-router.post('/signup', UserController.signup);
-router.post('/login', UserController.login);
-router.get('/users', UserController.getUsers);
-router.put('/users/:userId', UserAuth.verifyUser, UserController.editUser);
-router.post('/recipes', UserAuth.verifyUser, UserAuth.verifyUser, RecipeController.addRecipe);
-router.put('/recipes/:userId/:recipeId', UserAuth.verifyUser, RecipeController.editRecipe);
-router.delete('/recipes/:userId/:recipeId', UserAuth.verifyUser, RecipeController.deleteRecipe);
+router.post('/signup', signup);
+router.post('/login', login);
+router.get('/users', getUsers);
+router.put('/users/:userId', verifyUser, editUser);
+router.post('/recipes', verifyUser, addRecipe);
+router.put('/recipes/:userId/:recipeId', verifyUser, editRecipe, validateVotes);
+router.delete('/recipes/:userId/:recipeId', verifyUser, deleteRecipe);
 // To sort recipes, append '?sort=[Object key]&order=[desc or asc]'
-router.get('/recipes', RecipeController.getRecipes);
-router.get('/recipes/:recipeId', RecipeController.getRecipes);
-router.post('/recipes/:recipeId/reviews', UserAuth.verifyUser, ReviewController.addReview);
-router.put('/recipes/:recipeId/reviews/:reviewId', UserAuth.verifyUser, ReviewController.editReview);
-router.delete('/recipes/:recipeId/reviews/:reviewId', UserAuth.verifyUser, ReviewController.deleteReview);
+router.get('/recipes', getRecipes);
+router.get('/recipes/:recipeId', getRecipes);
+router.post('/recipes/:recipeId/reviews', verifyUser, addReview);
+router.put('/recipes/:recipeId/reviews/:reviewId', verifyUser, editReview);
+router.delete('/recipes/:recipeId/reviews/:reviewId', verifyUser, deleteReview);
 
 export default router;

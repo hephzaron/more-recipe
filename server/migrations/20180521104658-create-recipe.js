@@ -17,26 +17,8 @@ module.exports = {
       allowNull: false,
       type: Sequelize.STRING
     },
-    upVotes: {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0
-    },
-    downVotes: {
-      allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0
-    },
     favorites: {
       allowNull: false,
-      type: Sequelize.INTEGER,
-      defaultValue: 0
-    },
-    likes: {
-      type: Sequelize.INTEGER,
-      defaultValue: 0
-    },
-    dislikes: {
       type: Sequelize.INTEGER,
       defaultValue: 0
     },

@@ -20,6 +20,13 @@ class UserAuth {
    * @returns { promise } response
    */
   static verifyUser(req, res, next) {
+    const { userId } = req.params;
+    const {
+      upVotes,
+      downVotes,
+      likes,
+      dislikes
+    } = req.body;
     try {
       const token = req.headers.authorization;
       const decoded = jwt.decode(token, process.env.JWT_SECRET, { algorithm: 'HS256' });
@@ -38,6 +45,14 @@ class UserAuth {
           if (!user) {
             return res.status(404).send({
               message: 'Token invalid or expired-user not found'
+            });
+          }
+          console.log(userId, user.id);
+          if (userId &&
+            !(upVotes || downVotes || likes || dislikes) &&
+            parseInt(userId, 10) !== user.id) {
+            return res.status(401).send({
+              message: 'You are not authorized to access this account'
             });
           }
           next();

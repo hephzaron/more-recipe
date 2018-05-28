@@ -1,7 +1,12 @@
+import Sequelize from 'sequelize';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
+import { ManageVotes } from '../middlewares';
 
-const { Recipe, Review } = models;
+const { Recipe, Review, RecipeVote } = models;
+const { restrictCreator } = ManageVotes;
+const { handleErrors } = ErrorHandler;
+const { Op } = Sequelize;
 /**
  * Handles Recipe request operations
  * @class RecipeController
@@ -49,20 +54,20 @@ class RecipeController {
               recipe: newRecipe,
               message: `${newRecipe.name} added succesfully`
             })).catch((error) => {
-              const e = ErrorHandler.handleErrors(error);
+              const e = handleErrors(error);
               return res.status(e.statusCode).send({
                 message: e.message
               });
             }))
           .catch((error) => {
-            const e = ErrorHandler.handleErrors(error);
+            const e = handleErrors(error);
             return res.status(e.statusCode).send({
               message: e.message
             });
           });
       })
       .catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });
@@ -73,9 +78,10 @@ class RecipeController {
    * Edit a Recipe
    * @param {object} req
    * @param {object} res
+   * @param { function } next
    * @returns { promise } response
    */
-  static editRecipe(req, res) {
+  static editRecipe(req, res, next) {
     const { recipeId, userId } = req.params;
     const {
       upVotes,
@@ -97,16 +103,21 @@ class RecipeController {
             message: 'You are not allowed to modify this recipe. Please add a review instead'
           });
         }
+        const { shouldVote } = restrictCreator(recipe, userId);
+        if (!shouldVote && (upVotes || downVotes)) {
+          return res.status(403).send({
+            message: 'You are not allowed to vote your own recipe'
+          });
+        }
+        if (upVotes || downVotes || likes || dislikes) {
+          return next();
+        }
         return recipe
           .update(req.body, {
             fields: [
               'name',
               'description',
               'photoUrl',
-              'upVotes',
-              'downVotes',
-              'likes',
-              'dislikes',
               'favorites'
             ],
             returning: true
@@ -116,13 +127,13 @@ class RecipeController {
             message: `${updatedRecipe.name} have been updated successfully`
           }))
           .catch((error) => {
-            const e = ErrorHandler.handleErrors(error);
+            const e = handleErrors(error);
             return res.status(e.statusCode).send({
               message: e.message
             });
           });
       }).catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });
@@ -160,14 +171,14 @@ class RecipeController {
             message: 'Recipe deleted successfully'
           }))
           .catch((error) => {
-            const e = ErrorHandler.handleErrors(error);
+            const e = handleErrors(error);
             return res.status(e.statusCode).send({
               message: e.message
             });
           });
       })
       .catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });
@@ -203,6 +214,16 @@ class RecipeController {
       ],
       include: [{
         model: Review
+      }, {
+        model: RecipeVote,
+        where: {
+          [Op.or]: [
+            { upVotes: true },
+            { downVotes: true },
+            { likes: true },
+            { dislikes: true }
+          ]
+        }
       }]
     };
     return Recipe
@@ -215,7 +236,7 @@ class RecipeController {
         }
         return res.status(200).send({ recipes });
       }).catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });

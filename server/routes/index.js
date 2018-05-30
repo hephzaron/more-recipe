@@ -41,7 +41,7 @@ router.delete('/recipes/:userId/:recipeId', verifyUser, deleteRecipe);
 router.get('/recipes', getRecipes);
 router.get('/recipes/:recipeId', getRecipes);
 router.post('/recipes/:recipeId/reviews', verifyUser, addReview);
-router.put('/recipes/:recipeId/reviews/:reviewId', verifyUser, editReview);
-router.delete('/recipes/:recipeId/reviews/:reviewId', verifyUser, deleteReview);
+router.put('/recipes/:userId/reviews/:reviewId', verifyUser, editReview);
+router.delete('/recipes/:userId/reviews/:reviewId', verifyUser, deleteReview);
 
 export default router;

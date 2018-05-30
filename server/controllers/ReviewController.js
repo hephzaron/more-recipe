@@ -1,7 +1,9 @@
+import Sequelize from 'sequelize';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 
 const { User, Recipe, Review } = models;
+const { Op } = Sequelize;
 /**
  * Handles Review request operations
  * @class ReviewController
@@ -37,7 +39,7 @@ class ReviewController {
             return Review
               .findById(parentId)
               .then((review) => {
-                if (!review || review.parentId === 0) {
+                if (!review) {
                   return res.status(404).send({
                     message: 'You are trying review an invalid item. Please select an item'
                   });
@@ -99,13 +101,24 @@ class ReviewController {
             message: 'Review does not exist'
           });
         }
+        if (review.parentId === 0) {
+          return res.status(403).send({
+            message: 'Recipe cannot be modified here'
+          });
+        }
         if (review.userId !== parseInt(userId, 10)) {
           return res.status(403).send({
             message: 'You are not allowed to modify this review. Please add your own review instead'
           });
         }
         return review
-          .update(req.body)
+          .update(req.body, {
+            fields: [
+              'description',
+              'imageUrl'
+            ],
+            returning: true
+          })
           .then(updatedReview => res.status(200).send({
             updatedReview,
             message: 'Your review have been updated successfully'
@@ -146,10 +159,18 @@ class ReviewController {
             message: 'You are not allowed to delete this review.'
           });
         }
+        if (review.parentId === 0) {
+          return res.status(403).send({
+            message: 'You are not allowed to delete recipe from here'
+          });
+        }
         return Review
           .destroy({
             where: {
-              id: reviewId
+              [Op.or]: [
+                { id: reviewId },
+                { parentId: reviewId }
+              ]
             }
           }).then(() => res.status(200).send({
             message: 'Review deleted successfully'

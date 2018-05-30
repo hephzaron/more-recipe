@@ -101,9 +101,11 @@ export default (sequelize, DataTypes) => {
     });
     Recipe.hasMany(models.Review, {
       foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
     Recipe.hasMany(models.RecipeVote, {
-      foreignKey: 'recipeId'
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE'
     });
   };
   return Recipe;

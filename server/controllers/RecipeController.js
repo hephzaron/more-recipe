@@ -1,4 +1,3 @@
-import Sequelize from 'sequelize';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 import { ManageVotes } from '../middlewares';
@@ -6,7 +5,6 @@ import { ManageVotes } from '../middlewares';
 const { Recipe, Review, RecipeVote } = models;
 const { restrictCreator } = ManageVotes;
 const { handleErrors } = ErrorHandler;
-const { Op } = Sequelize;
 /**
  * Handles Recipe request operations
  * @class RecipeController
@@ -122,10 +120,23 @@ class RecipeController {
             ],
             returning: true
           })
-          .then(updatedRecipe => res.status(200).send({
-            updatedRecipe,
-            message: `${updatedRecipe.name} have been updated successfully`
-          }))
+          .then(async(updatedRecipe) => {
+            const { description, imageUrl, id } = updatedRecipe;
+            await Review.update({
+              description,
+              imageUrl
+            }, {
+              returning: true,
+              where: {
+                recipeId: id,
+                parentId: 0
+              }
+            });
+            return res.status(200).send({
+              updatedRecipe,
+              message: `${updatedRecipe.name} have been updated successfully`
+            });
+          })
           .catch((error) => {
             const e = handleErrors(error);
             return res.status(e.statusCode).send({
@@ -200,7 +211,7 @@ class RecipeController {
       offset
     } = req.query;
     const { recipeId } = req.params;
-    const options = {
+    const queryOptions = {
       where: recipeId ? {
         id: recipeId
       } : {},
@@ -215,19 +226,11 @@ class RecipeController {
       include: [{
         model: Review
       }, {
-        model: RecipeVote,
-        where: {
-          [Op.or]: [
-            { upVotes: true },
-            { downVotes: true },
-            { likes: true },
-            { dislikes: true }
-          ]
-        }
+        model: RecipeVote
       }]
     };
     return Recipe
-      .findAll(options)
+      .findAll(queryOptions)
       .then((recipes) => {
         if (!recipes || recipes.length === 0) {
           return res.status(200).send({

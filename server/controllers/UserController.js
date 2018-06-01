@@ -10,11 +10,12 @@ import ErrorHandler from '../helpers/ErrorHandler';
 import Mailer from '../helpers/Mailer';
 
 const { User, Recipe, Review } = models;
-dotEnv.config();
+const { handleErrors } = ErrorHandler;
 
 const forgotPasswordTemplateDir = path.join(__dirname, '../helpers/emailTemplates/forgot-password.ejs');
 const resetPasswordTemplateDir = path.join(__dirname, '../helpers/emailTemplates/reset-password.ejs');
 
+dotEnv.config();
 /**
  * Handles User(s) related function
  * @class UserController
@@ -74,7 +75,7 @@ class UserController {
         message: 'Your account has been created successfully'
       });
     }).catch((error) => {
-      const e = ErrorHandler.handleErrors(error);
+      const e = handleErrors(error);
       return res.status(e.statusCode).send({
         message: e.message
       });
@@ -122,7 +123,7 @@ class UserController {
         message: 'Login successful'
       });
     }).catch((error) => {
-      const e = ErrorHandler.handleErrors(error);
+      const e = handleErrors(error);
       return res.status(e.statusCode).send({
         message: e.message
       });
@@ -155,7 +156,7 @@ class UserController {
       })
       .then(users => res.status(200).send({ users }))
       .catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });
@@ -216,14 +217,14 @@ class UserController {
             });
           })
           .catch((error) => {
-            const e = ErrorHandler.handleErrors(error);
+            const e = handleErrors(error);
             return res.status(e.statusCode).send({
               message: e.message
             });
           });
       })
       .catch((error) => {
-        const e = ErrorHandler.handleErrors(error);
+        const e = handleErrors(error);
         return res.status(e.statusCode).send({
           message: e.message
         });
@@ -286,7 +287,91 @@ class UserController {
             return res.status(200).send({
               message: `A password reset link has been sent to ${email}. It may take upto 5 mins for the mail to arrive.`
             });
+          })
+          .catch((error) => {
+            const e = handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
           });
+      })
+      .catch((error) => {
+        const e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
+      });
+  }
+
+  /**
+   * @method resetPassword
+   * @param { object } req -request object
+   * @param {object} res -response object
+   * @returns { object } response
+   */
+  static resetPassword(req, res) {
+    const { password, confirmPassword, email } = req.body;
+    const now = Math.floor(new Date().getTime() / 1000) - (60 * 60);
+    const resetPasswordToken = req.query.token;
+    if (!resetPasswordToken) {
+      return res.status(403).send({
+        message: 'You are not authorize to perform this action'
+      });
+    }
+    if (password !== confirmPassword) {
+      return res.status(400).send({
+        message: 'Password do not match'
+      });
+    }
+    return User
+      .findOne({
+        where: {
+          email,
+          resetPasswordToken,
+          resetPasswordExpires: { $gte: now }
+        }
+      })
+      .then((user) => {
+        if (!user) {
+          return res.status(400).send({
+            message: 'There was an error completing your request. Perhaps, you followed a broken link.'
+          });
+        }
+        const { salt, hash } = User.generateHash(password);
+        return user
+          .update({ salt, hash })
+          .then((updatedUser) => {
+            if (!updatedUser) {
+              return res.status(400).send({
+                message: 'Sorry password could not be changed. Please try again'
+              });
+            }
+            const { username } = updatedUser;
+            const mailer = new Mailer();
+            const { EMAIL_FROM } = process.env;
+            ejs.renderFile(resetPasswordTemplateDir, {
+              date: moment().format('MMM Do YYYY'),
+              username
+            }, (error, html) => {
+              if (error) {
+                return error.message;
+              }
+              mailer.to = email;
+              mailer.from = EMAIL_FROM;
+              mailer.subject = 'Password reset request';
+              mailer.html = html;
+              mailer.send();
+            });
+            return res.status(200).send({
+              message: 'Password successfully changed. Please login to your account.'
+            });
+          });
+      })
+      .catch((error) => {
+        const e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
+        });
       });
   }
 }

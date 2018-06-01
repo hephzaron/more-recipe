@@ -186,7 +186,6 @@ export default (sequelize, DataTypes) => {
     });
     User.belongsTo(models.Notification, {
       foreignKey: 'userId',
-      as: 'user',
       targetKey: 'id'
     });
   };

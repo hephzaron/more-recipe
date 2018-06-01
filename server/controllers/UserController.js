@@ -265,7 +265,7 @@ class UserController {
                 message: 'Your credentials could not be updated please try again'
               });
             }
-            const baseURL = 'https://more-recipe.herokuapp.com/api/v1';
+            const baseURL = 'https://waw-recipe.herokuapp.com/api/v1';
             const resetUrl = `${baseURL}/auth/reset_password?token=${resetPasswordToken}`;
             const { username } = updatedUser;
             const mailer = new Mailer();

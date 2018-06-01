@@ -1,9 +1,19 @@
+import path from 'path';
+import crypto from 'crypto';
+import dotEnv from 'dotenv';
+import moment from 'moment';
+import ejs from 'ejs';
 import models from '../models';
 import signToken from '../helpers/signToken';
 import removeKeys from '../helpers/removekeys';
 import ErrorHandler from '../helpers/ErrorHandler';
+import Mailer from '../helpers/Mailer';
 
 const { User, Recipe, Review } = models;
+dotEnv.config();
+
+const forgotPasswordTemplateDir = path.join(__dirname, '../helpers/emailTemplates/forgot-password.ejs');
+const resetPasswordTemplateDir = path.join(__dirname, '../helpers/emailTemplates/reset-password.ejs');
 
 /**
  * Handles User(s) related function
@@ -217,6 +227,66 @@ class UserController {
         return res.status(e.statusCode).send({
           message: e.message
         });
+      });
+  }
+
+  /**
+   * sendPasswordResetLink
+   * @param {object } req -request object
+   * @param {object} res -response object
+   * @returns { promise } user
+   */
+  static sendPasswordResetLink(req, res) {
+    const { email } = req.body;
+    return User
+      .findOne({
+        where: {
+          email
+        }
+      })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({
+            message: 'User does not exist'
+          });
+        }
+        const resetPasswordToken = crypto.randomBytes(10).toString('hex');
+        // token expire in 15minutes
+        const resetPasswordExpires = Math.floor(new Date().getTime() / 1000) + (15 * 60);
+        return user
+          .update({
+            resetPasswordToken,
+            resetPasswordExpires
+          })
+          .then((updatedUser) => {
+            if (!updatedUser) {
+              return res.status(400).send({
+                message: 'Your credentials could not be updated please try again'
+              });
+            }
+            const baseURL = 'https://more-recipe.herokuapp.com/api/v1';
+            const resetUrl = `${baseURL}/auth/reset_password?token=${resetPasswordToken}`;
+            const { username } = updatedUser;
+            const mailer = new Mailer();
+            const { EMAIL_FROM } = process.env;
+            ejs.renderFile(forgotPasswordTemplateDir, {
+              date: moment().format('MMM Do YYYY'),
+              username,
+              resetUrl
+            }, (error, html) => {
+              if (error) {
+                return error.message;
+              }
+              mailer.to = email;
+              mailer.from = EMAIL_FROM;
+              mailer.subject = 'Password reset request';
+              mailer.html = html;
+              mailer.send();
+            });
+            return res.status(200).send({
+              message: `A password reset link has been sent to ${email}. It may take upto 5 mins for the mail to arrive.`
+            });
+          });
       });
   }
 }

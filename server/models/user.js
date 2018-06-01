@@ -131,6 +131,15 @@ export default (sequelize, DataTypes) => {
     resetPasswordExpires: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    profilePhotoUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: {
+          msg: 'Invalid photo url'
+        }
+      }
     }
   });
 
@@ -169,6 +178,16 @@ export default (sequelize, DataTypes) => {
     User.hasMany(models.Recipe, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
+    });
+    User.belongsTo(models.Review, {
+      foreignKey: 'userId',
+      as: 'user',
+      targetKey: 'id'
+    });
+    User.belongsTo(models.Notification, {
+      foreignKey: 'userId',
+      as: 'user',
+      targetKey: 'id'
     });
   };
   return User;

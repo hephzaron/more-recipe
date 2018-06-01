@@ -1,19 +1,30 @@
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('SavedRecipes', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('Notifications', {
     id: {
       allowNull: false,
       autoIncrement: true,
+      primaryKey: true,
       type: Sequelize.INTEGER
     },
     userId: {
       allowNull: false,
-      primaryKey: true,
+      type: Sequelize.INTEGER
+    },
+    recipientId: {
+      allowNull: false,
+      type: Sequelize.INTEGER
+    },
+    parentId: {
+      allowNull: false,
       type: Sequelize.INTEGER
     },
     recipeId: {
       allowNull: false,
-      primaryKey: true,
       type: Sequelize.INTEGER
+    },
+    notificationType: {
+      allowNull: false,
+      type: Sequelize.ENUM('Likes', 'Review')
     },
     createdAt: {
       allowNull: false,
@@ -26,6 +37,5 @@ module.exports = {
       type: Sequelize.DATE
     }
   }),
-  down: queryInterface => queryInterface.dropTable('SavedRecipes')
-
+  down: queryInterface => queryInterface.dropTable('Notifications')
 };

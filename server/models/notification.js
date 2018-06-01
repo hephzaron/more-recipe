@@ -1,11 +1,11 @@
 /**
- * Review Model
+ * Notification Model
  * @param { object } sequelize
  * @param { object } DataTypes
- * @returns { object } Review
+ * @returns { object } Notification
  */
 export default (sequelize, DataTypes) => {
-  const Review = sequelize.define('Review', {
+  const Notification = sequelize.define('Notification', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -32,13 +32,13 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    recipeId: {
+    recipientId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         not: {
           args: /^[A-Z]+$/i,
-          msg: 'Recipe Id must be integer'
+          msg: 'Recipient Id must be integer'
         }
       }
     },
@@ -52,37 +52,29 @@ export default (sequelize, DataTypes) => {
         }
       }
     },
-    description: {
-      type: DataTypes.STRING,
+    recipeId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: {
-          args: true,
-          msg: 'The description field is required'
-        },
-        escape: true
+        not: {
+          args: /^[A-Z]+$/i,
+          msg: 'Recipe Id must be integer'
+        }
       }
     },
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        isUrl: true
-      }
+    notificationType: {
+      type: DataTypes.ENUM('Likes', 'Review'),
+      allowNull: false
     }
   });
-  Review.prototype.totalVotes = function calcTotalVotes() {
-    return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
-  };
-  Review.associate = (models) => {
-    Review.belongsTo(models.Recipe, {
-      foreignKey: 'recipeId',
-      as: 'RecipeReviews',
-      targetKey: 'id'
-    });
-    Review.hasMany(models.User, {
+
+  Notification.associate = (models) => {
+    Notification.hasMany(models.User, {
       foreignKey: 'userId'
     });
+    Notification.hasMany(models.Recipe, {
+      foreignKey: 'recipeId'
+    });
   };
-  return Review;
+  return Notification;
 };

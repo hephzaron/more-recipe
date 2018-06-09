@@ -1,12 +1,16 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import app from '../../src/server';
-import { user } from '../../helpers/dummyData';
+import { user } from '../seeds/user';
+import { dropOrCreateTable, getResetToken } from '../seeds';
 
 const { expect } = chai;
 const request = supertest(app);
 
 describe('User account', () => {
+  before((done) => {
+    dropOrCreateTable(done);
+  });
   let newUser;
   /**
    * @function Signup suite
@@ -47,7 +51,7 @@ describe('User account', () => {
             }
             expect(res.statusCode).to.equal(409);
             expect(res.body).to.be.an('object');
-            expect(res.body.message).to.equal('User already exists');
+            expect(res.body.message).to.equal('Validation error: This email already belongs to a user');
             done();
           });
       }
@@ -60,7 +64,6 @@ describe('User account', () => {
           ...user,
           confirmPassword: 'anotherPassword'
         };
-
         request
           .post('/api/v1/signup')
           .send(newUser)
@@ -83,25 +86,13 @@ describe('User account', () => {
           .post('/api/v1/signup')
           .send({})
           .end((err, res) => {
-            const { errors } = res.body;
+            const { message } = res.body;
             if (err) {
               return done(err);
             }
             expect(res.statusCode).to.equal(400);
-            expect(errors).to.be.an('object');
-            expect(errors).to.have.keys([
-              'firstName', 'lastName', 'password', 'email', 'username', 'age'
-            ]);
-            Object.keys(errors).forEach((key, index) => {
-              if (key === 'email') {
-                expect(errors.email).to.be.equal('This is not an email');
-              } else {
-                expect(errors[key.toString()]).to.be.equal(`${key} cannot be empty`);
-              }
-              if (index >= Object.keys(errors).length) {
-                return done();
-              }
-            });
+            expect(message).to.be.an('string');
+            expect(message.startsWith('notNull Violation')).to.equal(true);
             done();
           });
       }
@@ -128,7 +119,8 @@ describe('User account', () => {
             }
             expect(res.statusCode).to.equal(404);
             expect(res.body).to.be.an('object');
-            expect(res.body.message).to.equal('User does not exist');
+            expect(res.body.message)
+              .to.equal('This email does not exist. Please try again or create an account if not registered');
             done();
           });
       }
@@ -221,8 +213,126 @@ describe('User priviledge', () => {
             }
             expect(res.statusCode).to.be.equal(200);
             expect(res.body).to.be.an('object');
-            expect(res.body.user.username).to.be.equal('changeUsername');
-            expect(res.body.user.username).to.not.equal(user.username);
+            expect(res.body.message)
+              .to.equal('Your profile has been updated successfully');
+            done();
+          });
+      }
+    );
+  });
+});
+
+describe('Recover password', () => {
+  const { email } = user;
+  /**
+   * @function Send reset link suite
+   */
+  describe('# Send reset link', () => {
+    it(
+      'should not send reset link where email does not exist',
+      (done) => {
+        request
+          .post('/api/v1/users/reset_password')
+          .send({ email: 'emaildoesnotexist@mail.com' })
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.statusCode).to.equal(404);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message).to.equal('User with this email does not exist');
+            done();
+          });
+      }
+    );
+
+    it(
+      'should send reset link where email does exist',
+      (done) => {
+        request
+          .post('/api/v1/users/reset_password')
+          .send({ email })
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.statusCode).to.equal(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message)
+              .to.equal(`A password reset link has been sent to ${email}. It may take upto 5 mins for the mail to arrive.`);
+            done();
+          });
+      }
+    );
+  });
+
+  /**
+   * @function Reset password suite
+   */
+  describe('# Reset or Change password', () => {
+    it(
+      'should not change password where link is broken',
+      (done) => {
+        request
+          .post('/api/v1/auth/reset_password')
+          .send({ email })
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.statusCode).to.equal(403);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message).to.equal('You are not authorize to perform this action');
+            done();
+          });
+      }
+    );
+
+    it(
+      'should not change password where password does not match',
+      (done) => {
+        getResetToken(email)
+          .then((userDetails) => {
+            const { resetPasswordToken } = userDetails;
+            global.resetPasswordToken = resetPasswordToken;
+            request
+              .post(`/api/v1/auth/reset_password?token=${global.resetPasswordToken}`)
+              .send({
+                email,
+                password: 'newpassword',
+                confirmPassword: 'differentPass'
+              })
+              .end((err, res) => {
+                if (err) {
+                  return done(err);
+                }
+                expect(res.statusCode).to.equal(400);
+                expect(res.body).to.be.an('object');
+                expect(res.body.message)
+                  .to.equal('Password does not match');
+                done();
+              });
+          });
+      }
+    );
+    it(
+      'should change password',
+      (done) => {
+        request
+          .post(`/api/v1/auth/reset_password?token=${global.resetPasswordToken}`)
+          .send({
+            email,
+            password: 'newPassword',
+            confirmPassword: 'newPassword'
+          })
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.statusCode).to.equal(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.message)
+              .to.equal('Password successfully changed. Please login to your account.');
             done();
           });
       }

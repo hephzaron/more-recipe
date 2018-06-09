@@ -21,6 +21,7 @@ export default (sequelize, DataTypes) => {
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      primaryKey: true,
       validate: {
         not: {
           args: /^[A-Z]+$/i,
@@ -40,34 +41,58 @@ export default (sequelize, DataTypes) => {
       }
     },
     upVotes: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^(0||1)$/,
+          msg: 'Upvotes muse be an integer between 0 and 1'
+        }
+      }
     },
     downVotes: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^(0||1)$/,
+          msg: 'Downvotes muse be an integer between 0 and 1'
+        }
+      }
     },
     likes: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^(0||1)$/,
+          msg: 'Likes muse be an integer between 0 and 1'
+        }
+      }
     },
     dislikes: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^(0||1)$/,
+          msg: 'Dislikes muse be an integer between 0 and 1'
+        }
+      }
     }
   });
 
   RecipeVote.prototype.handleVotes = function manageVotes(opts) {
-    let upvotes = null;
-    let downvotes = null;
     const { upVotes, downVotes } = this;
+    let upvotes = upVotes;
+    let downvotes = downVotes;
     if (opts.upVotes) {
-      downvotes = downVotes ? upVotes : downVotes;
-      upvotes = !upVotes;
+      downvotes = (downVotes === 1) ? upVotes : downVotes;
+      upvotes = (upVotes === 1) ? 0 : 1;
     }
     if (opts.downVotes) {
-      upvotes = upVotes ? downVotes : upVotes;
-      downvotes = !downVotes;
+      upvotes = (upVotes === 1) ? downVotes : upVotes;
+      downvotes = (downVotes === 1) ? 0 : 1;
     }
     return {
       upvotes,
@@ -76,16 +101,16 @@ export default (sequelize, DataTypes) => {
   };
 
   RecipeVote.prototype.handleLikes = function manageLikes(opts) {
-    let like = null;
-    let dislike = null;
     const { likes, dislikes } = this;
+    let like = likes;
+    let dislike = dislikes;
     if (opts.likes) {
-      dislike = dislikes ? likes : dislikes;
-      like = !likes;
+      dislike = (dislikes === 1) ? likes : dislikes;
+      like = (likes === 1) ? 0 : 1;
     }
     if (opts.dislikes) {
-      like = likes ? dislikes : likes;
-      dislike = !dislikes;
+      like = (likes === 1) ? dislikes : likes;
+      dislike = (dislikes === 1) ? 0 : 1;
     }
     return {
       like,

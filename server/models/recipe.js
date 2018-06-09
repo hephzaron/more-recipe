@@ -63,7 +63,6 @@ export default (sequelize, DataTypes) => {
     },
     favorites: {
       type: DataTypes.INTEGER,
-      allowNull: false,
       set() {
         this.setDataValue('favorites', this.favorites + 1);
       },
@@ -88,11 +87,6 @@ export default (sequelize, DataTypes) => {
     return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
   };
   Recipe.associate = (models) => {
-    Recipe.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'Creator',
-      targetKey: 'id'
-    });
     Recipe.belongsToMany(models.User, {
       through: models.SavedRecipe,
       foreignKey: 'recipeId',
@@ -101,16 +95,18 @@ export default (sequelize, DataTypes) => {
     });
     Recipe.hasMany(models.Review, {
       foreignKey: 'recipeId',
+      sourceKey: 'id',
       onDelete: 'CASCADE'
     });
     Recipe.hasMany(models.RecipeVote, {
       foreignKey: 'recipeId',
+      sourceKey: 'id',
       onDelete: 'CASCADE'
     });
-    Recipe.belongsTo(models.Notification, {
+    Recipe.hasMany(models.Notification, {
       foreignKey: 'recipeId',
-      as: 'recipe',
-      targetKey: 'id'
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
     });
   };
   return Recipe;

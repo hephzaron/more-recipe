@@ -177,16 +177,18 @@ export default (sequelize, DataTypes) => {
     });
     User.hasMany(models.Recipe, {
       foreignKey: 'userId',
+      sourceKey: 'id',
       onDelete: 'CASCADE'
     });
-    User.belongsTo(models.Review, {
+    User.hasMany(models.Review, {
       foreignKey: 'userId',
-      as: 'user',
-      targetKey: 'id'
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
     });
-    User.belongsTo(models.Notification, {
-      foreignKey: 'userId',
-      targetKey: 'id'
+    User.hasMany(models.Notification, {
+      foreignKey: 'recipientId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
     });
   };
   return User;

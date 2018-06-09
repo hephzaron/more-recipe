@@ -7,6 +7,7 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     userId: {
+      allowNull: false,
       type: Sequelize.INTEGER
     },
     name: {
@@ -18,7 +19,6 @@ module.exports = {
       type: Sequelize.STRING
     },
     favorites: {
-      allowNull: false,
       type: Sequelize.INTEGER,
       defaultValue: 0
     },

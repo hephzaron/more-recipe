@@ -7,6 +7,7 @@ module.exports = {
       type: Sequelize.INTEGER
     },
     userId: {
+      primaryKey: true,
       type: Sequelize.INTEGER,
       allowNull: false,
     },
@@ -15,20 +16,24 @@ module.exports = {
       allowNull: false,
     },
     upVotes: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0,
+      type: Sequelize.INTEGER,
     },
     downVotes: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0,
+      type: Sequelize.INTEGER
     },
     likes: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0,
+      type: Sequelize.INTEGER
     },
     dislikes: {
-      type: Sequelize.BOOLEAN,
-      allowNull: false
+      allowNull: false,
+      defaultValue: 0,
+      type: Sequelize.INTEGER
     },
     createdAt: {
       allowNull: false,

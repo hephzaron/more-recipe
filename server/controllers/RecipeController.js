@@ -1,3 +1,5 @@
+import Sequelize from 'sequelize';
+import _ from 'lodash';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 import { ManageVotes } from '../middlewares';
@@ -50,7 +52,7 @@ class RecipeController {
               description: newRecipe.description
             }).then(() => res.status(201).send({
               recipe: newRecipe,
-              message: `${newRecipe.name} added succesfully`
+              message: `${newRecipe.name} added successfully`
             })).catch((error) => {
               const e = handleErrors(error);
               return res.status(e.statusCode).send({
@@ -134,7 +136,7 @@ class RecipeController {
             });
             return res.status(200).send({
               updatedRecipe,
-              message: `${updatedRecipe.name} have been updated successfully`
+              message: `${updatedRecipe.name} has been updated successfully`
             });
           })
           .catch((error) => {
@@ -211,33 +213,40 @@ class RecipeController {
       offset
     } = req.query;
     const { recipeId } = req.params;
-    const queryOptions = {
-      where: recipeId ? {
-        id: recipeId
-      } : {},
-      limit: limit || 4,
-      offset: offset || 0,
-      order: [
-        [
-          sort || 'id',
-          order || 'ASC'
-        ]
-      ],
-      include: [{
-        model: Review
-      }, {
-        model: RecipeVote
-      }]
-    };
+    const where = recipeId ? { id: recipeId } : {};
     return Recipe
-      .findAll(queryOptions)
+      .findAll({
+        where,
+        limit: limit || 10,
+        offset: offset || 0,
+        include: [{
+          model: RecipeVote,
+          attributes: [],
+          duplicating: false
+        }, {
+          model: Review,
+          duplicating: false
+        }],
+        attributes: Object.keys(Recipe.attributes)
+          .concat([
+            [Sequelize.fn('SUM', Sequelize.col('RecipeVotes.upVotes')), 'upVotes'],
+            [Sequelize.fn('SUM', Sequelize.col('RecipeVotes.downVotes')), 'downVotes'],
+            [Sequelize.fn('SUM', Sequelize.col('RecipeVotes.likes')), 'likes'],
+            [Sequelize.fn('SUM', Sequelize.col('RecipeVotes.dislikes')), 'dislikes']
+          ]),
+        group: [
+          'Recipe.id',
+          'Reviews.id'
+        ]
+      })
       .then((recipes) => {
         if (!recipes || recipes.length === 0) {
           return res.status(200).send({
             message: 'Oops! No recipe exists in this selection'
           });
         }
-        return res.status(200).send({ recipes });
+        const sorted = _.orderBy(recipes, [sort || 'id'], [order || 'asc']);
+        return res.status(200).send({ recipes: sorted });
       }).catch((error) => {
         const e = handleErrors(error);
         return res.status(e.statusCode).send({

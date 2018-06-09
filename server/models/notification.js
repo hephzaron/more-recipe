@@ -69,11 +69,14 @@ export default (sequelize, DataTypes) => {
   });
 
   Notification.associate = (models) => {
-    Notification.hasMany(models.User, {
-      foreignKey: 'userId'
+    Notification.belongsTo(models.User, {
+      foreignKey: 'recipientId',
+      as: 'notifications',
+      targetKey: 'id'
     });
-    Notification.hasMany(models.Recipe, {
-      foreignKey: 'recipeId'
+    Notification.belongsTo(models.Recipe, {
+      foreignKey: 'recipeId',
+      targetKey: 'id'
     });
   };
   return Notification;

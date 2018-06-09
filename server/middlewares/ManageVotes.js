@@ -58,18 +58,18 @@ class ManageVotes {
       })
       .then((vote) => {
         if (!vote) {
-          RecipeVote
+          return RecipeVote
             .create({
               userId,
               recipeId,
-              upVotes: !!upVotes || false,
-              downVotes: !!downVotes || false,
-              likes: !!likes || false,
-              dislikes: !!dislikes || false
+              upVotes: upVotes ? 1 : 0,
+              downVotes: downVotes ? 1 : 0,
+              likes: likes ? 1 : 0,
+              dislikes: dislikes ? 1 : 0
             })
             .then(userVote => res.status(200).send({
               userVote,
-              message: 'Voting successful'
+              message: (userVote.upVotes || userVote.downVotes) === 1 ? 'Voting successful' : ''
             }))
             .catch((error) => {
               const e = handleErrors(error);
@@ -84,12 +84,12 @@ class ManageVotes {
           .update({
             upVotes: upvotes,
             downVotes: downvotes,
-            likes: like || vote.likes,
-            dislikes: dislike || vote.dislikes
+            likes: like,
+            dislikes: dislike
           })
           .then(userVote => res.status(200).send({
             userVote,
-            message: 'Voting successful'
+            message: (userVote.upVotes || userVote.downVotes) ? 'Voting successful' : ''
           }))
           .catch((error) => {
             const e = handleErrors(error);

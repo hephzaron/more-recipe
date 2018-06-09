@@ -41,8 +41,5 @@ export default (sequelize, DataTypes) => {
       }
     }
   });
-  SavedRecipe.prototype.totalVotes = () => (
-    parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10)
-  );
   return SavedRecipe;
 };

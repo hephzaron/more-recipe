@@ -37,7 +37,10 @@ class ReviewController {
               });
             }
             return Review
-              .findById(parentId)
+              .find({
+                id: parentId,
+                recipeId
+              })
               .then((review) => {
                 if (!review) {
                   return res.status(404).send({

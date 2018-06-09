@@ -80,8 +80,9 @@ export default (sequelize, DataTypes) => {
       as: 'RecipeReviews',
       targetKey: 'id'
     });
-    Review.hasMany(models.User, {
-      foreignKey: 'userId'
+    Review.belongsTo(models.User, {
+      foreignKey: 'userId',
+      targetKey: 'id'
     });
   };
   return Review;

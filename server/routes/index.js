@@ -15,18 +15,22 @@ const {
   sendPasswordResetLink,
   resetPassword
 } = UserController;
+
 const {
   addRecipe,
   editRecipe,
   deleteRecipe,
   getRecipes
 } = RecipeController;
+
 const {
   addReview,
   editReview,
   deleteReview
 } = ReviewController;
+
 const { verifyUser } = UserAuth;
+
 const { validateVotes } = ManageVotes;
 
 const router = express.Router();
@@ -34,7 +38,7 @@ const router = express.Router();
 /**
  * User routes
  */
-router.get('/ping', (req, res) => ping(req, res));
+router.get('/ping', ping);
 router.post('/signup', signup);
 router.post('/login', login);
 router.get('/users', getUsers);
@@ -60,7 +64,7 @@ router.delete('/recipes/:userId/reviews/:reviewId', verifyUser, deleteReview);
 /**
  * Recover password routes
  */
-router.post('users/reset_password', sendPasswordResetLink);
-router.post('auth/reset_password', resetPassword);
+router.post('/users/reset_password', sendPasswordResetLink);
+router.post('/auth/reset_password', resetPassword);
 
 export default router;

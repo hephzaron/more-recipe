@@ -248,12 +248,12 @@ class UserController {
       .then((user) => {
         if (!user) {
           return res.status(404).send({
-            message: 'User does not exist'
+            message: 'User with this email does not exist'
           });
         }
         const resetPasswordToken = crypto.randomBytes(10).toString('hex');
         // token expire in 15minutes
-        const resetPasswordExpires = Math.floor(new Date().getTime() / 1000) + (15 * 60);
+        const resetPasswordExpires = moment().add(15, 'minutes');
         return user
           .update({
             resetPasswordToken,
@@ -311,7 +311,7 @@ class UserController {
    */
   static resetPassword(req, res) {
     const { password, confirmPassword, email } = req.body;
-    const now = Math.floor(new Date().getTime() / 1000) - (60 * 60);
+    const now = moment();
     const resetPasswordToken = req.query.token;
     if (!resetPasswordToken) {
       return res.status(403).send({
@@ -320,7 +320,7 @@ class UserController {
     }
     if (password !== confirmPassword) {
       return res.status(400).send({
-        message: 'Password do not match'
+        message: 'Password does not match'
       });
     }
     return User

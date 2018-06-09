@@ -10,7 +10,6 @@ class ErrorHandler extends Error {
    * @return { object } error
    */
   static handleErrors(options) {
-    console.log(options.name, options.message);
     console.log(options);
     const error = {};
     try {

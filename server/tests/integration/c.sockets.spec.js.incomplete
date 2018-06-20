@@ -1,0 +1,110 @@
+import chai from 'chai';
+import socketIO from 'socket.io';
+import io from 'socket.io-client';
+import dotEnv from 'dotenv';
+import moment from 'moment';
+import sockets from '../../sockets';
+import { appServer } from '../../src/server';
+import { notificationData } from '../seeds/notification';
+import { reviews } from '../seeds/review';
+import { seedNotificationTable, seedReviewTable } from '../seeds';
+
+const { expect } = chai;
+dotEnv.config();
+const { SOCKET_URL } = process.env;
+
+describe('Notifications', () => {
+  before((done) => {
+    appServer.listen(5000);
+    sockets(socketIO(appServer));
+    seedReviewTable()
+      .then(() =>
+        seedNotificationTable(done));
+  });
+
+  /**
+   * @function Single user/socket suite
+   */
+  describe('# Single User/Socket', () => {
+    it(
+      'should get client new notifications',
+      (done) => {
+        const client = io.connect(SOCKET_URL);
+        client.on('connect', () => {
+          client.emit('JOIN', {
+            userId: 1,
+            updatedAt: moment().subtract(5, 'minutes')
+          });
+          client.on('NEW_NOTIFICATIONS', (userNotifications) => {
+            const { notifications } = userNotifications;
+            expect(notifications).to.be.an('array');
+            expect(notifications.length).to.be.equal(2);
+            expect(notifications[0].userId).to.be.equal(notificationData[0].userId);
+            expect(notifications[1].userId).to.be.equal(notificationData[1].userId);
+            expect(notificationData[0].recipientId).to.be.equal(1);
+            expect(notificationData[1].recipientId).to.be.equal(1);
+            client.disconnect();
+            done();
+          });
+          client.on('disconnect', () => {
+            console.log('check 3', 'I am disconnected');
+          });
+        });
+      }
+    );
+  });
+
+  describe('# Multiple User/Sockets', () => {
+    const { userId, recipeId } = reviews[2]; // Recipe to review
+    it(
+      'should not send notification to user 4 -review author',
+      (done) => {
+        const client2 = io.connect(SOCKET_URL);
+        const client3 = io.connect(SOCKET_URL);
+        const client4 = io.connect(SOCKET_URL);
+        client4.on('connect', () => {
+          console.log('client4 connected');
+          client4.emit('JOIN', {
+            userId: 4
+          });
+          client4.emit('REVIEW_ADDED', {
+            recipeId,
+            recipientId: userId,
+            parentId: 7,
+            userId: 4,
+            notificationType: 'Review'
+          });
+          client2.on('connect', () => {
+            console.log('client2 connected');
+            client3.on('connect', () => {
+              console.log('client2 connected');
+              client3.emit('JOIN', {
+                userId: 2
+              });
+              client3.on('NOTIFY_CONTRIBUTORS', (data) => {
+                console.log('client3 :', data);
+                done();
+              });
+            });
+            client2.emit('JOIN', {
+              userId: 2
+            });
+            client2.on('NOTIFY_CONTRIBUTORS', (data) => {
+              console.log('client2 :', data);
+            });
+          });
+          client4.on('NOTIFY_CONTRIBUTORS', (data) => {
+            console.log('client4 :', data);
+          });
+        });
+        client4.on('disconnect', () => {
+          console.log('client4 disconnected');
+        });
+      }
+    );
+  });
+  after((done) => {
+    appServer.close();
+    done();
+  });
+});

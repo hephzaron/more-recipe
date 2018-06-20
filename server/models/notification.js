@@ -14,11 +14,11 @@ export default (sequelize, DataTypes) => {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'You haven\'t selected a review to update yet'
+          msg: 'You haven\'t selected a notification yet'
         },
         not: {
           args: /^[A-Z]+$/i,
-          msg: 'Review Id must be integer'
+          msg: 'Notification Id must be integer'
         }
       }
     },
@@ -71,7 +71,6 @@ export default (sequelize, DataTypes) => {
   Notification.associate = (models) => {
     Notification.belongsTo(models.User, {
       foreignKey: 'recipientId',
-      as: 'notifications',
       targetKey: 'id'
     });
     Notification.belongsTo(models.Recipe, {

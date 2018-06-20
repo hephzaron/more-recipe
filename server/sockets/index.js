@@ -17,7 +17,7 @@ export default (io) => {
 
     socket.on('JOIN', (client) => {
       onlineUsers.set(socket.id, client);
-      fetchUserNotifications({
+      fetchUserNotifications.call(notifications, {
         socketId: socket.id,
         recipientId: client.userId,
         updatedAt: client.updatedAt || null
@@ -25,12 +25,14 @@ export default (io) => {
     });
 
     socket.on('REVIEW_ADDED', async(data) => {
-      const notification = saveNotification(data);
-
+      const notification = saveNotification.call(notifications, data);
       await notification
         .then((savedNotification) => {
-          savedNotification
-            .map(review => recipients.push(review.user));
+          if (savedNotification && savedNotification.length > 0) {
+            savedNotification
+              .map(review => recipients.push(review.user));
+          }
+          return false;
         })
         .catch(error => socket.emit('error', error));
 
@@ -38,10 +40,10 @@ export default (io) => {
         const { userId } = client;
         const clientIndex = _.findIndex(recipients, { id: userId });
         if (clientIndex >= 0) {
-          notifyContributors(socketId);
+          notifyContributors.call(notifications, socketId);
         }
       });
     });
-    socket.on('error', error => console.log(error));
+    socket.on('error', error => console.log('socket error :', error));
   });
 };

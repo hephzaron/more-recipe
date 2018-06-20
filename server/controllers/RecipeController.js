@@ -1,5 +1,4 @@
 import Sequelize from 'sequelize';
-import _ from 'lodash';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 import { ManageVotes } from '../middlewares';
@@ -245,7 +244,14 @@ class RecipeController {
             message: 'Oops! No recipe exists in this selection'
           });
         }
-        const sorted = _.orderBy(recipes, [sort || 'id'], [order || 'asc']);
+        const sortBy = sort || 'id';
+        const sorted = recipes
+          .sort((prev, next) => {
+            if ((/desc/i).test(order)) {
+              return parseInt(next.dataValues[sortBy], 10) - parseInt(prev.dataValues[sortBy], 10);
+            }
+            return parseInt(prev.dataValues[sortBy], 10) - parseInt(next.dataValues[sortBy], 10);
+          });
         return res.status(200).send({ recipes: sorted });
       }).catch((error) => {
         const e = handleErrors(error);

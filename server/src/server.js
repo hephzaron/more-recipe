@@ -19,4 +19,6 @@ server.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
 
+export const appServer = server;
+
 export default app;

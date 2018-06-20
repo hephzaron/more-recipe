@@ -82,6 +82,7 @@ export default (sequelize, DataTypes) => {
     });
     Review.belongsTo(models.User, {
       foreignKey: 'userId',
+      as: 'user',
       targetKey: 'id'
     });
   };

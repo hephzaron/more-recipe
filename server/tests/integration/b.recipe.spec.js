@@ -356,7 +356,6 @@ describe('Recipe', () => {
         request
           .get('/api/v1/recipes?sort=upVotes&order=desc')
           .end((err, res) => {
-            console.log(res.body.recipes);
             if (err) {
               return done(err);
             }
@@ -365,12 +364,12 @@ describe('Recipe', () => {
             expect(res.body).to.be.an('object');
             expect(recipes).to.be.an('array');
             expect(recipes.length).to.be.equal(2);
-            expect(recipes[0].id).to.be.equal(2);
-            expect(recipes[1].id).to.be.equal(3);
-            expect(recipes[0].upVotes).to.be.equal(1);
-            expect(recipes[1].upVotes).to.be.equal(0);
-            expect(recipes[0].name).to.be.equal('SecondRecipe');
-            expect(recipes[1].name).to.be.equal('ThirdRecipe');
+            expect(recipes[0].id).to.be.equal(3);
+            expect(recipes[1].id).to.be.equal(2);
+            expect(recipes[0].upVotes).to.be.equal('1');
+            expect(recipes[1].upVotes).to.be.equal('0');
+            expect(recipes[0].name).to.be.equal('ThirdRecipe');
+            expect(recipes[1].name).to.be.equal('SecondRecipe');
             done();
           });
       }
@@ -390,12 +389,12 @@ describe('Recipe', () => {
             expect(res.body).to.be.an('object');
             expect(recipes).to.be.an('array');
             expect(recipes.length).to.be.equal(2);
-            expect(recipes[0].id).to.be.equal(3);
-            expect(recipes[1].id).to.be.equal(2);
-            expect(recipes[0].upVotes).to.be.equal(0);
-            expect(recipes[1].upVotes).to.be.equal(1);
-            expect(recipes[0].name).to.be.equal('ThirdRecipe');
-            expect(recipes[1].name).to.be.equal('SecondRecipe');
+            expect(recipes[0].id).to.be.equal(2);
+            expect(recipes[1].id).to.be.equal(3);
+            expect(recipes[0].upVotes).to.be.equal('0');
+            expect(recipes[1].upVotes).to.be.equal('1');
+            expect(recipes[0].name).to.be.equal('SecondRecipe');
+            expect(recipes[1].name).to.be.equal('ThirdRecipe');
             done();
           });
       }
@@ -450,7 +449,7 @@ describe('Recipe', () => {
       'it should not delete recipe for unauthenticated user',
       (done) => {
         request
-          .delete('/api/v1/recipes/1')
+          .delete('/api/v1/recipes/1/2')
           .set('authorization', 'unauth-token')
           .end((err, res) => {
             if (err) {
@@ -459,7 +458,7 @@ describe('Recipe', () => {
             const { message } = res.body;
             expect(res.statusCode).to.equal(401);
             expect(res.body).to.be.an('object');
-            expect(message).to.equal('Token invalid or expired-user not found');
+            expect(message).to.equal('You are not authorized to perform this action');
             done();
           });
       }

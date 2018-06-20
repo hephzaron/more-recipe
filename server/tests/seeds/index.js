@@ -1,8 +1,10 @@
 import models from '../../models';
 import { user } from './user';
+import { reviews } from './review';
+import { notificationData } from './notification';
 import signToken from '../../helpers/signToken';
 
-const { User } = models;
+const { User, Notification, Review } = models;
 const { salt, hash } = User.generateHash(user.password);
 
 const userData = [{
@@ -41,6 +43,16 @@ export const truncateUserTable = () => {
  */
 export const seedUserTable = (callback) => {
   User.bulkCreate(userData)
+    .then(() => callback());
+};
+
+/**
+ * seedNotificationTable
+ * @param { function } callback
+ * @returns { undefined }
+ */
+export const seedNotificationTable = (callback) => {
+  Notification.bulkCreate(notificationData)
     .then(() => callback());
 };
 
@@ -89,3 +101,17 @@ export const getResetToken = email => User
     }
   })
   .then(result => result);
+
+/**
+ * truncateReviewTable
+ * @returns { undefined }
+ */
+const truncateReviewTable = () => Review
+  .destroy({
+    truncate: true,
+    cascade: false
+  });
+
+export const seedReviewTable = () => truncateReviewTable()
+  .then(() =>
+    Review.bulkCreate(reviews));

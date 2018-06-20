@@ -30,32 +30,36 @@ class Notifications {
    * @returns { undefined }
    */
   saveNotification(data) {
-    const {
-      userId,
-      recipeId,
-      parentId,
-      recipientId,
-      notificationType
-    } = data;
+    const { userId } = data;
     return Notification
-      .create({
-        userId,
-        recipeId,
-        parentId,
-        recipientId,
-        notificationType
+      .create(data)
+      .then((notification) => {
+        if (!notification) return {};
+        return Review
+          .findAll({
+            where: {
+              recipeId: notification.recipeId,
+              [Op.not]: {
+                userId
+              }
+            }
+          })
+          .then((review) => {
+            if (!review) return;
+            this.contributionData = review;
+            return review;
+          })
+          .catch((error) => {
+            const { name, message } = error;
+            this.socket.emit('error', { name, message });
+            return {};
+          });
       })
-      .then(notification => Review
-        .findAll({
-          where: {
-            recipeId: notification.recipeId
-          }
-        })
-        .then((review) => {
-          this.contributionData = review;
-          return review;
-        }))
-      .catch(error => this.socket.emit('error', error));
+      .catch((error) => {
+        const { name, message } = error;
+        this.socket.emit('error', { name, message });
+        return {};
+      });
   }
 
   /**
@@ -65,7 +69,7 @@ class Notifications {
    * @returns { event } notifications
    */
   fetchUserNotifications(options) {
-    const { socketId, recipientId, updatedAt } = options;
+    const { recipientId, updatedAt } = options;
     const query = {
       where: {
         recipientId,
@@ -79,7 +83,6 @@ class Notifications {
       limit: 5,
       include: [{
         model: User,
-        as: 'user',
         attributes: [
           'username',
           'firstName',
@@ -88,7 +91,6 @@ class Notifications {
         ]
       }, {
         model: Recipe,
-        as: 'recipe',
         attributes: [
           'name'
         ]
@@ -100,10 +102,14 @@ class Notifications {
         if (notifications.length !== 0) {
           this.notificationData = { notifications };
           this.notificationData.isNew = !!updatedAt;
-          this.sendNotification(socketId);
+          this.sendNotification();
         }
+        return false;
       })
-      .catch(error => this.socket.emit('error', error));
+      .catch((error) => {
+        const { name, message } = error;
+        this.socket.emit('error', { name, message });
+      });
   }
 
   /**
@@ -112,8 +118,8 @@ class Notifications {
    * @param { object } socketId
    * @returns {undefined}
    */
-  sendNotification(socketId) {
-    this.socket.broadcast.to(socketId).emit('NEW_NOTIFICATIONS', this.notificationData);
+  sendNotification() {
+    this.socket.emit('NEW_NOTIFICATIONS', this.notificationData);
   }
 
   /**
@@ -123,7 +129,7 @@ class Notifications {
    * @returns {undefined}
    */
   notifyContributors(socketId) {
-    this.socket.broadcast.to(socketId).emit('NOTIFY_CONTRIBUTORS', this.contributionData);
+    this.socket.to(socketId).emit('NOTIFY_CONTRIBUTORS', this.contributionData);
   }
 }
 

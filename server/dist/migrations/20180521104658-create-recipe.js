@@ -10,6 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       name: {
@@ -20,31 +21,12 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      upVotes: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      downVotes: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
       favorites: {
-        type: Sequelize.INTEGER
-      },
-      likes: {
-        allowNull: false,
         type: Sequelize.INTEGER,
         defaultValue: 0
       },
-      dislikes: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      imageUrl: {
-        type: Sequelize.INTEGER
+      photoUrl: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

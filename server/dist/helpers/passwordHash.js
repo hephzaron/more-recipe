@@ -18,7 +18,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
  */
 var hashPassword = exports.hashPassword = function hashPassword(password) {
   var salt = _crypto2.default.randomBytes(16).toString('hex');
-  var hash = _crypto2.default.pbkdf2Sync(password, salt, 1000, 64, 'SHA1').toString('hex');
+  var hash = _crypto2.default.pbkdf2Sync(password, salt, 1000, 64, 'SHA256').toString('hex');
   return {
     salt: salt,
     hash: hash
@@ -36,7 +36,7 @@ var hashPassword = exports.hashPassword = function hashPassword(password) {
 var verifyPassword = exports.verifyPassword = function verifyPassword(password, userSalt, userHash) {
   var validPassword = false;
   if (password && userSalt && userHash) {
-    var hash = _crypto2.default.pbkdf2Sync(password, userSalt, 1000, 64, 'SHA1').toString('hex');
+    var hash = _crypto2.default.pbkdf2Sync(password, userSalt, 1000, 64, 'SHA256').toString('hex');
     if (hash === userHash) {
       validPassword = true;
     }

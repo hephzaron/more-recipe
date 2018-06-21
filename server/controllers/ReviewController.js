@@ -38,8 +38,10 @@ class ReviewController {
             }
             return Review
               .find({
-                id: parentId,
-                recipeId
+                where: {
+                  id: parentId,
+                  recipeId
+                }
               })
               .then((review) => {
                 if (!review) {

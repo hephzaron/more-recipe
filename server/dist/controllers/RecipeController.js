@@ -4,35 +4,59 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _keys = require('babel-runtime/core-js/object/keys');
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _keys2 = _interopRequireDefault(_keys);
 
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
+var _regenerator = require('babel-runtime/regenerator');
 
-var _inMemory = require('../helpers/in-memory');
+var _regenerator2 = _interopRequireDefault(_regenerator);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _sequelize = require('sequelize');
+
+var _sequelize2 = _interopRequireDefault(_sequelize);
+
+var _models = require('../models');
+
+var _models2 = _interopRequireDefault(_models);
+
+var _ErrorHandler = require('../helpers/ErrorHandler');
+
+var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
+
+var _middlewares = require('../middlewares');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Recipe = _models2.default.Recipe,
+    Review = _models2.default.Review,
+    RecipeVote = _models2.default.RecipeVote;
+var restrictCreator = _middlewares.ManageVotes.restrictCreator;
+var handleErrors = _ErrorHandler2.default.handleErrors;
 /**
  * Handles Recipe request operations
  * @class RecipeController
  * @param { null } void
  */
-var RecipeController = function (_RecipeClass) {
-  _inherits(RecipeController, _RecipeClass);
 
+var RecipeController = function () {
   function RecipeController() {
-    _classCallCheck(this, RecipeController);
-
-    return _possibleConstructorReturn(this, (RecipeController.__proto__ || Object.getPrototypeOf(RecipeController)).apply(this, arguments));
+    (0, _classCallCheck3.default)(this, RecipeController);
   }
 
-  _createClass(RecipeController, [{
+  (0, _createClass3.default)(RecipeController, null, [{
     key: 'addRecipe',
 
     /**
@@ -43,37 +67,147 @@ var RecipeController = function (_RecipeClass) {
      * @returns { obejct } server response
      */
     value: function addRecipe(req, res) {
-      return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'create', this).call(this, _extends({}, req.body)).then(function (recipe) {
-        return res.status(201).send({
-          recipe: recipe,
-          message: recipe.name + ' added successfully'
+      var name = req.body.name;
+
+      return Recipe.findOne({
+        where: {
+          name: name
+        }
+      }).then(function (recipe) {
+        if (recipe) {
+          return res.status(409).send({
+            message: 'A recipe with the same name already exist, you can add a review to existing recipe '
+          });
+        }
+        return Recipe.create(req.body, {
+          fields: ['userId', 'name', 'description', 'photoUrl'],
+          returning: true
+        }).then(function (newRecipe) {
+          return Review.create({
+            parentId: 0,
+            recipeId: parseInt(newRecipe.id, 10),
+            userId: parseInt(newRecipe.userId, 10),
+            description: newRecipe.description
+          }).then(function () {
+            return res.status(201).send({
+              recipe: newRecipe,
+              message: newRecipe.name + ' added successfully'
+            });
+          }).catch(function (error) {
+            var e = handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+        }).catch(function (error) {
+          var e = handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
         });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
 
     /**
-     * Modify a Recipe
+     * Edit a Recipe
      * @param {object} req
      * @param {object} res
+     * @param { function } next
      * @returns { promise } response
      */
 
   }, {
-    key: 'modifyRecipe',
-    value: function modifyRecipe(req, res) {
-      var id = req.params.recipeId;
-      return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'update', this).call(this, _extends({ id: id }, req.body)).then(function (modifiedRecipe) {
-        return res.status(200).send({
-          recipe: modifiedRecipe,
-          message: 'Changes made on ' + modifiedRecipe.name + ' is successfull'
+    key: 'editRecipe',
+    value: function editRecipe(req, res, next) {
+      var _this = this;
+
+      var _req$params = req.params,
+          recipeId = _req$params.recipeId,
+          userId = _req$params.userId;
+      var _req$body = req.body,
+          upVotes = _req$body.upVotes,
+          downVotes = _req$body.downVotes,
+          likes = _req$body.likes,
+          dislikes = _req$body.dislikes;
+
+      return Recipe.findById(recipeId).then(function (recipe) {
+        if (!recipe) {
+          return res.status(404).send({
+            message: 'Recipe does not exist'
+          });
+        }
+        if (recipe.userId !== parseInt(userId, 10) && !(upVotes || downVotes || likes || dislikes)) {
+          return res.status(403).send({
+            message: 'You are not allowed to modify this recipe. Please add a review instead'
+          });
+        }
+
+        var _restrictCreator = restrictCreator(recipe, userId),
+            shouldVote = _restrictCreator.shouldVote;
+
+        if (!shouldVote && (upVotes || downVotes)) {
+          return res.status(403).send({
+            message: 'You are not allowed to vote your own recipe'
+          });
+        }
+        if (upVotes || downVotes || likes || dislikes) {
+          return next();
+        }
+        return recipe.update(req.body, {
+          fields: ['name', 'description', 'photoUrl', 'favorites'],
+          returning: true
+        }).then(function () {
+          var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(updatedRecipe) {
+            var description, imageUrl, id;
+            return _regenerator2.default.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    description = updatedRecipe.description, imageUrl = updatedRecipe.imageUrl, id = updatedRecipe.id;
+                    _context.next = 3;
+                    return Review.update({
+                      description: description,
+                      imageUrl: imageUrl
+                    }, {
+                      returning: true,
+                      where: {
+                        recipeId: id,
+                        parentId: 0
+                      }
+                    });
+
+                  case 3:
+                    return _context.abrupt('return', res.status(200).send({
+                      updatedRecipe: updatedRecipe,
+                      message: updatedRecipe.name + ' has been updated successfully'
+                    }));
+
+                  case 4:
+                  case 'end':
+                    return _context.stop();
+                }
+              }
+            }, _callee, _this);
+          }));
+
+          return function (_x) {
+            return _ref.apply(this, arguments);
+          };
+        }()).catch(function (error) {
+          var e = handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
         });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
@@ -89,20 +223,45 @@ var RecipeController = function (_RecipeClass) {
   }, {
     key: 'deleteRecipe',
     value: function deleteRecipe(req, res) {
-      var id = req.params.recipeId;
-      return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'delete', this).call(this, id).then(function (deletedRecipe) {
-        return res.status(200).send({
-          message: deletedRecipe.name + ' have been successfully removed'
+      var _req$params2 = req.params,
+          userId = _req$params2.userId,
+          recipeId = _req$params2.recipeId;
+
+      return Recipe.findById(recipeId).then(function (recipe) {
+        if (!recipe) {
+          return res.status(404).send({
+            message: 'Recipe does not exist'
+          });
+        }
+        if (recipe.userId !== parseInt(userId, 10)) {
+          return res.status(403).send({
+            message: 'You are not allowed to delete this recipe.'
+          });
+        }
+        return Recipe.destroy({
+          where: {
+            id: recipeId
+          }
+        }).then(function () {
+          return res.status(200).send({
+            message: 'Recipe deleted successfully'
+          });
+        }).catch(function (error) {
+          var e = handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
         });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          error: error.messsage
+        var e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
 
     /**
-     * Gets all Recipe
+     * Gets Recipe
      * @memberof RecipeController
      * @param { object } req
      * @param { object } res
@@ -110,58 +269,53 @@ var RecipeController = function (_RecipeClass) {
      */
 
   }, {
-    key: 'getAllRecipe',
-    value: function getAllRecipe(req, res) {
+    key: 'getRecipes',
+    value: function getRecipes(req, res) {
       var _req$query = req.query,
           sort = _req$query.sort,
-          order = _req$query.order;
-
-      if (sort && order) {
-        return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'findAll', this).call(this, { opts: [sort, order] }).then(function (recipes) {
-          return res.status(200).send({ recipes: recipes });
-        }).catch(function (error) {
-          return res.status(error.statusCode).send({
-            message: error.message
-          });
-        });
-      }
-      return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'findAll', this).call(this, {}).then(function (recipes) {
-        return res.status(200).send({ recipes: recipes });
-      }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
-        });
-      });
-    }
-
-    /**
-     * Adds a new review to recipe
-     * @method addReview
-     * @memberof ReviewController
-     * @param { object } req
-     * @param { object } res
-     * @returns { object } response
-     */
-
-  }, {
-    key: 'addReview',
-    value: function addReview(req, res) {
+          order = _req$query.order,
+          limit = _req$query.limit,
+          offset = _req$query.offset;
       var recipeId = req.params.recipeId;
 
-      return _get(RecipeController.prototype.__proto__ || Object.getPrototypeOf(RecipeController.prototype), 'createReview', this).call(this, _extends({ recipeId: recipeId }, req.body)).then(function (reviewedRecipe) {
-        return res.status(201).send({
-          recipe: reviewedRecipe,
-          message: 'You added a review to ' + reviewedRecipe.name
+      var where = recipeId ? { id: recipeId } : {};
+      return Recipe.findAll({
+        where: where,
+        limit: limit || 10,
+        offset: offset || 0,
+        include: [{
+          model: RecipeVote,
+          attributes: [],
+          duplicating: false
+        }, {
+          model: Review,
+          duplicating: false
+        }],
+        attributes: (0, _keys2.default)(Recipe.attributes).concat([[_sequelize2.default.fn('SUM', _sequelize2.default.col('RecipeVotes.upVotes')), 'upVotes'], [_sequelize2.default.fn('SUM', _sequelize2.default.col('RecipeVotes.downVotes')), 'downVotes'], [_sequelize2.default.fn('SUM', _sequelize2.default.col('RecipeVotes.likes')), 'likes'], [_sequelize2.default.fn('SUM', _sequelize2.default.col('RecipeVotes.dislikes')), 'dislikes']]),
+        group: ['Recipe.id', 'Reviews.id']
+      }).then(function (recipes) {
+        if (!recipes || recipes.length === 0) {
+          return res.status(200).send({
+            message: 'Oops! No recipe exists in this selection'
+          });
+        }
+        var sortBy = sort || 'id';
+        var sorted = recipes.sort(function (prev, next) {
+          if (/desc/i.test(order)) {
+            return parseInt(next.dataValues[sortBy], 10) - parseInt(prev.dataValues[sortBy], 10);
+          }
+          return parseInt(prev.dataValues[sortBy], 10) - parseInt(next.dataValues[sortBy], 10);
         });
+        return res.status(200).send({ recipes: sorted });
       }).catch(function (error) {
-        return res.status(error.statusCode).send({
-          message: error.message
+        var e = handleErrors(error);
+        return res.status(e.statusCode).send({
+          message: e.message
         });
       });
     }
   }]);
-
   return RecipeController;
-}(_inMemory.Recipe);
+}();
 
 exports.default = RecipeController;

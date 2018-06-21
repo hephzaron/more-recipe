@@ -5,13 +5,13 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 /**
- * Review Model
+ * Notification Model
  * @param { object } sequelize
  * @param { object } DataTypes
- * @returns { object } Review
+ * @returns { object } Notification
  */
 exports.default = function (sequelize, DataTypes) {
-  var Review = sequelize.define('Review', {
+  var Notification = sequelize.define('Notification', {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -20,11 +20,11 @@ exports.default = function (sequelize, DataTypes) {
       validate: {
         notEmpty: {
           args: true,
-          msg: 'You haven\'t selected a review to update yet'
+          msg: 'You haven\'t selected a notification yet'
         },
         not: {
           args: /^[A-Z]+$/i,
-          msg: 'Review Id must be integer'
+          msg: 'Notification Id must be integer'
         }
       }
     },
@@ -38,13 +38,13 @@ exports.default = function (sequelize, DataTypes) {
         }
       }
     },
-    recipeId: {
+    recipientId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
         not: {
           args: /^[A-Z]+$/i,
-          msg: 'Recipe Id must be integer'
+          msg: 'Recipient Id must be integer'
         }
       }
     },
@@ -58,39 +58,31 @@ exports.default = function (sequelize, DataTypes) {
         }
       }
     },
-    description: {
-      type: DataTypes.STRING,
+    recipeId: {
+      type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        notEmpty: {
-          args: true,
-          msg: 'The description field is required'
-        },
-        escape: true
+        not: {
+          args: /^[A-Z]+$/i,
+          msg: 'Recipe Id must be integer'
+        }
       }
     },
-    imageUrl: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      validate: {
-        isUrl: true
-      }
+    notificationType: {
+      type: DataTypes.ENUM('Likes', 'Review'),
+      allowNull: false
     }
   });
-  Review.prototype.totalVotes = function calcTotalVotes() {
-    return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
-  };
-  Review.associate = function (models) {
-    Review.belongsTo(models.Recipe, {
+
+  Notification.associate = function (models) {
+    Notification.belongsTo(models.User, {
+      foreignKey: 'recipientId',
+      targetKey: 'id'
+    });
+    Notification.belongsTo(models.Recipe, {
       foreignKey: 'recipeId',
-      as: 'RecipeReviews',
-      targetKey: 'id'
-    });
-    Review.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'user',
       targetKey: 'id'
     });
   };
-  return Review;
+  return Notification;
 };

@@ -137,6 +137,15 @@ exports.default = function (sequelize, DataTypes) {
     resetPasswordExpires: {
       type: DataTypes.DATE,
       allowNull: true
+    },
+    profilePhotoUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      validate: {
+        isUrl: {
+          msg: 'Invalid photo url'
+        }
+      }
     }
   });
 
@@ -154,10 +163,7 @@ exports.default = function (sequelize, DataTypes) {
         salt = _hashPassword.salt,
         hash = _hashPassword.hash;
 
-    return {
-      salt: salt,
-      hash: hash
-    };
+    return { salt: salt, hash: hash };
   };
 
   /**
@@ -167,8 +173,8 @@ exports.default = function (sequelize, DataTypes) {
    * @param { string } password
    * @returns { boolean } validPassword
    */
-  User.prototype.validPassword = function (password) {
-    var _verifyPassword = (0, _passwordHash.verifyPassword)(password, undefined.salt, undefined.hash),
+  User.prototype.validPassword = function validatePassword(password) {
+    var _verifyPassword = (0, _passwordHash.verifyPassword)(password, this.salt, this.hash),
         validPassword = _verifyPassword.validPassword;
 
     return validPassword;
@@ -183,6 +189,17 @@ exports.default = function (sequelize, DataTypes) {
     });
     User.hasMany(models.Recipe, {
       foreignKey: 'userId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
+    });
+    User.hasMany(models.Review, {
+      foreignKey: 'userId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
+    });
+    User.hasMany(models.Notification, {
+      foreignKey: 'recipientId',
+      sourceKey: 'id',
       onDelete: 'CASCADE'
     });
   };

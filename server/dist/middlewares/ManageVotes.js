@@ -4,26 +4,37 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
-var _lodash = require('lodash');
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
 
-var _lodash2 = _interopRequireDefault(_lodash);
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+var _models = require('../models');
+
+var _models2 = _interopRequireDefault(_models);
+
+var _ErrorHandler = require('../helpers/ErrorHandler');
+
+var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
+var RecipeVote = _models2.default.RecipeVote;
+var handleErrors = _ErrorHandler2.default.handleErrors;
 /**
  * Controls and manage upVotes downVotes
  * @class ManageVotes
  */
+
 var ManageVotes = function () {
   function ManageVotes() {
-    _classCallCheck(this, ManageVotes);
+    (0, _classCallCheck3.default)(this, ManageVotes);
   }
 
-  _createClass(ManageVotes, null, [{
+  (0, _createClass3.default)(ManageVotes, null, [{
     key: 'restrictCreator',
 
     /**
@@ -45,90 +56,87 @@ var ManageVotes = function () {
      * Validates and control user votes
      * @method validateVotes
      * @memberof ManageVotes
-     * @param { object } opts
-     * @param { array } voters
+     * @param { object } req -request object
+     * @param { object } res -response object
      * @returns { object } voters parameter
      */
 
   }, {
     key: 'validateVotes',
-    value: function validateVotes(opts, voters) {
-      var upCount = opts.upCount,
-          downCount = opts.downCount,
-          upVotes = opts.upVotes,
-          downVotes = opts.downVotes,
-          userId = opts.userId,
-          recipeId = opts.recipeId;
+    value: function validateVotes(req, res) {
+      var _req$params = req.params,
+          recipeId = _req$params.recipeId,
+          userId = _req$params.userId;
+      var _req$body = req.body,
+          upVotes = _req$body.upVotes,
+          downVotes = _req$body.downVotes,
+          likes = _req$body.likes,
+          dislikes = _req$body.dislikes;
 
-      var userUpVoteIndex = _lodash2.default.findIndex(voters, {
-        userId: parseInt(userId, 10),
-        recipeId: parseInt(recipeId, 10),
-        up: true
-      });
-      var userDownVoteIndex = _lodash2.default.findIndex(voters, {
-        userId: parseInt(userId, 10),
-        recipeId: parseInt(recipeId, 10),
-        up: false
-      });
-      var upVotesCount = upCount;
-      var downVotesCount = downCount;
-      var userVotes = voters;
-      var newVoters = void 0;
-      var canVote = true;
-      if (upVotes) {
-        if (userUpVoteIndex === -1 && userDownVoteIndex >= 0) {
-          upVotesCount = upCount + 1;
-          downVotesCount = downCount - 1;
-          newVoters = voters.filter(function (voter, index) {
-            return index !== userDownVoteIndex;
-          });
-          userVotes = newVoters.concat([{
-            userId: parseInt(userId, 10),
-            recipeId: parseInt(recipeId, 10),
-            up: true
-          }]);
-        } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
-          upVotesCount = upCount + 1;
-          userVotes = voters.concat([{
-            userId: parseInt(userId, 10),
-            recipeId: parseInt(recipeId, 10),
-            up: true
-          }]);
-        } else {
-          canVote = false;
-        }
-      } else if (downVotes) {
-        if (userUpVoteIndex >= 0 && userDownVoteIndex === -1) {
-          upVotesCount = upCount - 1;
-          downVotesCount = downCount + 1;
-          newVoters = voters.filter(function (voter, index) {
-            return index !== userUpVoteIndex;
-          });
-          userVotes = newVoters.concat([{
-            userId: parseInt(userId, 10),
-            recipeId: parseInt(recipeId, 10),
-            up: false
-          }]);
-        } else if (userUpVoteIndex === -1 && userDownVoteIndex === -1) {
-          downVotesCount = downCount + 1;
-          userVotes = voters.concat([{
-            userId: parseInt(userId, 10),
-            recipeId: parseInt(recipeId, 10),
-            up: false
-          }]);
-        } else {
-          canVote = false;
-        }
+      if (upVotes && downVotes) {
+        return res.status(403).send({
+          message: 'You can only upVote or downVote one at a time'
+        });
       }
-      return {
-        upVotesCount: upVotesCount,
-        downVotesCount: downVotesCount,
-        userVotes: userVotes,
-        canVote: canVote
-      };
+      if (likes && dislikes) {
+        return res.status(403).send({
+          message: 'You can only like or dislike one at a time'
+        });
+      }
+      return RecipeVote.findOne({
+        where: {
+          userId: userId,
+          recipeId: recipeId
+        }
+      }).then(function (vote) {
+        if (!vote) {
+          return RecipeVote.create({
+            userId: userId,
+            recipeId: recipeId,
+            upVotes: upVotes ? 1 : 0,
+            downVotes: downVotes ? 1 : 0,
+            likes: likes ? 1 : 0,
+            dislikes: dislikes ? 1 : 0
+          }).then(function (userVote) {
+            return res.status(200).send({
+              userVote: userVote,
+              message: (userVote.upVotes || userVote.downVotes) === 1 ? 'Voting successful' : ''
+            });
+          }).catch(function (error) {
+            var e = handleErrors(error);
+            return res.status(e.statusCode).send({
+              message: e.message
+            });
+          });
+        }
+
+        var _vote$handleVotes = vote.handleVotes({ upVotes: upVotes, downVotes: downVotes }),
+            upvotes = _vote$handleVotes.upvotes,
+            downvotes = _vote$handleVotes.downvotes;
+
+        var _vote$handleLikes = vote.handleLikes({ likes: likes, dislikes: dislikes }),
+            like = _vote$handleLikes.like,
+            dislike = _vote$handleLikes.dislike;
+
+        return vote.update({
+          upVotes: upvotes,
+          downVotes: downvotes,
+          likes: like,
+          dislikes: dislike
+        }).then(function (userVote) {
+          return res.status(200).send({
+            userVote: userVote,
+            message: userVote.upVotes || userVote.downVotes ? 'Voting successful' : ''
+          });
+        }).catch(function (error) {
+          var e = handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
+        });
+      });
     }
   }]);
-
   return ManageVotes;
 }();
 

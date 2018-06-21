@@ -4,11 +4,37 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof2 = require('babel-runtime/helpers/typeof');
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _typeof3 = _interopRequireDefault(_typeof2);
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _middlewares = require('../../middlewares');
 
@@ -17,10 +43,6 @@ var _ErrorHandler = require('../ErrorHandler');
 var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 /**
  * Recipes in-memory data
@@ -32,7 +54,7 @@ var Recipe = function () {
    * @returns { object } Instance of Users class
    */
   function Recipe() {
-    _classCallCheck(this, Recipe);
+    (0, _classCallCheck3.default)(this, Recipe);
 
     this.recipes = [];
     this.reviews = [];
@@ -67,25 +89,25 @@ var Recipe = function () {
    */
 
 
-  _createClass(Recipe, [{
+  (0, _createClass3.default)(Recipe, [{
     key: 'create',
     value: function create(newRecipe) {
       var id = this.lastIndex + 1;
-      var indexedRecipe = _extends({}, newRecipe, {
+      var indexedRecipe = (0, _extends3.default)({}, newRecipe, {
         userId: parseInt(newRecipe.userId, 10),
         upVotes: 0,
         downVotes: 0,
         id: id
       });
-      this.recipe = Object.assign({}, _extends({}, this.recipe), indexedRecipe);
+      this.recipe = (0, _assign2.default)({}, (0, _extends3.default)({}, this.recipe), indexedRecipe);
       this.recipes.push(this.recipe);
       if (this.recipes[this.recipes.length - 1] !== this.recipe) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           message: 'An error occured in adding new recipe'
         }));
       }
       this.lastIndex += 1;
-      return Promise.resolve(this.recipe);
+      return _promise2.default.resolve(this.recipe);
     }
 
     /**
@@ -128,31 +150,31 @@ var Recipe = function () {
             canVote = _ManageVotes$validate.canVote;
 
         if (!canVote && (upVotes || downVotes)) {
-          return Promise.reject(_ErrorHandler2.default.handleErrors({
+          return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
             name: 'Conflict',
             message: 'Sorry! You have voted before'
           }));
         }
 
         if (!shouldVote && (upVotes || downVotes)) {
-          return Promise.reject(_ErrorHandler2.default.handleErrors({
+          return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
             name: 'Forbidden',
             message: 'The Creator of a recipe is not allowed to vote'
           }));
         }
-        _this.recipes.splice(recipeIndex, 1, Object.assign({}, _extends({}, recipeFound), {
+        _this.recipes.splice(recipeIndex, 1, (0, _assign2.default)({}, (0, _extends3.default)({}, recipeFound), {
           name: name || recipeFound.name,
           description: description || recipeFound.description,
           upVotes: upVotesCount,
           downVotes: downVotesCount,
           totalVotes: upVotesCount - downVotesCount,
-          reviews: reviews ? [].concat(_toConsumableArray(recipeFound.reviews), [reviews]) : recipeFound.reviews,
+          reviews: reviews ? [].concat((0, _toConsumableArray3.default)(recipeFound.reviews), [reviews]) : recipeFound.reviews,
           imageURL: imageURL || recipeFound.imageURL
         }));
         _this.voters = userVotes;
-        return Promise.resolve(_this.recipes[recipeIndex]);
+        return _promise2.default.resolve(_this.recipes[recipeIndex]);
       }).catch(function (error) {
-        return Promise.reject(error);
+        return _promise2.default.reject(error);
       });
     }
 
@@ -172,12 +194,12 @@ var Recipe = function () {
         return item.id === parseInt(id, 10);
       });
       if (recipeIndex === -1) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Not Found',
           message: 'Recipe does not exist'
         }));
       }
-      return Promise.resolve(recipeIndex);
+      return _promise2.default.resolve(recipeIndex);
     }
 
     /**
@@ -193,9 +215,9 @@ var Recipe = function () {
 
       return this.findOne({ where: { id: id } }).then(function (recipeIndex) {
         var deletedRecipe = _this2.recipes.splice(recipeIndex, 1);
-        return Promise.resolve(deletedRecipe[0]);
+        return _promise2.default.resolve(deletedRecipe[0]);
       }).catch(function (error) {
-        return Promise.reject(error);
+        return _promise2.default.reject(error);
       });
     }
 
@@ -211,7 +233,7 @@ var Recipe = function () {
       var opts = _ref2.opts;
 
       if (!this.recipes) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Not Found',
           message: 'No item exists in this section'
         }));
@@ -219,17 +241,17 @@ var Recipe = function () {
       if (opts) {
         var sortedArray = Recipe.sortArray(this.recipes, opts);
         if (!Array.isArray(opts)) {
-          return Promise.reject(_ErrorHandler2.default.handleErrors({
+          return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
             name: 'Invalid Request',
             message: 'options must be of type array'
           }));
         }
-        if (Object.keys(sortedArray) === 'error') {
-          return Promise.reject(sortedArray);
+        if ((0, _keys2.default)(sortedArray) === 'error') {
+          return _promise2.default.reject(sortedArray);
         }
-        return Promise.resolve(sortedArray);
+        return _promise2.default.resolve(sortedArray);
       }
-      return Promise.resolve(this.recipes);
+      return _promise2.default.resolve(this.recipes);
     }
 
     /**
@@ -252,22 +274,22 @@ var Recipe = function () {
      */
     value: function createReview(newReview) {
       if (this.recipes.length === 0 || !this.recipes[parseInt(newReview.recipeId, 10) - 1] || !this.recipes) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Not Found',
           message: 'No recipe to review yet'
         }));
       }
       var id = this.recipes[parseInt(newReview.recipeId, 10) - 1].reviews.length + 1;
       this.reviewIndex += 1;
-      var indexedReview = _extends({}, newReview, {
+      var indexedReview = (0, _extends3.default)({}, newReview, {
         userId: parseInt(newReview.userId, 10),
         recipeId: parseInt(newReview.recipeId, 10),
         id: id
       });
-      this.review = Object.assign({}, _extends({}, this.review), indexedReview);
+      this.review = (0, _assign2.default)({}, (0, _extends3.default)({}, this.review), indexedReview);
       this.reviews.push(this.review);
       if (this.reviews[this.reviews.length - 1] !== this.review) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           message: 'Review could not be created'
         }));
       }
@@ -275,9 +297,9 @@ var Recipe = function () {
         id: this.review.recipeId,
         reviews: this.review
       }).then(function (reviewedRecipe) {
-        return Promise.resolve(reviewedRecipe);
+        return _promise2.default.resolve(reviewedRecipe);
       }).catch(function (error) {
-        return Promise.reject(error);
+        return _promise2.default.reject(error);
       });
     }
   }], [{
@@ -306,7 +328,7 @@ var Recipe = function () {
       }
       if (options.some(cbASC) && !options.some(cbDESC)) {
         return array.sort(function (prev, next) {
-          var dataType = _typeof(prev[sortBy]);
+          var dataType = (0, _typeof3.default)(prev[sortBy]);
           if (dataType === 'string') {
             return prev[sortBy].localeCompare(next[sortBy]);
           } else if (dataType === 'number') {
@@ -316,7 +338,7 @@ var Recipe = function () {
         });
       } else if (!options.some(cbASC) && options.some(cbDESC)) {
         return array.sort(function (prev, next) {
-          var dataType = _typeof(prev[sortBy]);
+          var dataType = (0, _typeof3.default)(prev[sortBy]);
           if (dataType === 'string') {
             return next[sortBy].localeCompare(prev[sortBy]);
           } else if (dataType === 'number') {
@@ -331,7 +353,6 @@ var Recipe = function () {
       });
     }
   }]);
-
   return Recipe;
 }();
 

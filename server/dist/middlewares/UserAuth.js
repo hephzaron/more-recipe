@@ -4,7 +4,13 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _jsonwebtoken = require('jsonwebtoken');
 
@@ -14,9 +20,18 @@ var _dotenv = require('dotenv');
 
 var _dotenv2 = _interopRequireDefault(_dotenv);
 
+var _models = require('../models');
+
+var _models2 = _interopRequireDefault(_models);
+
+var _ErrorHandler = require('../helpers/ErrorHandler');
+
+var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var User = _models2.default.User;
+var handleErrors = _ErrorHandler2.default.handleErrors;
 
 _dotenv2.default.config();
 /**
@@ -27,10 +42,10 @@ _dotenv2.default.config();
 
 var UserAuth = function () {
   function UserAuth() {
-    _classCallCheck(this, UserAuth);
+    (0, _classCallCheck3.default)(this, UserAuth);
   }
 
-  _createClass(UserAuth, null, [{
+  (0, _createClass3.default)(UserAuth, null, [{
     key: 'verifyUser',
 
     /**
@@ -42,16 +57,44 @@ var UserAuth = function () {
      * @returns { promise } response
      */
     value: function verifyUser(req, res, next) {
+      var userId = req.params.userId;
+      var _req$body = req.body,
+          upVotes = _req$body.upVotes,
+          downVotes = _req$body.downVotes,
+          likes = _req$body.likes,
+          dislikes = _req$body.dislikes;
+
       try {
         var token = req.headers.authorization;
         var decoded = _jsonwebtoken2.default.decode(token, process.env.JWT_SECRET, { algorithm: 'HS256' });
         /** Insert code to find user payload from user list */
         if (!decoded) {
           return res.status(401).send({
-            message: 'Token invalid or expired-user not found'
+            message: 'You are not authorized to perform this action'
           });
         }
-        next();
+        var email = decoded.email;
+
+        User.findOne({
+          where: { email: email }
+        }).then(function (user) {
+          if (!user) {
+            return res.status(404).send({
+              message: 'Token invalid or expired-user not found'
+            });
+          }
+          if (userId && !(upVotes || downVotes || likes || dislikes) && parseInt(userId, 10) !== user.id) {
+            return res.status(401).send({
+              message: 'You are not authorized to access this account'
+            });
+          }
+          next();
+        }).catch(function (error) {
+          var e = handleErrors(error);
+          return res.status(e.statusCode).send({
+            message: e.message
+          });
+        });
       } catch (e) {
         return res.status(401).send({
           message: 'Token invalid or expired-user not found'
@@ -59,7 +102,6 @@ var UserAuth = function () {
       }
     }
   }]);
-
   return UserAuth;
 }();
 

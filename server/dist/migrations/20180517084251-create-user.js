@@ -58,6 +58,9 @@ module.exports = {
         defaultValue: Sequelize.NOW,
         type: Sequelize.DATE
       },
+      profilePhotoUrl: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         defaultValue: Sequelize.NOW,

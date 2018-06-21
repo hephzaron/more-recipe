@@ -14,30 +14,55 @@ var _middlewares = require('../middlewares');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var signup = _controllers.UserController.signup,
+    login = _controllers.UserController.login,
+    getUsers = _controllers.UserController.getUsers,
+    editUser = _controllers.UserController.editUser,
+    sendPasswordResetLink = _controllers.UserController.sendPasswordResetLink,
+    resetPassword = _controllers.UserController.resetPassword;
+var addRecipe = _controllers.RecipeController.addRecipe,
+    editRecipe = _controllers.RecipeController.editRecipe,
+    deleteRecipe = _controllers.RecipeController.deleteRecipe,
+    getRecipes = _controllers.RecipeController.getRecipes;
+var addReview = _controllers.ReviewController.addReview,
+    editReview = _controllers.ReviewController.editReview,
+    deleteReview = _controllers.ReviewController.deleteReview;
+var verifyUser = _middlewares.UserAuth.verifyUser;
+var validateVotes = _middlewares.ManageVotes.validateVotes;
+
+
 var router = _express2.default.Router();
 
-router.get('/ping', function (req, res) {
-  return (0, _controllers.ping)(req, res);
-});
-router.post('/signup', _controllers.UserController.signup);
-router.post('/login', _controllers.UserController.login);
-router.get('/users', _controllers.UserController.getAllUsers);
-router.put('/users/:userId', _middlewares.UserAuth.verifyUser, _controllers.UserController.editUser);
-router.post('/recipes', _middlewares.UserAuth.verifyUser, function (req, res) {
-  return _controllers.Recipe.addRecipe(req, res);
-});
-router.put('/recipes/:recipeId', _middlewares.UserAuth.verifyUser, function (req, res) {
-  return _controllers.Recipe.modifyRecipe(req, res);
-});
-router.delete('/recipes/:recipeId', _middlewares.UserAuth.verifyUser, function (req, res) {
-  return _controllers.Recipe.deleteRecipe(req, res);
-});
+/**
+ * User routes
+ */
+router.get('/ping', _controllers.ping);
+router.post('/signup', signup);
+router.post('/login', login);
+router.get('/users', getUsers);
+router.put('/users/:userId', verifyUser, editUser);
+
+/**
+ * Recipe routes
+ */
+router.post('/recipes', verifyUser, addRecipe);
+router.put('/recipes/:userId/:recipeId', verifyUser, editRecipe, validateVotes);
+router.delete('/recipes/:userId/:recipeId', verifyUser, deleteRecipe);
 // To sort recipes, append '?sort=[Object key]&order=[desc or asc]'
-router.get('/recipes', function (req, res) {
-  return _controllers.Recipe.getAllRecipe(req, res);
-});
-router.post('/recipes/:recipeId/reviews', _middlewares.UserAuth.verifyUser, function (req, res) {
-  return _controllers.Recipe.addReview(req, res);
-});
+router.get('/recipes', getRecipes);
+router.get('/recipes/:recipeId', getRecipes);
+
+/**
+ * Review routes
+ */
+router.post('/recipes/:recipeId/reviews', verifyUser, addReview);
+router.put('/recipes/:userId/reviews/:reviewId', verifyUser, editReview);
+router.delete('/recipes/:userId/reviews/:reviewId', verifyUser, deleteReview);
+
+/**
+ * Recover password routes
+ */
+router.post('/users/reset_password', sendPasswordResetLink);
+router.post('/auth/reset_password', resetPassword);
 
 exports.default = router;

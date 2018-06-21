@@ -47,8 +47,5 @@ exports.default = function (sequelize, DataTypes) {
       }
     }
   });
-  SavedRecipe.prototype.totalVotes = function () {
-    return parseInt(undefined.upVotes, 10) - parseInt(undefined.downVotes, 10);
-  };
   return SavedRecipe;
 };

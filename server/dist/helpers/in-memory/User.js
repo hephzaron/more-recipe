@@ -4,9 +4,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = require('babel-runtime/helpers/createClass');
+
+var _createClass3 = _interopRequireDefault(_createClass2);
 
 var _lodash = require('lodash');
 
@@ -30,10 +50,6 @@ var _ErrorHandler2 = _interopRequireDefault(_ErrorHandler);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
 /**
  * User in-memory data
  */
@@ -44,7 +60,7 @@ var User = function () {
    * @returns { object } Instance of Users class
    */
   function User() {
-    _classCallCheck(this, User);
+    (0, _classCallCheck3.default)(this, User);
 
     this.index = 0;
     this.users = [];
@@ -70,7 +86,7 @@ var User = function () {
    */
 
 
-  _createClass(User, [{
+  (0, _createClass3.default)(User, [{
     key: 'create',
     value: function create(newUser) {
       var _validateUser = (0, _validation.validateUser)(newUser),
@@ -78,13 +94,13 @@ var User = function () {
           errors = _validateUser.errors;
 
       if (!isValid) {
-        return Promise.reject(errors);
+        return _promise2.default.reject(errors);
       }
       var userExists = this.users.findIndex(function (user) {
         return user.email === newUser.email;
       });
       if (userExists >= 0) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Conflict',
           message: 'User already exists'
         }));
@@ -101,20 +117,20 @@ var User = function () {
           hash = _hashPassword.hash;
 
       var withoutPassword = (0, _removekeys2.default)(newUser, ['password']);
-      var indexedUser = _extends({
+      var indexedUser = (0, _extends3.default)({
         id: nextIndex,
         salt: salt,
         hash: hash
       }, withoutPassword);
-      this.user = Object.assign({}, _extends({}, this.user), indexedUser);
+      this.user = (0, _assign2.default)({}, (0, _extends3.default)({}, this.user), indexedUser);
       this.users.push(this.user);
       if (this.users[this.users.length - 1].email !== this.user.email || !this.user) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           message: 'An error occured in creating a new user'
         }));
       }
-      var withoutHash = (0, _removekeys2.default)(_extends({}, this.user), ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
-      return Promise.resolve(withoutHash);
+      var withoutHash = (0, _removekeys2.default)((0, _extends3.default)({}, this.user), ['salt', 'hash', 'facebookOauthID', 'googleOauthID']);
+      return _promise2.default.resolve(withoutHash);
     }
 
     /**
@@ -128,14 +144,14 @@ var User = function () {
     value: function findOne(_ref) {
       var where = _ref.where;
 
-      var userIndex = _lodash2.default.findIndex(this.users, _extends({}, where));
+      var userIndex = _lodash2.default.findIndex(this.users, (0, _extends3.default)({}, where));
       if (userIndex === -1) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Not Found',
           message: 'User does not exist'
         }));
       }
-      return Promise.resolve(this.users[userIndex]);
+      return _promise2.default.resolve(this.users[userIndex]);
     }
 
     /**
@@ -164,7 +180,7 @@ var User = function () {
           googleOauthID = user.googleOauthID;
 
       return this.findOne({ where: { id: parseInt(userId, 10) } }).then(function (userFound) {
-        _this.users.splice(userFound.id - 1, 1, Object.assign({}, _extends({}, userFound), {
+        _this.users.splice(userFound.id - 1, 1, (0, _assign2.default)({}, (0, _extends3.default)({}, userFound), {
           firstName: firstName || userFound.firstName,
           lastName: lastName || userFound.lastName,
           salt: salt || userFound.salt,
@@ -177,9 +193,9 @@ var User = function () {
           googleOauthID: googleOauthID || userFound.googleOauthID
         }));
         var withoutHash = (0, _removekeys2.default)(_this.users[userFound.id - 1], ['salt', 'hash']);
-        return Promise.resolve(withoutHash);
+        return _promise2.default.resolve(withoutHash);
       }).catch(function (error) {
-        return Promise.reject(error);
+        return _promise2.default.reject(error);
       });
     }
 
@@ -192,23 +208,22 @@ var User = function () {
   }, {
     key: 'list',
     value: function list() {
-      var users = [].concat(_toConsumableArray(this.users));
+      var users = [].concat((0, _toConsumableArray3.default)(this.users));
       if (!this.users) {
-        return Promise.reject(_ErrorHandler2.default.handleErrors({
+        return _promise2.default.reject(_ErrorHandler2.default.handleErrors({
           name: 'Not Found',
           message: 'Users list not available'
         }));
       }
       if (this.users.length === 0) {
-        return Promise.resolve({ users: users, message: 'No user created yet' });
+        return _promise2.default.resolve({ users: users, message: 'No user created yet' });
       }
       users.map(function (user) {
         return (0, _removekeys2.default)(user, ['salt', 'hash']);
       });
-      return Promise.resolve(users);
+      return _promise2.default.resolve(users);
     }
   }]);
-
   return User;
 }();
 

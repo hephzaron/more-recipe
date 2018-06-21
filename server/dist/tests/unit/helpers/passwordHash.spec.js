@@ -1,6 +1,8 @@
 'use strict';
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof2 = require('babel-runtime/helpers/typeof');
+
+var _typeof3 = _interopRequireDefault(_typeof2);
 
 var _chai = require('chai');
 
@@ -22,8 +24,8 @@ describe('Password Hash', function () {
         hash = _hashPassword.hash;
 
     global.hashedPassword = { salt: salt, hash: hash };
-    assert.equal(typeof salt === 'undefined' ? 'undefined' : _typeof(salt), 'string');
-    assert.equal(typeof hash === 'undefined' ? 'undefined' : _typeof(hash), 'string');
+    assert.equal(typeof salt === 'undefined' ? 'undefined' : (0, _typeof3.default)(salt), 'string');
+    assert.equal(typeof hash === 'undefined' ? 'undefined' : (0, _typeof3.default)(hash), 'string');
   });
 
   it('it should return truthy value for valid password', function () {
@@ -34,7 +36,7 @@ describe('Password Hash', function () {
     var _verifyPassword = (0, _passwordHash.verifyPassword)(password, salt, hash),
         validPassword = _verifyPassword.validPassword;
 
-    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : _typeof(validPassword), 'boolean');
+    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : (0, _typeof3.default)(validPassword), 'boolean');
     assert.equal(validPassword, true);
   });
 
@@ -46,7 +48,7 @@ describe('Password Hash', function () {
     var _verifyPassword2 = (0, _passwordHash.verifyPassword)(password + '-invalid', salt, hash),
         validPassword = _verifyPassword2.validPassword;
 
-    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : _typeof(validPassword), 'boolean');
+    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : (0, _typeof3.default)(validPassword), 'boolean');
     assert.equal(validPassword, false);
   });
 
@@ -54,7 +56,7 @@ describe('Password Hash', function () {
     var _verifyPassword3 = (0, _passwordHash.verifyPassword)(password),
         validPassword = _verifyPassword3.validPassword;
 
-    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : _typeof(validPassword), 'boolean');
+    assert.equal(typeof validPassword === 'undefined' ? 'undefined' : (0, _typeof3.default)(validPassword), 'boolean');
     assert.equal(validPassword, false);
   });
 });

@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.appServer = undefined;
 
 var _http = require('http');
 
@@ -43,5 +44,7 @@ app.set('port', port);
 server.listen(port, function () {
   console.log('Server listening on port ' + port);
 });
+
+var appServer = exports.appServer = server;
 
 exports.default = app;

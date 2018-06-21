@@ -1,11 +1,16 @@
-export const reviewDetails = {
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var reviewDetails = exports.reviewDetails = {
   userId: 1,
   description: 'Review description',
   parentId: 2,
   imageURL: 'my/review/image/url'
 };
 
-export const reviews = [{
+var reviews = exports.reviews = [{
   userId: 2,
   recipeId: 2,
   parentId: 0,
@@ -27,4 +32,4 @@ export const reviews = [{
   description: 'recipe description'
 }];
 
-export default {};
+exports.default = {};

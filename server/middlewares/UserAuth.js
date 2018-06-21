@@ -4,6 +4,7 @@ import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 
 const { User } = models;
+const { handleErrors } = ErrorHandler;
 dotEnv.config();
 /**
  * @class UserAuth
@@ -57,7 +58,7 @@ class UserAuth {
           next();
         })
         .catch((error) => {
-          const e = ErrorHandler.handleErrors(error);
+          const e = handleErrors(error);
           return res.status(e.statusCode).send({
             message: e.message
           });

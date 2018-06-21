@@ -15,7 +15,7 @@
     "slate:install": "cd ./slate && bundle install",
     "slate:start": "cd ./slate && bundle exec middleman server",
     "slate:build": "cd ./slate && rimraf build && deploy.sh",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/unit/helpers/**.spec.js\" --timeout 100000 --exit"
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit"
   },
   "nyc": {
     "exclude": [
@@ -23,9 +23,10 @@
       "client/**/**.js",
       "server/dist/**/**.js",
       "server/helpers/dummyData/**.js",
+      "server/helpers/emailTemplate/**.js",
       "slate/**/**.js",
       "server/docs",
-      "server/models/**.js",
+      "server/sockets/**/**.js",
       "server/migrations/**.js",
       "server/seeders/**.js",
       "server/config/db.js",

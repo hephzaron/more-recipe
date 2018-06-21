@@ -67,49 +67,12 @@ exports.default = function (sequelize, DataTypes) {
         escape: true
       }
     },
-    upVotes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Upvotes must be an integer'
-        }
-      }
-    },
-    downVotes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Downvotes must be an integer'
-        }
-      }
-    },
-    likes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'Likes must be an integer'
-        }
-      }
-    },
-    dislikes: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        is: {
-          args: /^[0-9]+$/,
-          msg: 'dislikes must be an integer'
-        }
-      }
-    },
     favorites: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      set: function set() {
+        this.setDataValue('favorites', this.favorites + 1);
+      },
+
       validate: {
         is: {
           args: /^[0-9]+$/,
@@ -117,23 +80,20 @@ exports.default = function (sequelize, DataTypes) {
         }
       }
     },
-    imageUrl: {
+    photoUrl: {
       type: DataTypes.STRING,
       allowNull: true,
       validate: {
-        isUrl: true
+        isUrl: {
+          msg: 'Invalid photo url'
+        }
       }
     }
   });
-  Recipe.prototype.totalVotes = function () {
-    return parseInt(undefined.upVotes, 10) - parseInt(undefined.downVotes, 10);
+  Recipe.prototype.totalVotes = function calcTotalVotes() {
+    return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
   };
   Recipe.associate = function (models) {
-    Recipe.belongsTo(models.User, {
-      foreignKey: 'userId',
-      as: 'Creator',
-      targetKey: 'id'
-    });
     Recipe.belongsToMany(models.User, {
       through: models.SavedRecipe,
       foreignKey: 'recipeId',
@@ -141,7 +101,19 @@ exports.default = function (sequelize, DataTypes) {
       onDelete: 'CASCADE'
     });
     Recipe.hasMany(models.Review, {
-      foreignKey: 'recipeId'
+      foreignKey: 'recipeId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
+    });
+    Recipe.hasMany(models.RecipeVote, {
+      foreignKey: 'recipeId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
+    });
+    Recipe.hasMany(models.Notification, {
+      foreignKey: 'recipeId',
+      sourceKey: 'id',
+      onDelete: 'CASCADE'
     });
   };
   return Recipe;

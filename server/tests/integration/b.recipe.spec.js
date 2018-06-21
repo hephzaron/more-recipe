@@ -3,7 +3,6 @@ import supertest from 'supertest';
 import app from '../../src/server';
 import { user, users } from '../seeds/user';
 import { recipeDetails } from '../seeds/recipe';
-import { reviewDetails } from '../seeds/review';
 import { generateToken, seedUserTable } from '../seeds';
 
 const { expect } = chai;
@@ -84,33 +83,6 @@ describe('Recipe', () => {
             expect(recipe).to.be.an('object');
             expect(recipe.id).to.be.equal(3);
             expect(recipe.userId).to.be.equal(3);
-            done();
-          });
-      }
-    );
-
-    it(
-      'it should review second recipe',
-      (done) => {
-        request
-          .post('/api/v1/recipes/2/reviews')
-          .set('authorization', token)
-          .send({
-            ...reviewDetails,
-            parentId: 2
-          })
-          .end((err, res) => {
-            if (err) {
-              return done(err);
-            }
-            const { review, message } = res.body;
-            expect(res.statusCode).to.equal(201);
-            expect(res.body).to.be.an('object');
-            expect(message).to.be.equal('You have just reviewed item');
-            expect(review).to.be.an('object');
-            expect(review.recipeId).to.be.equal(2);
-            expect(review.parentId).to.be.equal(2);
-            expect(review.description).to.be.equal(reviewDetails.description);
             done();
           });
       }

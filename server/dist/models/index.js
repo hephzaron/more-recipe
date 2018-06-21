@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
 var _fs = require('fs');
 
 var _fs2 = _interopRequireDefault(_fs);
@@ -42,7 +46,7 @@ _fs2.default.readdirSync(__dirname).filter(function (file) {
   db[model.name] = model;
 });
 
-Object.keys(db).forEach(function (modelName) {
+(0, _keys2.default)(db).forEach(function (modelName) {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

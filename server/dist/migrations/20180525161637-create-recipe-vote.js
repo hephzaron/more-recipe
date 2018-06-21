@@ -2,7 +2,7 @@
 
 module.exports = {
   up: function up(queryInterface, Sequelize) {
-    return queryInterface.createTable('Reviews', {
+    return queryInterface.createTable('RecipeVotes', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -10,21 +10,33 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.INTEGER
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        allowNull: false
       },
       recipeId: {
+        type: Sequelize.INTEGER,
+        allowNull: false
+      },
+      upVotes: {
+        allowNull: false,
+        defaultValue: 0,
         type: Sequelize.INTEGER
       },
-      parentId: {
+      downVotes: {
         allowNull: false,
+        defaultValue: 0,
         type: Sequelize.INTEGER
       },
-      description: {
+      likes: {
         allowNull: false,
-        type: Sequelize.STRING
+        defaultValue: 0,
+        type: Sequelize.INTEGER
       },
-      imageUrl: {
-        type: Sequelize.STRING
+      dislikes: {
+        allowNull: false,
+        defaultValue: 0,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -39,7 +51,6 @@ module.exports = {
     });
   },
   down: function down(queryInterface) {
-    return queryInterface.dropTable('Reviews');
+    return queryInterface.dropTable('RecipeVotes');
   }
-
 };

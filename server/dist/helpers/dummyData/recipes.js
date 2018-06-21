@@ -4,6 +4,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 exports.default = function () {
   var recipeDetails = {
     userId: 1,
@@ -13,7 +19,7 @@ exports.default = function () {
     upvotes: 5,
     downvotes: 6,
     numberOfReviews: 4,
-    replies: JSON.stringify({})
+    replies: (0, _stringify2.default)({})
   };
 
   var recipes = [{
@@ -26,7 +32,7 @@ exports.default = function () {
     downvotes: 6,
     numberOfReviews: 4,
     numberOfViews: 6,
-    replies: JSON.stringify([{
+    replies: (0, _stringify2.default)([{
       userId: 1,
       recipeId: 2,
       replyId: 1,

@@ -4,6 +4,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
 var _jsonwebtoken = require('jsonwebtoken');
 
 var _jsonwebtoken2 = _interopRequireDefault(_jsonwebtoken);
@@ -40,7 +44,7 @@ function generateGUID() {
 
 exports.default = function (req) {
   if (!secret || !req || !req.body.email || req.body.email.length === 0) {
-    return Promise.reject(_ErrorHandler2.default.handleErrors({}));
+    return _promise2.default.reject(_ErrorHandler2.default.handleErrors({}));
   }
   var GUID = generateGUID();
   var expiresDefault = Math.floor(new Date().getTime() / 1000) + 24 * 60 * 60;

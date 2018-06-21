@@ -5,7 +5,7 @@ env:
     - TEST_DB_HOST=127.0.0.1
     - TEST_DB_USERNAME=tobi
     - TEST_DB_PASSWORD=1234
-    - TEST_DB_PORT=8000
+    - TEST_DB_PORT=5432
     - CC_TEST_REPORTER_ID=$CODECLIMATE_REPO_TOKEN
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: node_js

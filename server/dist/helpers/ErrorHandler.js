@@ -49,7 +49,6 @@ var ErrorHandler = function (_Error) {
      * @return { object } error
      */
     value: function handleErrors(options) {
-      console.log(options);
       var error = {};
       try {
         if (options || options.name) {

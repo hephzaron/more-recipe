@@ -11,7 +11,6 @@ class ErrorHandler extends Error {
    * @return { object } error
    */
   static handleErrors(options) {
-    console.log(options);
     const error = {};
     try {
       if (options || options.name) {

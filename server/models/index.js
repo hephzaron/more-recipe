@@ -11,12 +11,19 @@ const env = process.env.NODE_ENV || 'development';
 const configg = config[env];
 const db = {};
 
-const sequelize = new Sequelize(
-  configg.database,
-  configg.username,
-  configg.password,
-  configg
-);
+let sequelize;
+
+if(process.env.DATABASE_URL){
+  sequelize = new Sequelize(process.env.DATABASE_URL)
+} else  {
+  sequelize = new Sequelize(
+    configg.database,
+    configg.username,
+    configg.password,
+    configg
+  );
+}
+
 
 fs
   .readdirSync(__dirname)

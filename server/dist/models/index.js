@@ -37,13 +37,7 @@ var env = process.env.NODE_ENV || 'development';
 var configg = _db2.default[env];
 var db = {};
 
-var sequelize = void 0;
-
-if (configg.use_env_variable) {
-  sequelize = new _sequelize2.default(configg.use_env_variable, configg);
-} else {
-  sequelize = new _sequelize2.default(configg.database, configg.username, configg.password, configg);
-}
+var sequelize = new _sequelize2.default(configg.database, configg.username, configg.password, configg);
 
 _fs2.default.readdirSync(__dirname).filter(function (file) {
   return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js';

@@ -19,6 +19,8 @@ const {
   DATABASE_URL
 } = process.env;
 
+const match = DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+
 module.exports = {
   development: {
     username: DEVELOPMENT_DB_USERNAME,
@@ -37,7 +39,11 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    use_env_variable: DATABASE_URL,
+    username: match[1],
+    password: match[2],
+    host: match[3],
+    port: match[4],
+    database: match[5],
     dialect: 'postgres'
   }
 };

@@ -38,18 +38,9 @@ var configg = _db2.default[env];
 var db = {};
 
 var sequelize = void 0;
-var DATABASE_URL = process.env.DATABASE_URL;
 
-
-if (DATABASE_URL) {
-  var match = DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
-  sequelize = new _sequelize2.default(match[5], match[1], match[2], {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    port: match[4],
-    host: match[3],
-    logging: true
-  });
+if (configg.use_env_variable) {
+  sequelize = new _sequelize2.default(configg.use_env_variable, configg);
 } else {
   sequelize = new _sequelize2.default(configg.database, configg.username, configg.password, configg);
 }

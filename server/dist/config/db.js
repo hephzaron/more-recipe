@@ -17,7 +17,8 @@ var _process$env = process.env,
     DEVELOPMENT_DB_HOST = _process$env.DEVELOPMENT_DB_HOST,
     DEVELOPMENT_DB_PORT = _process$env.DEVELOPMENT_DB_PORT,
     DEVELOPMENT_DB_PASSWORD = _process$env.DEVELOPMENT_DB_PASSWORD,
-    DEVELOPMENT_DB_USERNAME = _process$env.DEVELOPMENT_DB_USERNAME;
+    DEVELOPMENT_DB_USERNAME = _process$env.DEVELOPMENT_DB_USERNAME,
+    DATABASE_URL = _process$env.DATABASE_URL;
 
 
 module.exports = {
@@ -38,11 +39,6 @@ module.exports = {
     dialect: 'postgres'
   },
   production: {
-    username: PRODUCTION_DB_USERNAME,
-    password: PRODUCTION_DB_PASSWORD,
-    database: PRODUCTION_DB_NAME,
-    host: PRODUCTION_DB_HOST,
-    port: PRODUCTION_DB_PORT,
-    dialect: 'postgres'
+    use_env_variable: DATABASE_URL
   }
 };

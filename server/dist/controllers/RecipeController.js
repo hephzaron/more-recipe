@@ -299,6 +299,11 @@ var RecipeController = function () {
             message: 'Oops! No recipe exists in this selection'
           });
         }
+        if (recipes.length === 0) {
+          return res.status(200).send({
+            recipe: recipes[0]
+          });
+        }
         var sortBy = sort || 'id';
         var sorted = recipes.sort(function (prev, next) {
           if (/desc/i.test(order)) {

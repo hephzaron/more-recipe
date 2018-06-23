@@ -244,6 +244,11 @@ class RecipeController {
             message: 'Oops! No recipe exists in this selection'
           });
         }
+        if (recipes.length === 0) {
+          return res.status(200).send({
+            recipe: recipes[0]
+          });
+        }
         const sortBy = sort || 'id';
         const sorted = recipes
           .sort((prev, next) => {

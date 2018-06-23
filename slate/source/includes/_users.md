@@ -248,7 +248,13 @@ This endpoint gets all users
       "age": "24",
       "sex": "female",
       "facebookOauthID": "",
-      "googleOauthID": ""
+      "googleOauthID": "",
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "profilePhotoUrl": null,
+      "createdAt": "2018-06-22T12:25:33.076Z",
+      "updatedAt": "2018-06-22T12:30:00.434Z",
+      "Recipes": []
   }
 }
 ```

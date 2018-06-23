@@ -244,7 +244,7 @@ class RecipeController {
             message: 'Oops! No recipe exists in this selection'
           });
         }
-        if (recipes.length === 0) {
+        if (recipes.length === 1) {
           return res.status(200).send({
             recipe: recipes[0]
           });

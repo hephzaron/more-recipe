@@ -9,11 +9,7 @@
   "userId": 1,
   "name": "name of recipe",
   "description": "describe recipe",
-  "reviews": [],
-  "upVotes": 0,
-  "downVotes": 0,
-  "totalVotes": 0,
-  "imageURL": "imageFile"
+  "photoUrl": "photourl@photo.com"
 }
 ```
 
@@ -26,11 +22,10 @@
     "userId": 1,
     "name": "name of recipe",
     "description": "describe recipe",
-    "reviews": [],
-    "upVotes": 0,
-    "downVotes": 0,
-    "totalVotes": 0,
-    "imageURL": "imageFile"
+    "photoUrl": "photourl@photo.com",
+    "updatedAt": "2018-06-23T00:43:06.356Z",
+    "createdAt": "2018-06-23T00:43:06.356Z",
+    "favorites": null
     },
     "message": "name of recipe added successfully"
 }

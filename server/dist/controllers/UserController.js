@@ -259,11 +259,7 @@ var UserController = function () {
           message: 'The passwords are not the same. Please try again'
         });
       }
-      return User.findById(userId, {
-        attributes: {
-          exclude: ['salt', 'hash']
-        }
-      }).then(function (user) {
+      return User.findById(userId).then(function (user) {
         if (!user) {
           return res.status(404).send({
             message: 'This user does not exist'

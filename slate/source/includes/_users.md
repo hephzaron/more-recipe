@@ -61,15 +61,7 @@ This endpoint creates a user record.
 
 ```javascript
 {
-  "user": {
-      "id": 1,
-      "firstName": "firstName",
-      "lastName": "lastName",
-      "email": "myemail@email.com",
-      "username": "newUsername",
-      "age": 18,
-      "sex": "female"""
-    }
+  "message": "Your profile has been updated successfully"
 }
 ```
 
@@ -103,7 +95,7 @@ userId | The ID of the user
 
 ```javascript
 {
-  "message": "Password reset link sent to myemail12@email.com"
+  "message": "A password reset link has been sent to myemail@email.com.It may take upto 5 mins for the mail to                  arrive."
 }
 ```
 
@@ -111,7 +103,7 @@ This endpoint sends a reset password link to the user associated with the provid
 
 ### HTTP Request
 
-`POST /users/forgot_password`
+`POST /users/reset_password`
 
 ### HTTP Response
 
@@ -129,12 +121,7 @@ This endpoint sends a reset password link to the user associated with the provid
 
 ```javascript
 {
-  "message": "Password reset successful, you can now change your password",
-  "user": {
-    "username": "username12",
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "userId": 1
-  }
+  "message": "Password successfully changed. Please login to your account."
 }
 ```
 
@@ -209,7 +196,13 @@ This endpoint is for authenticated users to change their password
       "age": "24",
       "sex": "female",
       "facebookOauthID": "",
-      "googleOauthID": ""
+      "googleOauthID": "",
+      "resetPasswordToken": null,
+      "resetPasswordExpires": null,
+      "profilePhotoUrl": null,
+      "createdAt": "2018-06-22T12:25:33.076Z",
+      "updatedAt": "2018-06-22T12:30:00.434Z",
+      "Recipes": []
     },
     ...
     ]

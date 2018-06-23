@@ -178,11 +178,7 @@ class UserController {
       });
     }
     return User
-      .findById(userId, {
-        attributes: {
-          exclude: ['salt', 'hash']
-        }
-      })
+      .findById(userId)
       .then((user) => {
         if (!user) {
           return res.status(404).send({

@@ -151,6 +151,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 
 ```javascript
 {
+  "oldPassword": "old password",
   "newPassword": "new password",
   "confirmPassword": "new password"
 }
@@ -160,7 +161,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 
 ```javascript
 {
-  "message": "Password change successful, please login to your account"
+  "message": "Your password has been changed succesfully"
 }
 ```
 
@@ -168,11 +169,17 @@ This endpoint is for authenticated users to change their password
 
 ### HTTP Request
 
-`PUT /users/change_password`
+`PUT /users/:userId`
 
 ### HTTP Response
 
 `200 OK`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+userId | The ID of the user
 
 ## Get all users
 

@@ -229,6 +229,11 @@ var UserController = function () {
           }]
         }]
       }).then(function (users) {
+        if (users.length === 1) {
+          return res.status(200).send({
+            user: users[0]
+          });
+        }
         return res.status(200).send({ users: users });
       }).catch(function (error) {
         var e = handleErrors(error);

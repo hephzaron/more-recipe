@@ -154,7 +154,14 @@ class UserController {
           }]
         }]
       })
-      .then(users => res.status(200).send({ users }))
+      .then((users) => {
+        if (users.length === 1) {
+          return res.status(200).send({
+            user: users[0]
+          });
+        }
+        return res.status(200).send({ users });
+      })
       .catch((error) => {
         const e = handleErrors(error);
         return res.status(e.statusCode).send({

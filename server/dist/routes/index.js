@@ -40,6 +40,7 @@ router.get('/ping', _controllers.ping);
 router.post('/signup', signup);
 router.post('/login', login);
 router.get('/users', getUsers);
+router.get('/users/:userId', getUsers);
 router.put('/users/:userId', verifyUser, editUser);
 
 /**

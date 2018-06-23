@@ -60,13 +60,16 @@ This endpoint creates a new recipe
     "userId": 1,
     "name": "name of recipe",
     "description": "describe recipe",
+    "favorites": null,
+    "photoUrl": "photourl@photo.com",
+    "createdAt": "2018-06-23T00:43:06.356Z",
+    "updatedAt": "2018-06-23T00:43:06.356Z",
     "reviews": [],
-    "upVotes": 1,
-    "downVotes": 0,
-    "totalVotes": 1,
-    "imageURL": "imageFile"
-    },
-    "message": "Changes made on name of recipe is successfull"
+    "upVotes": "1",
+    "downVotes": "0",
+    "likes": "0",
+    "dislikes": "0"
+    }
 }
 ```
 
@@ -74,7 +77,7 @@ This endpoint updates a recipe. This also applies to `upVoting` and `downVoting`
 
 ### HTTP Request
 
-`PUT /recipes/:recipeId`
+`PUT /recipes/:userId/:recipeId`
 
 ### HTTP Response
 
@@ -84,6 +87,7 @@ This endpoint updates a recipe. This also applies to `upVoting` and `downVoting`
 
 Parameter | Description
 --------- | -----------
+userId | The ID of the user
 recipeId | The ID of the recipe
 
 ## Get all recipes
@@ -104,11 +108,14 @@ recipeId | The ID of the recipe
       "userId": 1,
       "name": "name of recipe",
       "description": "describe recipe",
-      "reviews": [],
-      "upVotes": 1,
-      "downVotes": 0,
-      "totalVotes": 1,
-      "imageURL": "imageFile"
+      "photoUrl": "photourl@photo.com"
+      "createdAt": "2018-06-09T03:19:04.848Z",
+      "updatedAt": "2018-06-09T03:19:04.848Z",
+      "upVotes": "0",
+      "downVotes": "0",
+      "likes": "0",
+      "dislikes": "0",
+      "Reviews": []
       },
       ...
     ]
@@ -143,14 +150,17 @@ This endpoint gets all recipes
       "userId": 1,
       "name": "name of recipe",
       "description": "describe recipe",
-      "reviews": [],
-      "upVotes": 1,
-      "downVotes": 0,
-      "totalVotes": 1,
-      "imageURL": "imageFile"
-      },
-      ...
-    ]
+      "favorites": null,
+      "photoUrl": null,
+      "createdAt": "2018-06-09T03:19:04.898Z",
+      "updatedAt": "2018-06-09T03:19:04.898Z",
+      "upVotes": "1",
+      "downVotes": "0",
+      "likes": "0",
+      "dislikes": "0",
+    },
+    ...
+  ]
 }
 ```
 
@@ -169,7 +179,7 @@ This endpoint gets all recipes
 Parameter | Default | Description
 --------- | ----------- | --------
 sort | undefined | A choosen property of recipe to be used in sorting
-order | undefined | The order of recipes required `asc` or `desc || dsc`-case irrelevant
+order | undefined | The order of recipes required `asc` or `desc`
 
 ## Get a single recipe
 
@@ -188,11 +198,15 @@ order | undefined | The order of recipes required `asc` or `desc || dsc`-case ir
       "userId": 1,
       "name": "name of recipe",
       "description": "describe recipe",
-      "reviews": [],
-      "upVotes": 1,
-      "downVotes": 0,
-      "totalVotes": 1,
-      "imageURL": "imageFile"
+      "favorites": null,
+      "photoUrl": "photourl@photo.com",
+      "createdAt": "2018-06-23T00:43:06.356Z",
+      "updatedAt": "2018-06-23T00:43:06.356Z",
+      "upVotes": "1",
+      "downVotes": "0",
+      "likes": "0",
+      "dislikes": "0",
+      "Reviews": []
   }
 }
 ```
@@ -233,7 +247,7 @@ This endpoint deletes a recipe
 
 ### HTTP Request
 
-`DELETE /recipes/:recipeId`
+`DELETE /recipes/:userId/:recipeId`
 
 ### HTTP Response
 
@@ -243,4 +257,5 @@ This endpoint deletes a recipe
 
 Parameter | Description
 --------- | -----------
+userId | The ID of the user
 recipeId | The ID of the recipe

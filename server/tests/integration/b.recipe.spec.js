@@ -114,6 +114,26 @@ describe('Recipe', () => {
     );
 
     it(
+      'it should get a single recipe',
+      (done) => {
+        request
+          .get('/api/v1/recipes/1')
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            const { recipe } = res.body;
+            expect(res.statusCode).to.equal(200);
+            expect(res.body).to.be.an('object');
+            expect(recipe).to.be.an('object');
+            expect(recipe.id).to.be.equal(1);
+            expect(recipe.name).to.be.equal(recipeDetails.name);
+            done();
+          });
+      }
+    );
+
+    it(
       'it should modify a recipe',
       (done) => {
         request

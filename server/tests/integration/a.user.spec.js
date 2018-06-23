@@ -2,7 +2,7 @@ import chai from 'chai';
 import supertest from 'supertest';
 import app from '../../src/server';
 import { user } from '../seeds/user';
-import { dropOrCreateTable, getResetToken } from '../seeds';
+import { dropOrCreateTable, getResetToken, seedUserTable } from '../seeds';
 
 const { expect } = chai;
 const request = supertest(app);
@@ -174,6 +174,27 @@ describe('User priviledge', () => {
    * @function Get Users suite
    */
   describe('# Fetch user', () => {
+    before((done) => {
+      seedUserTable(done);
+    });
+    it(
+      'it should get a single user',
+      (done) => {
+        request
+          .get('/api/v1/users/1')
+          .end((err, res) => {
+            if (err) {
+              return done(err);
+            }
+            expect(res.statusCode).to.be.equal(200);
+            expect(res.body).to.be.an('object');
+            expect(res.body.user).to.be.an('object');
+            expect(res.body.user.id).to.be.equal(1);
+            done();
+          });
+      }
+    );
+
     it(
       'it should get all users',
       (done) => {
@@ -183,12 +204,10 @@ describe('User priviledge', () => {
             if (err) {
               return done(err);
             }
-            const { users } = res.body;
             expect(res.statusCode).to.be.equal(200);
             expect(res.body).to.be.an('object');
-            expect(users).to.be.an('array');
-            expect(users.length).to.be.equal(1);
-            expect(users[0].id).to.be.equal(1);
+            expect(res.body.users).to.be.an('array');
+            expect(res.body.users.length).to.be.equal(4);
             done();
           });
       }

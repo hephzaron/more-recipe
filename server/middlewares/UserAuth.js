@@ -48,6 +48,8 @@ class UserAuth {
               message: 'Token invalid or expired-user not found'
             });
           }
+          console.log(userId);
+          console.log(user.id);
           if (userId &&
             !(upVotes || downVotes || likes || dislikes) &&
             parseInt(userId, 10) !== user.id) {

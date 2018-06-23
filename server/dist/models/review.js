@@ -77,9 +77,7 @@ exports.default = function (sequelize, DataTypes) {
       }
     }
   });
-  Review.prototype.totalVotes = function calcTotalVotes() {
-    return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
-  };
+
   Review.associate = function (models) {
     Review.belongsTo(models.Recipe, {
       foreignKey: 'recipeId',

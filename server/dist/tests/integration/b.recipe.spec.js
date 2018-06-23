@@ -118,6 +118,22 @@ describe('Recipe', function () {
       });
     });
 
+    it('it should get a single recipe', function (done) {
+      request.get('/api/v1/recipes/1').end(function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        var recipe = res.body.recipe;
+
+        expect(res.statusCode).to.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(recipe).to.be.an('object');
+        expect(recipe.id).to.be.equal(1);
+        expect(recipe.name).to.be.equal(_recipe.recipeDetails.name);
+        done();
+      });
+    });
+
     it('it should modify a recipe', function (done) {
       request.put('/api/v1/recipes/1/1').set('authorization', token).send({ name: 'RecipeNameChanged' }).end(function (err, res) {
         if (err) {

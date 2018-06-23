@@ -83,7 +83,7 @@ var UserAuth = function () {
               message: 'Token invalid or expired-user not found'
             });
           }
-          if (userId && !(upVotes || downVotes || likes || dislikes) && parseInt(userId, 10) !== user.id) {
+          if (userId && (!(upVotes || downVotes || likes || dislikes) || (upVotes || downVotes || likes || dislikes) && req.method !== 'PUT') && userId !== user.id) {
             return res.status(401).send({
               message: 'You are not authorized to access this account'
             });

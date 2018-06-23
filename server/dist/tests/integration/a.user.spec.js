@@ -151,18 +151,31 @@ describe('User priviledge', function () {
    * @function Get Users suite
    */
   describe('# Fetch user', function () {
+    before(function (done) {
+      (0, _seeds.seedUserTable)(done);
+    });
+    it('it should get a single user', function (done) {
+      request.get('/api/v1/users/1').end(function (err, res) {
+        if (err) {
+          return done(err);
+        }
+        expect(res.statusCode).to.be.equal(200);
+        expect(res.body).to.be.an('object');
+        expect(res.body.user).to.be.an('object');
+        expect(res.body.user.id).to.be.equal(1);
+        done();
+      });
+    });
+
     it('it should get all users', function (done) {
       request.get('/api/v1/users').end(function (err, res) {
         if (err) {
           return done(err);
         }
-        var users = res.body.users;
-
         expect(res.statusCode).to.be.equal(200);
         expect(res.body).to.be.an('object');
-        expect(users).to.be.an('array');
-        expect(users.length).to.be.equal(1);
-        expect(users[0].id).to.be.equal(1);
+        expect(res.body.users).to.be.an('array');
+        expect(res.body.users.length).to.be.equal(4);
         done();
       });
     });

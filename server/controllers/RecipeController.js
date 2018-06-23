@@ -122,10 +122,10 @@ class RecipeController {
             returning: true
           })
           .then(async(updatedRecipe) => {
-            const { description, imageUrl, id } = updatedRecipe;
+            const { description, photoUrl, id } = updatedRecipe;
             await Review.update({
               description,
-              imageUrl
+              photoUrl
             }, {
               returning: true,
               where: {

@@ -239,7 +239,7 @@ recipeId | The ID of the recipe
 
 ```javascript
 {
-  "message": "name of recipe have been successfully removed"
+  "message": "Recipe deleted successfully"
 }
 ```
 

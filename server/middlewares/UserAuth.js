@@ -51,7 +51,7 @@ class UserAuth {
           if (userId &&
             (!(upVotes || downVotes || likes || dislikes) ||
               ((upVotes || downVotes || likes || dislikes) && req.method !== 'PUT')) &&
-            (userId !== user.id)) {
+            (parseInt(userId, 10) !== user.id)) {
             return res.status(401).send({
               message: 'You are not authorized to access this account'
             });

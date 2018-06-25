@@ -90,6 +90,123 @@ Parameter | Description
 userId | The ID of the user
 recipeId | The ID of the recipe
 
+## Save a recipe
+
+> Request body
+
+```javascript
+{ }
+```
+
+> Response body (application/json)
+
+```javascript
+{
+  "message": "Recipe saved"
+}
+```
+
+This endpoint saves a recipe.
+
+### HTTP Request
+
+`POST /recipes/save/:userId/:recipeId`
+
+### HTTP Response
+
+`201 Created`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+userId | The ID of the user
+recipeId | The ID of the recipe
+
+## Unsave a user recipe
+
+> Request body
+
+```javascript
+{ }
+```
+
+> Response body (application/json)
+
+```javascript
+{
+  "message": "Recipe removed"
+}
+```
+
+This endpoint unsaves a recipe.
+
+### HTTP Request
+
+`DELETE /recipes/unsave/:userId/:recipeId`
+
+### HTTP Response
+
+`200 OK`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+userId | The ID of the user
+recipeId | The ID of the recipe
+
+## Get a user saved recipes
+
+> Request body
+
+```javascript
+{ }
+```
+
+> Response body (application/json)
+
+```javascript
+{
+  "savedRecipe": [
+    {
+      "id": 1,
+      "userId": 1,
+      "name": "FirstRecipe",
+      "description": "Describe your recipe in details",
+      "favorites": null,
+      "photoUrl": null,
+      "createdAt": "2018-06-09T03:19:04.848Z",
+      "updatedAt": "2018-06-09T03:19:04.848Z",
+      "SavedRecipe": {
+        "id": 1,
+        "userId": 1,
+        "recipeId": 1,
+        "createdAt": "2018-06-25T16:33:59.846Z",
+        "updatedAt": "2018-06-25T16:33:59.846Z"
+        }
+      },
+      ...
+  ]
+}
+```
+
+This endpoint gets list of recipes saved by user.
+
+### HTTP Request
+
+`GET /recipes/saved/:userId`
+
+### HTTP Response
+
+`200 OK`
+
+### URL Parameters
+
+Parameter | Description
+--------- | -----------
+userId | The ID of the user
+
 ## Get all recipes
 
 > Request body

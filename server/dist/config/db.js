@@ -21,7 +21,7 @@ var _process$env = process.env,
     DATABASE_URL = _process$env.DATABASE_URL;
 
 
-var match = DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+var match = DATABASE_URL ? DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/) : [];
 
 module.exports = {
   development: {

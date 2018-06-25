@@ -19,7 +19,7 @@ const {
   DATABASE_URL
 } = process.env;
 
-const match = DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+const match = DATABASE_URL ? DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/) : [];
 
 module.exports = {
   development: {

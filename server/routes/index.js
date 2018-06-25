@@ -3,6 +3,7 @@ import {
   RecipeController,
   UserController,
   ReviewController,
+  SavedRecipeController,
   ping
 } from '../controllers';
 import { UserAuth, ManageVotes } from '../middlewares';
@@ -29,6 +30,12 @@ const {
   deleteReview
 } = ReviewController;
 
+const {
+  saveRecipe,
+  unsaveRecipe,
+  getSavedRecipe
+} = SavedRecipeController;
+
 const { verifyUser } = UserAuth;
 
 const { validateVotes } = ManageVotes;
@@ -54,6 +61,10 @@ router.delete('/recipes/:userId/:recipeId', verifyUser, deleteRecipe);
 // To sort recipes, append '?sort=[Object key]&order=[desc or asc]'
 router.get('/recipes', getRecipes);
 router.get('/recipes/:recipeId', getRecipes);
+// Handle saved recipes
+router.post('/recipes/save/:userId/:recipeId', verifyUser, saveRecipe);
+router.delete('/recipes/unsave/:userId/:recipeId', verifyUser, unsaveRecipe);
+router.get('/recipes/saved/:userId', verifyUser, getSavedRecipe);
 
 /**
  * Review routes

@@ -31,6 +31,16 @@ describe('Error Handler', () => {
       assert.equal(message, error.message);
     });
 
+    it('it should return status 401 where reference to foreignKey does not exist', () => {
+      const error = {
+        name: 'SequelizeForeignKeyConstraintError'
+      };
+      const { name, message, statusCode } = handleErrors(error);
+      assert.equal(statusCode, 401);
+      assert.equal(name, 'Not Found');
+      assert.equal(message, 'Referenced item does not exist');
+    });
+
     it('it should return status 500 for unspecified error name', () => {
       const error = {
         message: 'I am not specified'

@@ -24,6 +24,10 @@ class ErrorHandler extends Error {
             error.name = 'Conflict';
             error.message = message;
           }
+        } else if (/^(SequelizeForeignKeyConstraintError)/i.test(name)) {
+          error.statusCode = 401;
+          error.name = 'Not Found';
+          error.message = 'Referenced item does not exist';
         } else {
           error.statusCode = 500;
           error.message = 'Internal Server Error';

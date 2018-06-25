@@ -51,15 +51,30 @@ describe('Error Handler', function () {
       assert.equal(message, error.message);
     });
 
-    it('it should return status 500 for unspecified error name', function () {
+    it('it should return status 401 where reference to foreignKey does not exist', function () {
       var error = {
-        message: 'I am not specified'
+        name: 'SequelizeForeignKeyConstraintError'
       };
 
       var _handleErrors3 = handleErrors(error),
           name = _handleErrors3.name,
           message = _handleErrors3.message,
           statusCode = _handleErrors3.statusCode;
+
+      assert.equal(statusCode, 401);
+      assert.equal(name, 'Not Found');
+      assert.equal(message, 'Referenced item does not exist');
+    });
+
+    it('it should return status 500 for unspecified error name', function () {
+      var error = {
+        message: 'I am not specified'
+      };
+
+      var _handleErrors4 = handleErrors(error),
+          name = _handleErrors4.name,
+          message = _handleErrors4.message,
+          statusCode = _handleErrors4.statusCode;
 
       assert.equal(name, 'Server Error');
       assert.equal(message, 'Internal Server Error');
@@ -71,9 +86,9 @@ describe('Error Handler', function () {
      */
     describe('# Invalid entries', function () {
       it('it should return status 500 for undefined error message', function () {
-        var _handleErrors4 = handleErrors(),
-            message = _handleErrors4.message,
-            statusCode = _handleErrors4.statusCode;
+        var _handleErrors5 = handleErrors(),
+            message = _handleErrors5.message,
+            statusCode = _handleErrors5.statusCode;
 
         assert.equal(message, 'Internal Server Error');
         assert.equal(statusCode, 500);
@@ -85,10 +100,10 @@ describe('Error Handler', function () {
           message: 'uuhm!?'
         };
 
-        var _handleErrors5 = handleErrors(error),
-            name = _handleErrors5.name,
-            message = _handleErrors5.message,
-            statusCode = _handleErrors5.statusCode;
+        var _handleErrors6 = handleErrors(error),
+            name = _handleErrors6.name,
+            message = _handleErrors6.message,
+            statusCode = _handleErrors6.statusCode;
 
         assert.equal(name, 'Server Error');
         assert.equal(message, 'Internal Server Error');

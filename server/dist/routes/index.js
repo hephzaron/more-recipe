@@ -27,6 +27,9 @@ var addRecipe = _controllers.RecipeController.addRecipe,
 var addReview = _controllers.ReviewController.addReview,
     editReview = _controllers.ReviewController.editReview,
     deleteReview = _controllers.ReviewController.deleteReview;
+var saveRecipe = _controllers.SavedRecipeController.saveRecipe,
+    unsaveRecipe = _controllers.SavedRecipeController.unsaveRecipe,
+    getSavedRecipe = _controllers.SavedRecipeController.getSavedRecipe;
 var verifyUser = _middlewares.UserAuth.verifyUser;
 var validateVotes = _middlewares.ManageVotes.validateVotes;
 
@@ -52,6 +55,10 @@ router.delete('/recipes/:userId/:recipeId', verifyUser, deleteRecipe);
 // To sort recipes, append '?sort=[Object key]&order=[desc or asc]'
 router.get('/recipes', getRecipes);
 router.get('/recipes/:recipeId', getRecipes);
+// Handle saved recipes
+router.post('/recipes/save/:userId/:recipeId', verifyUser, saveRecipe);
+router.delete('/recipes/unsave/:userId/:recipeId', verifyUser, unsaveRecipe);
+router.get('/recipes/saved/:userId', verifyUser, getSavedRecipe);
 
 /**
  * Review routes

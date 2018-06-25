@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.ping = exports.NotificationController = exports.ReviewController = exports.UserController = exports.RecipeController = undefined;
+exports.ping = exports.SavedRecipeController = exports.NotificationController = exports.ReviewController = exports.UserController = exports.RecipeController = undefined;
 
 var _RecipeController = require('./RecipeController');
 
@@ -21,6 +21,10 @@ var _NotificationController = require('./NotificationController');
 
 var _NotificationController2 = _interopRequireDefault(_NotificationController);
 
+var _SavedRecipeController = require('./SavedRecipeController');
+
+var _SavedRecipeController2 = _interopRequireDefault(_SavedRecipeController);
+
 var _ping = require('./ping');
 
 var _ping2 = _interopRequireDefault(_ping);
@@ -31,4 +35,5 @@ exports.RecipeController = _RecipeController2.default;
 exports.UserController = _UserController2.default;
 exports.ReviewController = _ReviewController2.default;
 exports.NotificationController = _NotificationController2.default;
+exports.SavedRecipeController = _SavedRecipeController2.default;
 exports.ping = _ping2.default;

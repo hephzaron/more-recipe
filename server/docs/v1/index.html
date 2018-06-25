@@ -265,6 +265,15 @@
                     <a href="#edit-a-recipe" class="toc-h2 toc-link" data-title="edit-a-recipe">Edit a recipe</a>
                   </li>
                   <li>
+                    <a href="#save-a-recipe" class="toc-h2 toc-link" data-title="save-a-recipe">Save a recipe</a>
+                  </li>
+                  <li>
+                    <a href="#unsave-a-user-recipe" class="toc-h2 toc-link" data-title="unsave-a-user-recipe">Unsave a user recipe</a>
+                  </li>
+                  <li>
+                    <a href="#get-a-user-saved-recipes" class="toc-h2 toc-link" data-title="get-a-user-saved-recipes">Get a user saved recipes</a>
+                  </li>
+                  <li>
                     <a href="#get-all-recipes" class="toc-h2 toc-link" data-title="get-all-recipes">Get all recipes</a>
                   </li>
                   <li>
@@ -283,6 +292,12 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#review-a-recipe" class="toc-h2 toc-link" data-title="review-a-recipe">Review a recipe</a>
+                  </li>
+                  <li>
+                    <a href="#edit-a-review" class="toc-h2 toc-link" data-title="edit-a-review">Edit a review</a>
+                  </li>
+                  <li>
+                    <a href="#delete-a-review" class="toc-h2 toc-link" data-title="delete-a-review">Delete a review</a>
                   </li>
               </ul>
           </li>
@@ -406,15 +421,7 @@ You must replace <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> with the s
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
-      <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"firstName"</span><span class="p">:</span> <span class="s2">"firstName"</span><span class="p">,</span>
-      <span class="s2">"lastName"</span><span class="p">:</span> <span class="s2">"lastName"</span><span class="p">,</span>
-      <span class="s2">"email"</span><span class="p">:</span> <span class="s2">"myemail@email.com"</span><span class="p">,</span>
-      <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"newUsername"</span><span class="p">,</span>
-      <span class="s2">"age"</span><span class="p">:</span> <span class="mi">18</span><span class="p">,</span>
-      <span class="s2">"sex"</span><span class="p">:</span> <span class="s2">"female"""</span>
-    <span class="p">}</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your profile has been updated successfully"</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint edits a user record.</p>
@@ -446,12 +453,12 @@ You must replace <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> with the s
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Password reset link sent to myemail12@email.com"</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"A password reset link has been sent to myemail@email.com.It may take upto 5 mins for the mail to                  arrive."</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint sends a reset password link to the user associated with the provided email address</p>
 <h3 id='http-request-3'>HTTP Request</h3>
-<p><code>POST /users/forgot_password</code></p>
+<p><code>POST /users/reset_password</code></p>
 <h3 id='http-response-3'>HTTP Response</h3>
 <p><code>200 OK</code></p>
 <h2 id='validate-reset-link'>Validate reset link</h2>
@@ -464,12 +471,7 @@ You must replace <code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code> with the s
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Password reset successful, you can now change your password"</span><span class="p">,</span>
-  <span class="s2">"user"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">"username"</span><span class="p">:</span> <span class="s2">"username12"</span><span class="p">,</span>
-    <span class="s2">"token"</span><span class="p">:</span><span class="s2">"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."</span><span class="p">,</span>
-    <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span>
-  <span class="p">}</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Password successfully changed. Please login to your account."</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint validates the reset link after the user has click on the reset password link and redirects user to change password</p>
@@ -500,6 +502,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <p>Request body</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"oldPassword"</span><span class="p">:</span> <span class="s2">"old password"</span><span class="p">,</span>
   <span class="s2">"newPassword"</span><span class="p">:</span> <span class="s2">"new password"</span><span class="p">,</span>
   <span class="s2">"confirmPassword"</span><span class="p">:</span> <span class="s2">"new password"</span>
 <span class="p">}</span>
@@ -508,14 +511,26 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Password change successful, please login to your account"</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your password has been changed succesfully"</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint is for authenticated users to change their password</p>
 <h3 id='http-request-5'>HTTP Request</h3>
-<p><code>PUT /users/change_password</code></p>
+<p><code>PUT /users/:userId</code></p>
 <h3 id='http-response-5'>HTTP Response</h3>
 <p><code>200 OK</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+</tbody></table>
 <h2 id='get-all-users'>Get all users</h2>
 <blockquote>
 <p>Request body</p>
@@ -536,7 +551,13 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
       <span class="s2">"age"</span><span class="p">:</span> <span class="s2">"24"</span><span class="p">,</span>
       <span class="s2">"sex"</span><span class="p">:</span> <span class="s2">"female"</span><span class="p">,</span>
       <span class="s2">"facebookOauthID"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-      <span class="s2">"googleOauthID"</span><span class="p">:</span> <span class="s2">""</span>
+      <span class="s2">"googleOauthID"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+      <span class="s2">"resetPasswordToken"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"resetPasswordExpires"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"profilePhotoUrl"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-22T12:25:33.076Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-22T12:30:00.434Z"</span><span class="p">,</span>
+      <span class="s2">"Recipes"</span><span class="p">:</span> <span class="p">[]</span>
     <span class="p">},</span>
     <span class="p">...</span>
     <span class="p">]</span>
@@ -566,7 +587,13 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
       <span class="s2">"age"</span><span class="p">:</span> <span class="s2">"24"</span><span class="p">,</span>
       <span class="s2">"sex"</span><span class="p">:</span> <span class="s2">"female"</span><span class="p">,</span>
       <span class="s2">"facebookOauthID"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
-      <span class="s2">"googleOauthID"</span><span class="p">:</span> <span class="s2">""</span>
+      <span class="s2">"googleOauthID"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+      <span class="s2">"resetPasswordToken"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"resetPasswordExpires"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"profilePhotoUrl"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-22T12:25:33.076Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-22T12:30:00.434Z"</span><span class="p">,</span>
+      <span class="s2">"Recipes"</span><span class="p">:</span> <span class="p">[]</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -575,7 +602,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <p><code>GET /users/:userId</code></p>
 <h3 id='http-response-7'>HTTP Response</h3>
 <p><code>200 OK</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<h3 id='url-parameters-3'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -595,11 +622,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
   <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
   <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-  <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-  <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-  <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
+  <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="s2">"photourl@photo.com"</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
@@ -611,11 +634,10 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
     <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
     <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-    <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
+    <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="s2">"photourl@photo.com"</span><span class="p">,</span>
+    <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
+    <span class="s2">"favorites"</span><span class="p">:</span> <span class="kc">null</span>
     <span class="p">},</span>
     <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"name of recipe added successfully"</span>
 <span class="p">}</span>
@@ -642,18 +664,21 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
     <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
     <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
     <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
+    <span class="s2">"favorites"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+    <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="s2">"photourl@photo.com"</span><span class="p">,</span>
+    <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
+    <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
     <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-    <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
-    <span class="p">},</span>
-    <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Changes made on name of recipe is successfull"</span>
+    <span class="s2">"upVotes"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+    <span class="s2">"downVotes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+    <span class="s2">"likes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+    <span class="s2">"dislikes"</span><span class="p">:</span> <span class="s2">"0"</span>
+    <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint updates a recipe. This also applies to <code>upVoting</code> and <code>downVoting</code> a recipe</p>
 <h3 id='http-request-2'>HTTP Request</h3>
-<p><code>PUT /recipes/:recipeId</code></p>
+<p><code>PUT /recipes/:userId/:recipeId</code></p>
 <h3 id='http-response-2'>HTTP Response</h3>
 <p><code>200 OK</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
@@ -664,8 +689,129 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 </tr>
 </thead><tbody>
 <tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
 <td>recipeId</td>
 <td>The ID of the recipe</td>
+</tr>
+</tbody></table>
+<h2 id='save-a-recipe'>Save a recipe</h2>
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span> <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Response body (application/json)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Recipe saved"</span>
+<span class="p">}</span>
+</code></pre>
+<p>This endpoint saves a recipe.</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>POST /recipes/save/:userId/:recipeId</code></p>
+<h3 id='http-response-3'>HTTP Response</h3>
+<p><code>201 Created</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
+<td>recipeId</td>
+<td>The ID of the recipe</td>
+</tr>
+</tbody></table>
+<h2 id='unsave-a-user-recipe'>Unsave a user recipe</h2>
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span> <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Response body (application/json)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Recipe removed"</span>
+<span class="p">}</span>
+</code></pre>
+<p>This endpoint unsaves a recipe.</p>
+<h3 id='http-request-4'>HTTP Request</h3>
+<p><code>DELETE /recipes/unsave/:userId/:recipeId</code></p>
+<h3 id='http-response-4'>HTTP Response</h3>
+<p><code>200 OK</code></p>
+<h3 id='url-parameters-3'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
+<td>recipeId</td>
+<td>The ID of the recipe</td>
+</tr>
+</tbody></table>
+<h2 id='get-a-user-saved-recipes'>Get a user saved recipes</h2>
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span> <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Response body (application/json)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"savedRecipe"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"FirstRecipe"</span><span class="p">,</span>
+      <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Describe your recipe in details"</span><span class="p">,</span>
+      <span class="s2">"favorites"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.848Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.848Z"</span><span class="p">,</span>
+      <span class="s2">"SavedRecipe"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"recipeId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-25T16:33:59.846Z"</span><span class="p">,</span>
+        <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-25T16:33:59.846Z"</span>
+        <span class="p">}</span>
+      <span class="p">},</span>
+      <span class="p">...</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre>
+<p>This endpoint gets list of recipes saved by user.</p>
+<h3 id='http-request-5'>HTTP Request</h3>
+<p><code>GET /recipes/saved/:userId</code></p>
+<h3 id='http-response-5'>HTTP Response</h3>
+<p><code>200 OK</code></p>
+<h3 id='url-parameters-4'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
 </tr>
 </tbody></table>
 <h2 id='get-all-recipes'>Get all recipes</h2>
@@ -684,20 +830,23 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
       <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
       <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
       <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-      <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
+      <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="s2">"photourl@photo.com"</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.848Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.848Z"</span><span class="p">,</span>
+      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"likes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"dislikes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"Reviews"</span><span class="p">:</span> <span class="p">[]</span>
       <span class="p">},</span>
       <span class="p">...</span>
     <span class="p">]</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint gets all recipes</p>
-<h3 id='http-request-3'>HTTP Request</h3>
+<h3 id='http-request-6'>HTTP Request</h3>
 <p><code>GET /recipes</code></p>
-<h3 id='http-response-3'>HTTP Response</h3>
+<h3 id='http-response-6'>HTTP Response</h3>
 <p><code>200 OK</code></p>
 <h2 id='sort-recipe'>Sort Recipe</h2>
 <blockquote>
@@ -715,20 +864,23 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
       <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
       <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
       <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-      <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
-      <span class="p">},</span>
-      <span class="p">...</span>
-    <span class="p">]</span>
+      <span class="s2">"favorites"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.898Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-09T03:19:04.898Z"</span><span class="p">,</span>
+      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"likes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"dislikes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="p">...</span>
+  <span class="p">]</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint gets all recipes</p>
-<h3 id='http-request-4'>HTTP Request</h3>
+<h3 id='http-request-7'>HTTP Request</h3>
 <p><code>GET /recipes</code></p>
-<h3 id='http-response-4'>HTTP Response</h3>
+<h3 id='http-response-7'>HTTP Response</h3>
 <p><code>200 OK</code></p>
 <h3 id='query-parameters'>Query Parameters</h3>
 <table><thead>
@@ -746,7 +898,7 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <tr>
 <td>order</td>
 <td>undefined</td>
-<td>The order of recipes required <code>asc</code> or `desc</td>
+<td>The order of recipes required <code>asc</code> or <code>desc</code></td>
 </tr>
 </tbody></table>
 <h2 id='get-a-single-recipe'>Get a single recipe</h2>
@@ -764,20 +916,24 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
       <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
       <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
       <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-      <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[],</span>
-      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-      <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-      <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
+      <span class="s2">"favorites"</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+      <span class="s2">"photoUrl"</span><span class="p">:</span> <span class="s2">"photourl@photo.com"</span><span class="p">,</span>
+      <span class="s2">"createdAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
+      <span class="s2">"updatedAt"</span><span class="p">:</span> <span class="s2">"2018-06-23T00:43:06.356Z"</span><span class="p">,</span>
+      <span class="s2">"upVotes"</span><span class="p">:</span> <span class="s2">"1"</span><span class="p">,</span>
+      <span class="s2">"downVotes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"likes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"dislikes"</span><span class="p">:</span> <span class="s2">"0"</span><span class="p">,</span>
+      <span class="s2">"Reviews"</span><span class="p">:</span> <span class="p">[]</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint gets a single recipe</p>
-<h3 id='http-request-5'>HTTP Request</h3>
+<h3 id='http-request-8'>HTTP Request</h3>
 <p><code>GET /recipes/:recipeId</code></p>
-<h3 id='http-response-5'>HTTP Response</h3>
+<h3 id='http-response-8'>HTTP Response</h3>
 <p><code>200 OK</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
+<h3 id='url-parameters-5'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
@@ -799,21 +955,25 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"name of recipe have been successfully removed"</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Recipe deleted successfully"</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint deletes a recipe</p>
-<h3 id='http-request-6'>HTTP Request</h3>
-<p><code>DELETE /recipes/:recipeId</code></p>
-<h3 id='http-response-6'>HTTP Response</h3>
+<h3 id='http-request-9'>HTTP Request</h3>
+<p><code>DELETE /recipes/:userId/:recipeId</code></p>
+<h3 id='http-response-9'>HTTP Response</h3>
 <p><code>200 OK</code></p>
-<h3 id='url-parameters-3'>URL Parameters</h3>
+<h3 id='url-parameters-6'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
 <tr>
 <td>recipeId</td>
 <td>The ID of the recipe</td>
@@ -826,40 +986,29 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
   <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
   <span class="s2">"recipeId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s2">"parentId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
   <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Review description"</span><span class="p">,</span>
-  <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"my/review/image/url"</span>
+  <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageurl@url.com"</span>
 <span class="p">}</span>
 </code></pre>
 <blockquote>
 <p>Response body (application/json)</p>
 </blockquote>
 <pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
-  <span class="s2">"recipe"</span><span class="p">:</span> <span class="p">{</span>
-    <span class="s2">"id"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  <span class="s2">"review"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span>
     <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="s2">"name"</span><span class="p">:</span> <span class="s2">"name of recipe"</span><span class="p">,</span>
-    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"describe recipe"</span><span class="p">,</span>
-    <span class="s2">"reviews"</span><span class="p">:</span> <span class="p">[</span>
-       <span class="p">{</span>
-         <span class="s2">"id"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-         <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-         <span class="s2">"recipeId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-         <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Review description"</span><span class="p">,</span>
-         <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"my/review/image/url"</span>
-         <span class="p">},</span>
-         <span class="p">...</span>
-      <span class="p">],</span>
-    <span class="s2">"upVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"downVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"totalVotes"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageFile"</span>
-    <span class="p">},</span>
-    <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"You added a review to name of recipe"</span>
+    <span class="s2">"recipeId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"parentId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Review description"</span><span class="p">,</span>
+    <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageurl@url.com"</span>
+  <span class="p">},</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"You have just reviewed item"</span>
 <span class="p">}</span>
 </code></pre>
 <p>This endpoint adds review(s) to recipe</p>
 <h3 id='http-request'>HTTP Request</h3>
-<p><code>PUT /recipes/:recipeId/reviews</code></p>
+<p><code>POST /recipes/:recipeId/reviews</code></p>
 <h3 id='http-response'>HTTP Response</h3>
 <p><code>201 Created</code></p>
 <h3 id='url-parameters'>URL Parameters</h3>
@@ -872,6 +1021,85 @@ The query parameter<code>token=ab653dbf704d6f70ec466a8b4395d4d8220dd...</code> i
 <tr>
 <td>recipeId</td>
 <td>The ID of the recipe</td>
+</tr>
+</tbody></table>
+<h2 id='edit-a-review'>Edit a review</h2>
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Edit review description"</span><span class="p">,</span>
+  <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageurl@url.com"</span>
+<span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Response body (application/json)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"updatedReview"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="s2">"id"</span><span class="p">:</span><span class="mi">1</span>
+    <span class="s2">"userId"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s2">"recipeId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"parentId"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="s2">"description"</span><span class="p">:</span> <span class="s2">"Edit review description"</span><span class="p">,</span>
+    <span class="s2">"imageURL"</span><span class="p">:</span> <span class="s2">"imageurl@url.com"</span>
+  <span class="p">},</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Your review have been updated successfully"</span>
+<span class="p">}</span>
+</code></pre>
+<p>This endpoint edits a review</p>
+<h3 id='http-request-2'>HTTP Request</h3>
+<p><code>PUT /recipes/:userId/reviews/:reviewId</code></p>
+<h3 id='http-response-2'>HTTP Response</h3>
+<p><code>200 OK</code></p>
+<h3 id='url-parameters-2'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
+<td>reviewId</td>
+<td>The ID of the review</td>
+</tr>
+</tbody></table>
+<h2 id='delete-a-review'>Delete a review</h2>
+<blockquote>
+<p>Request body</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span> <span class="p">}</span>
+</code></pre>
+<blockquote>
+<p>Response body (application/json)</p>
+</blockquote>
+<pre class="highlight javascript tab-javascript"><code><span class="p">{</span>
+  <span class="s2">"message"</span><span class="p">:</span> <span class="s2">"Review deleted successfully"</span>
+<span class="p">}</span>
+</code></pre>
+<p>This endpoint deletes a review</p>
+<h3 id='http-request-3'>HTTP Request</h3>
+<p><code>DELETE /recipes/:userId/reviews/:reviewId</code></p>
+<h3 id='http-response-3'>HTTP Response</h3>
+<p><code>200 OK</code></p>
+<h3 id='url-parameters-3'>URL Parameters</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>userId</td>
+<td>The ID of the user</td>
+</tr>
+<tr>
+<td>reviewId</td>
+<td>The ID of the review</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>

@@ -15,7 +15,9 @@
     "slate:install": "cd ./slate && bundle install",
     "slate:start": "cd ./slate && bundle exec middleman server",
     "slate:build": "cd ./slate && rimraf build && deploy.sh",
-    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit"
+    "test": "cross-env NODE_ENV=test mocha --compilers js:babel-register \"server/tests/**/**.spec.js\" --timeout 100000 --exit",
+    "client:install": "cd ./client && npm install",
+    "client:webpack": "cd ./client && npm run webpack"
   },
   "nyc": {
     "exclude": [
@@ -36,7 +38,8 @@
     ]
   },
   "cacheDirectories": [
-    "node_modules"
+    "node_modules",
+    "client/node_modules"
   ],
   "repository": {
     "type": "git",
@@ -45,6 +48,10 @@
   "bugs": {
     "url": "https://github.com/hephzaron/more-recipe/issues"
   },
+  "keywords": [
+    "TDD",
+    "Javascript"
+  ],
   "author": "Daramola Tobi",
   "license": "MIT",
   "dependencies": {

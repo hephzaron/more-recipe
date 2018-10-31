@@ -11,6 +11,7 @@ const {
   ROOT_URL,
   API_KEY
 } = process.env;
+console.log('APP_ENV', APP_ENV)
 const isDevelopment = APP_ENV === 'development';
 const isProduction = APP_ENV === 'production';
 
@@ -34,79 +35,81 @@ const setPublicPath = () => {
 };
 
 module.exports = {
-  entry: [
-    __dirname + "./src/index.jsx",
-  ],
+  mode: APP_ENV,
+  entry: {
+    main: path.resolve(__dirname, "./src/index.jsx")
+  },
   output: {
-    path: __dirname + "./dist",
+    path: path.resolve(__dirname, "./dist"),
     filename: 'bundle.js',
     publicPath: setPublicPath()
   },
   module: {
     rules: [{
-      test: /\.(js|jsx)$/,
-      use: 'babel-loader',
-      exclude: /node_modules/
-    },
-    {
-      test: /\.(jpg|jpeg|gif|png)?$/,
-      loader: 'url-loader',
-      exclude: /node_modules/,
-      options: {
-        name: 'images/[name].[ext]'
-      }
-    },
-    {
-      test: /\.(eot|ttf|otf|svg)(\?.*$|$)?$/,
-      loader: 'url-loader?limit=10000&mimetype=application/font-woff',
-      options: {
-        name: 'fonts/[name].[ext]'
-      }
-    },
-    {
-      test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: 'file-loader',
-      exclude: /node_modules/
-    },
-    {
-      test: /\.(css)$/,
-      exclude: /node_modules/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: {
+        test: /\.(js|jsx)$/,
+        use: 'babel-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(jpg|jpeg|gif|png)?$/,
+        loader: 'url-loader',
+        exclude: /node_modules/,
+        options: {
+          name: 'images/[name].[ext]'
+        }
+      },
+      {
+        test: /\.(eot|ttf|otf|svg)(\?.*$|$)?$/,
+        loader: 'url-loader?limit=10000&mimetype=application/font-woff',
+        options: {
+          name: 'fonts/[name].[ext]'
+        }
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader',
+        exclude: /node_modules/
+      },
+      {
+        test: /\.(css)$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: {
+            loader: 'css-loader',
+            options: {
+              minimize: true
+            }
+          }
+        }),
+      },
+      {
+        test: /\.scss$/,
+        use: [{
+          loader: 'style-loader',
+          options: {
+            sourceMap: true
+          }
+        }, {
           loader: 'css-loader',
           options: {
-            minimize: true
+            sourceMap: true
           }
-        }
-      }),
-    },
-    {
-      test: /\.scss$/,
-      use: [{
-        loader: 'style-loader',
-        options: {
-          sourceMap: true
-        }
+        }, {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true
+          }
+        }]
       }, {
-        loader: 'css-loader',
-        options: {
-          sourceMap: true
-        }
-      }, {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: true
-        }
-      }]
-    }, {
-      test: /\.html$/,
-      use: ['html-loader']
-    }]
+        test: /\.html$/,
+        use: ['html-loader']
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: __dirname + "./public/index.html",
+      template: path.resolve(__dirname, "./public/index.html"),
       inject: 'body'
     }),
     new ExtractTextPlugin('style.css'),

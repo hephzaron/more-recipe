@@ -1,47 +1,148 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import CustomList from './CustomList';
+import NotificationComponent from './Notification';
 
-const Header = (props) => (
-  <header id="wawrecipe-header" class="wawrecipe-header-one">
-		<div class="wawrecipe-main-header">
-			<div class="container">
-				<div class="row">
-					<aside class="col-md-2"> <a href="index-2.html" class="logo"><img src="images/logo.png" alt=""></a> </aside>
-					<aside class="col-md-10">
-						<!--// Navigation \\-->
-						<a href="#menu" class="menu-link active"><span></span></a>
-						<nav id="menu" class="menu navbar navbar-default">
-							<ul class="level-1 navbar-nav">
-								<li class="active"><a href="index-2.html"><i class="fa fa-lg fa-home"></i> Home</a></li>
-								<li><a href="#"><i class="fa fa-lg fa-align-justify"></i> View Recipes</a><span class="has-subnav"><i class="fa fa-angle-down"></i></span>
-									<ul class="sub-menu level-2">
-										<li><a href="saved-recipe.html">Saved Recipes<span class="badge pull-right">10</span></a></li>
-										<li><a href="recipe-list.html">My Recipes<span class="badge pull-right">7</span></a></li>
-										<li><a href="recipe-list.html">All Recipes</a></li>
-									</ul>
-								</li>
-								<li><a href="#"><i class="fa fa-lg fa-pencil"></i> new post</a></li>
-								<li><a href=""><i class="fa fa-lg fa-user-circle"></i> Hephzibah</a><span class="has-subnav"><i class="fa fa-angle-down"></i></span>
-									<ul class="sub-menu level-2">
-										<li><a href=""><i class="fa fa-lg fa-edit"></i> Edit Profile</a></li>
-										<li><a href=""><i class="fa fa-lg fa-pencil"></i> Change Password</a></li>
-										<li><a href="user-profile.html"><i class="fa fa-lg fa-user-circle-o"></i> View Profile</a></li>
-										<li><a href="#"><i class="fa fa-lg fa-question-circle"></i> About Us</a></li>
-										<li><a href="#"><i class="fa fa-lg fa-sign-out"></i> Sign Out</a></li>
-									</ul>
-								</li>
-							</ul>
-						</nav>
-						<!--// Navigation \\-->
-						<ul class="wawrecipe-user-list">
-							<li><a href="#" class="fa fa-search" data-toggle="modal" data-target="#searchmodal"></a></li>
-							<li><a href="#" class="notification fa fa-bell-o"><span>{props.notifications}</span></a>
-								{props.children}
-							</li>
-						</ul>
-					</aside>
-			 	</div>
-			</div>
-		</div>
-	</header>
-)
+/**
+ * @class Header
+ * @extends { React.Component }
+ * @description This renders the Header component
+ * @param { object } props
+ * @return { JSX } - JSX Header Component
+ */
+class Header extends Component {
+/**
+ * @description Creates an instance of Header class
+ * @param { object } props
+ */
+	constructor(props) {
+		super(props);
+		this.state = {
+			user: {},
+			baseUrl: '',
+			countOfSavedRecipe: 0,
+			countOfUserCreatedRecipe: 0,
+			noOfNewNotifications: 0,
+			notifications: [{
+				review: true,
+				imageAlt: 'imageAlt',
+				imageUrl: 'imageUrl',
+				message: 'message',
+				time: 'time'
+			}, {
+				reply: true,
+				imageAlt: 'imageAlt',
+				imageUrl: 'imageUrl',
+				message: 'message',
+				time: 'time'
+			}, {
+				like: true,
+				imageAlt: 'imageAlt',
+				imageUrl: 'imageUrl',
+				message: 'message',
+				time: 'time'
+			}]
+		};
+	}
+
+	/**
+   * @memberof CustomList
+   * @method render
+   * @description Renders JSX Component
+   * @returns {JSX} - JSX Component
+   */
+	render() {
+		const listContent = [
+			{
+				liClass: 'active',
+				aValue: 'Home',
+				icon: 'fa-home',
+			}, {
+				aValue: 'View Recipes',
+				subNav: true,
+				icon: 'fa-align-justify',
+				child: 'viewRecipeMenu'
+			}, {
+				aValue: 'New Post',
+				icon: 'fa-pencil'
+			}, {
+				aValue: this.state.user.username,
+				subNav: true,
+				icon: 'fa-user-circle',
+				child: 'userOptionsMenu'
+			}
+		];
+
+		const viewRecipeList = [
+			{
+				aValue: 'Saved Recipes',
+				spanValue: this.state.countOfSavedRecipe
+			}, {
+				aValue: 'My Recipes',
+				spanValue: this.state.countOfUserCreatedRecipe
+			}, {
+				aValue: 'All Recipes'
+			}
+		];
+
+		const userOptionsList = [
+			{
+				aValue: 'Edit Profile',
+				icon: 'fa-edit'
+			}, {
+				aValue: 'Change Password',
+				icon: 'fa-pencil'
+			}, {
+				aValue: 'View Profile',
+				icon: 'fa-user-circle-o'
+			}, {
+				aValue: 'About Us',
+				icon: 'fa-question-circle'
+			}, {
+				aValue: 'Sign Out',
+				icon: 'fa-sign-out'
+			}
+		];
+
+		return (
+			<header id="wawrecipe-header" className="wawrecipe-header-one">
+				<div className="wawrecipe-main-header">
+					<div className="container">
+						<div className="row">
+							<aside className="col-md-2">
+								<a href={this.state.baseUrl} className="logo">
+									<img src="images/logo.png" alt="logo"/>
+								</a>
+							</aside>
+							<aside>
+								{/** Navigation Begins**/}
+								<a href="#menu" className="menu-link active"><span/></a>
+								<nav id="menu" className="menu navbar navbar-default">
+									<CustomList
+										listContent={listContent}
+										ulClass={"level-1 navbar-nav"}
+										identifier={""}>
+										<CustomList
+											key = {"viewRecipeMenu"}
+											listContent={viewRecipeList}
+											ulClass={"sub-menu level-2"}/>
+										<CustomList
+											key = {"userOptionsMenu"}
+											listContent={userOptionsList}
+											ulClass={"sub-menu level-2"}/>
+									</CustomList>
+								</nav>
+								{/** Navigation Ends**/}
+								{/** User Notifications Begins**/}
+								<NotificationComponent
+									noOfNewNotifications={this.state.noOfNewNotifications}
+									notifications={this.state.notifications}/>
+							</aside>
+						</div>
+					</div>
+				</div>
+			</header>
+		);
+	}
+}
+
+export default Header;

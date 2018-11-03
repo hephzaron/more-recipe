@@ -19,7 +19,8 @@
     }
   },
   "rules": {
-    "indent": ["error", 2],
+    "indent": ["error", "tab"],
+    "no-tabs": ["error", { "allowIndentationTabs": true }],
     "prefer-reflect": 0,
     "one-var": 0,
     "one-var-declaration-per-line": 0,

@@ -11,7 +11,6 @@ const {
   ROOT_URL,
   API_KEY
 } = process.env;
-console.log('APP_ENV', APP_ENV)
 const isDevelopment = APP_ENV === 'development';
 const isProduction = APP_ENV === 'production';
 

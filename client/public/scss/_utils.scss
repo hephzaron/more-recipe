@@ -1,0 +1,33 @@
+/**Transition*/
+
+$ease: cubic-bezier(0, 0, 0, 0);
+
+/**Animation*/
+
+@mixin transform-origin($spec...) {
+  @each $prefix in '',
+  -ms-,
+  -webkit- {
+    #{$prefix}transform-origin: $spec
+  }
+}
+
+@mixin transform($spec...) {
+  @each $prefix in '',
+  -o-,
+  -ms-,
+  -moz-,
+  -webkit- {
+    #{$prefix}transform: rotate($spec)
+  }
+}
+
+@mixin transition($spec...) {
+  @each $prefix in '',
+  -o-,
+  -ms-,
+  -moz-,
+  -webkit- {
+    #{$prefix}transition: all 0s $spec
+  }
+}

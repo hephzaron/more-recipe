@@ -17,11 +17,13 @@ class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: {},
+			user: {
+				username: 'Username'
+			},
 			baseUrl: '',
 			countOfSavedRecipe: 0,
 			countOfUserCreatedRecipe: 0,
-			noOfNewNotifications: 0,
+			noOfNewNotifications: 6,
 			notifications: [{
 				review: true,
 				imageAlt: 'imageAlt',
@@ -45,11 +47,11 @@ class Header extends Component {
 	}
 
 	/**
-   * @memberof CustomList
-   * @method render
-   * @description Renders JSX Component
-   * @returns {JSX} - JSX Component
-   */
+	 * @memberof CustomList
+	 * @method render
+	 * @description Renders JSX Component
+	 * @returns {JSX} - JSX Component
+	 */
 	render() {
 		const listContent = [
 			{
@@ -110,7 +112,7 @@ class Header extends Component {
 						<div className="row">
 							<aside className="col-md-2">
 								<a href={this.state.baseUrl} className="logo">
-									<img src="images/logo.png" alt="logo"/>
+									<img src={require('../../../public/images/logo.png')} alt="logo"/>
 								</a>
 							</aside>
 							<aside>

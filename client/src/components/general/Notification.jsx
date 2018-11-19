@@ -14,14 +14,20 @@ const propTypes = {
  * @return { JSX } - JSX Notification Component
  */
 const Notification = (props) => {
-	const { noOfNewNotifications, notifications } = props;
+	let { noOfNewNotifications, notifications } = props;
+
+	if (!noOfNewNotifications >= 1) {
+		noOfNewNotifications = '';
+	}
 	const listContent = [
 		{
-			aClass: 'fa-search'
+			aClass: 'fa fa-search',
+			aValue: ''
 		}, {
-			aClass: 'notification fa-bell-o',
+			aClass: 'notification fa fa-bell-o',
 			child: 'notifications',
-			spanValue: noOfNewNotifications
+			spanValue: noOfNewNotifications,
+			aValue: ''
 		}
 	];
 

@@ -14,19 +14,81 @@ body {
   h4,
   h5,
   h6 {
-    color: #222222;
+    color: $primary-bg-color;
     font-family: 'Open Sans', sans-serif;
     font-style: normal;
     line-height: 1.5;
     margin: 0 0 8px;
     a {
-      color: #222222;
+      color: $primary-bg-color;
+      text-decoration: none;
+      &:hover,
+      &:focus,
+      &:active {
+        outline: none;
+      }
     }
   }
+}
+
+p {
+  line-height: 24px;
+  margin-bottom: 10px;
+  a {
+    color: $primary-bg-color;
+  }
+}
+
+ul {
+  margin-bottom: 0;
+}
+
+figure {
+  margin-bottom: 6px;
+  position: relative;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+strong {
+  color: $primary-bg-color;
 }
 
 .js .menu>ul ul.active {
   margin: 0;
   max-height: 55em;
   padding: 0;
+}
+
+.wawrecipe-main-wrapper,
+.wawrecipe-main-content,
+.wawrecipe-main-header,
+#wawrecipe-header {
+  float: left;
+  width: 100%;
+}
+
+li {
+  line-height: 28px;
+  list-style: inside none disc;
+}
+
+ul ul {
+  margin-left: 20px;
+}
+
+ol {
+  float: none;
+  list-style: outside none decimal;
+  padding-left: 15px;
+  ol {
+    margin-left: 20px;
+  }
+  li {
+    list-style: outside none decimal;
+    width: 100%;
+  }
 }

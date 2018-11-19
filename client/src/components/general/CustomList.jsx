@@ -6,9 +6,9 @@ const propTypes = {
 	listContent: PropTypes.array.isRequired,
 	children: PropTypes.node,
 	ulClass: PropTypes.string.isRequired,
-	identifier: PropTypes.string.isRequired,
+	identifier: PropTypes.string,
 	notification: PropTypes.bool,
-	key: PropTypes.string
+	spec: PropTypes.string
 };
 
 /**
@@ -26,7 +26,11 @@ class CustomList extends Component {
    * @returns {JSX} children
    */
 	getComponent(key) {
-		return this.props.children.filter(comp => comp.key === key);
+		if (this.props.children.length >= 1) {
+			console.log('children 1', this.props.children[0]);
+			console.log('children 2', this.props.children[1]);
+			return this.props.children.filter(comp => comp.key === key);
+		}
 	}
 
 	/**
@@ -41,7 +45,7 @@ class CustomList extends Component {
 			ulClass,
 			identifier,
 			notification,
-			key
+			spec
 		} = this.props;
 
 		const listItems = listContent.map((item, index) => {
@@ -68,7 +72,6 @@ class CustomList extends Component {
 					className = {classnames(`${liClass}`)}
 					onClick = {onClick}>
 					<a href={href} className = {classnames(`${aClass}`)}>
-						{spanValue && ` ${aValue}`}
 						{
 							spanValue &&
 								<span className={classnames('badge pull-right')}>
@@ -78,7 +81,7 @@ class CustomList extends Component {
 							icon &&
 								<i className = {classnames('fa fa-lg', icon)}/>}
 						{!spanValue && ` ${aValue}`}
-						{child === key && this.getComponent(`${child}`)}
+						{child === spec && this.getComponent(`${child}`)}
 						{
 							notification &&
 							<div className={'row'}>
@@ -111,7 +114,7 @@ class CustomList extends Component {
 		return (
 			<ul id = {identifier}
 				className = {classnames(`${ulClass}`)}
-				key = {key}>
+				key = {spec}>
 				{listItems}
 			</ul>
 		);

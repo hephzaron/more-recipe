@@ -17,7 +17,7 @@
 }
 
 a.menu-link {
-  color: #222222;
+  color: $primary-bg-color;
   display: none;
 }
 
@@ -59,6 +59,7 @@ span.has-subnav {
 .wawrecipe-user-list,
 .navbar-nav {
   li:hover {
+    cursor: pointer;
     &>.sub-menu {
       opacity: 1;
       visibility: visible;
@@ -133,12 +134,13 @@ span.has-subnav {
       position: relative;
       span {
         position: absolute;
-        right: -6px;
-        top: -3px;
+        right: -4px;
+        top: -5px;
         color: #ffffff;
-        width: 15px;
-        height: 15px;
+        width: 18px;
+        height: 18px;
         border-radius: 100%;
+        border: 1px solid white;
         text-align: center;
         font-size: 13px;
         padding: 2px 0px 0px 1px;
@@ -171,51 +173,44 @@ span.has-subnav {
   }
   &-nav {
     &>li {
-      float: left;
+      margin: 0px 23px;
+      position: relative;
       list-style: none;
-      position: relative;
-      width: 100%;
-      padding: 0px 15px;
-    }
-  }
-  &>li {
-    margin: 0px 23px;
-    position: relative;
-    list-style: none;
-    &>a {
-      font-weight: 600;
-      display: inline-block;
-      text-transform: uppercase;
-      padding: 23px 20px 12px;
-      position: relative;
-      letter-spacing: 0.2px;
-      color: #ffffff;
-      &:before {
-        content: '';
-        position: absolute;
-        right: -23px;
-        top: 29px;
-        width: 1px;
-        height: 9px;
-        background: rgba(255, 255, 255, 0.5);
+      &>a {
+        font-weight: 600;
+        display: inline-block;
+        text-transform: uppercase;
+        padding: 23px 20px 12px;
+        position: relative;
+        letter-spacing: 0.2px;
+        color: #ffffff;
+        &:before {
+          content: '';
+          position: absolute;
+          right: -23px;
+          top: 29px;
+          width: 1px;
+          height: 9px;
+          background: rgba(255, 255, 255, 0.5);
+        }
+        &>i {
+          margin-right: 4px;
+          font-size: 25px;
+        }
       }
-      &>i {
-        margin-right: 4px;
-        font-size: 25px;
+      &:first-child {
+        margin-left: 0px;
+        padding-left: 0px;
       }
-    }
-    &:first-child {
-      margin-left: 0px;
-      padding-left: 0px;
-    }
-    &:last-child {
-      margin-right: 0px;
-      padding-right: 0px;
-      &>a:before {
-        content: none;
-      }
-      a {
+      &:last-child {
+        margin-right: 0px;
         padding-right: 0px;
+        &>a:before {
+          content: none;
+        }
+        a {
+          padding-right: 0px;
+        }
       }
     }
   }

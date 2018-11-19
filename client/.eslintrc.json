@@ -1,6 +1,6 @@
 {
   "root": true,
-  "extends": ["airbnb-base", "react"],
+  "extends": ["airbnb-base", "react", "eslint-config-react"],
   "env": {
     "node": true,
     "es6": true,
@@ -19,8 +19,7 @@
     }
   },
   "rules": {
-    "indent": ["error", "tab"],
-    "no-tabs": ["error", { "allowIndentationTabs": true }],
+    "indent": ["error", 2],
     "prefer-reflect": 0,
     "one-var": 0,
     "one-var-declaration-per-line": 0,

@@ -43,6 +43,7 @@ const DefinePlugin = new webpack.DefinePlugin({
 module.exports = {
   entry: {
     bloader: path.resolve(__dirname, '../src/assets/js/loader/js/loader.js'),
+    chelper: path.resolve(__dirname, '../src/assets/helper.js'),
     dmain: path.resolve(__dirname, '../src/index.jsx')
   },
   resolve: {

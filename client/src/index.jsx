@@ -4,6 +4,7 @@ import '../public/css/bootstrap.css';
 import '../public/css/color.css';
 import '../public/css/image.css';
 import '../public/css/font-awesome.css';
+import '../public/css/responsive.css';
 //import '../../template/style.css';
 import '../public/scss/main.scss';
 import Header from './components/general/Header';

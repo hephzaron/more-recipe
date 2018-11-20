@@ -115,7 +115,7 @@ class Header extends Component {
 									<img src={require('../../../public/images/logo.png')} alt="logo"/>
 								</a>
 							</aside>
-							<aside>
+							<aside className="col-md-10">
 								{/** Navigation Begins**/}
 								<a href="#menu" className="menu-link active"><span/></a>
 								<nav id="menu" className="menu navbar navbar-default">

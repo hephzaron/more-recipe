@@ -35,6 +35,12 @@ a.menu-link {
   width: 100%;
 }
 
+.js .menu>ul ul.active {
+  margin: 0;
+  max-height: 55em;
+  padding: 0;
+}
+
 span.has-subnav {
   display: none;
   font-size: 1em;

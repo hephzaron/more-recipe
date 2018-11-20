@@ -4,5 +4,3 @@ node_modules
 coverage
 template
 client/node_modules
-client/public/css
-client/public/js

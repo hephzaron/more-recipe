@@ -21,9 +21,9 @@ class Header extends Component {
 				username: 'Username'
 			},
 			baseUrl: '',
-			countOfSavedRecipe: 0,
-			countOfUserCreatedRecipe: 0,
-			noOfNewNotifications: 6,
+			countOfSavedRecipe: 8,
+			countOfUserCreatedRecipe: 3,
+			noOfNewNotifications: 2,
 			notifications: [{
 				review: true,
 				imageAlt: 'imageAlt',

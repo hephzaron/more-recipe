@@ -36,9 +36,9 @@ const Notification = (props) => {
 			listContent = {listContent}
 			ulClass = "wawrecipe-user-list">
 			<CustomList
-				key="notifications"
+				key={"notifications"}
 				identifier="notifications"
-				ulClass="sub-menu level-2 hidden"
+				ulClass={"sub-menu level-2 hidden"}
 				listContent={notifications}/>
 		</CustomList>
 	);

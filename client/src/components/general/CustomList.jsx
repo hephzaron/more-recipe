@@ -7,8 +7,7 @@ const propTypes = {
 	children: PropTypes.node,
 	ulClass: PropTypes.string.isRequired,
 	identifier: PropTypes.string,
-	notification: PropTypes.bool,
-	spec: PropTypes.string
+	notification: PropTypes.bool
 };
 
 /**
@@ -19,6 +18,15 @@ const propTypes = {
  */
 class CustomList extends Component {
 	/**
+ * @description Creates an instance of Header class
+ * @param { object } props
+ */
+	constructor(props) {
+		super(props);
+		this.getComponent = this.getComponent.bind(this);
+	}
+
+	/**
    * @memberof CustomList
    * @method getComponent
    * @description Selects children elements to render
@@ -27,8 +35,6 @@ class CustomList extends Component {
    */
 	getComponent(key) {
 		if (this.props.children.length >= 1) {
-			console.log('children 1', this.props.children[0]);
-			console.log('children 2', this.props.children[1]);
 			return this.props.children.filter(comp => comp.key === key);
 		}
 	}
@@ -44,8 +50,7 @@ class CustomList extends Component {
 			listContent,
 			ulClass,
 			identifier,
-			notification,
-			spec
+			notification
 		} = this.props;
 
 		const listItems = listContent.map((item, index) => {
@@ -80,8 +85,7 @@ class CustomList extends Component {
 						{
 							icon &&
 								<i className = {classnames('fa fa-lg', icon)}/>}
-						{!spanValue && ` ${aValue}`}
-						{child === spec && this.getComponent(`${child}`)}
+						{(!spanValue || (aValue && spanValue)) && ` ${aValue}`}
 						{
 							notification &&
 							<div className={'row'}>
@@ -108,13 +112,13 @@ class CustomList extends Component {
 							<i className={classnames('fa fa-angle-down')}/>
 						</span>
 					}
+					{child && this.getComponent(`${child}`)}
 				</li>
 			);
 		});
 		return (
 			<ul id = {identifier}
-				className = {classnames(`${ulClass}`)}
-				key = {spec}>
+				className = {classnames(`${ulClass}`)}>
 				{listItems}
 			</ul>
 		);

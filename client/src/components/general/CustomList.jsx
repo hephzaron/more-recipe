@@ -23,19 +23,21 @@ class CustomList extends Component {
  */
 	constructor(props) {
 		super(props);
-		this.getComponent = this.getComponent.bind(this);
+		this.getChildComponent = this.getChildComponent.bind(this);
 	}
 
 	/**
    * @memberof CustomList
-   * @method getComponent
+   * @method getChildComponent
    * @description Selects children elements to render
    * @param {string} key
    * @returns {JSX} children
    */
-	getComponent(key) {
+	getChildComponent(key) {
 		if (this.props.children.length >= 1) {
 			return this.props.children.filter(comp => comp.key === key);
+		} else {
+			return this.props.children;
 		}
 	}
 
@@ -70,11 +72,13 @@ class CustomList extends Component {
 				time,
 				review,
 				reply,
-				like
+				like,
+				loadMore,
+				newInfo
 			} = item;
 			return (
 				<li key = {index}
-					className = {classnames(`${liClass}`)}
+					className = {classnames(`${liClass}`, (newInfo ? 'new' : ''))}
 					onClick = {onClick}>
 					<a href={href} className = {classnames(`${aClass}`)}>
 						{
@@ -85,12 +89,12 @@ class CustomList extends Component {
 						{
 							icon &&
 								<i className = {classnames('fa fa-lg', icon)}/>}
-						{(!spanValue || (aValue && spanValue)) && ` ${aValue}`}
+						{aValue && ` ${aValue}`}
 						{
-							notification &&
+							(notification && !loadMore) &&
 							<div className={'row'}>
 								<div className ={classnames('col-md-3 col-sm-3 col-xs-3')}>
-									<img src={`${imageUrl}`}
+									<img src={imageUrl}
 										className={classnames('img-circle')}
 										alt={`${imageAlt}`}/>
 									<span className={
@@ -112,7 +116,14 @@ class CustomList extends Component {
 							<i className={classnames('fa fa-angle-down')}/>
 						</span>
 					}
-					{child && this.getComponent(`${child}`)}
+					{child && this.getChildComponent(`${child}`)}
+					{
+						loadMore &&
+						<div>
+							<i className ={"fa fa-angle-double-up"} />
+							<i className ={"fa fa-angle-double-down"} />
+						</div>
+					}
 				</li>
 			);
 		});

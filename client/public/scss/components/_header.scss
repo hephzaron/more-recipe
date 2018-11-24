@@ -128,7 +128,7 @@ span.has-subnav {
 
 .wawrecipe-user-list {
   float: right;
-  margin: 0px 0px 0px 0px;
+  margin: 0;
   li {
     float: left;
     list-style: none;
@@ -179,7 +179,7 @@ span.has-subnav {
   }
   &-nav {
     &>li {
-      margin: 0px 23px;
+      margin: 0px 18px;
       position: relative;
       list-style: none;
       &>a {
@@ -219,5 +219,61 @@ span.has-subnav {
         }
       }
     }
+  }
+}
+
+#notifications {
+  position: absolute;
+  left: -350px !important;
+  min-width: 350px;
+  top: 50px;
+  z-index: 300000;
+  li {
+    margin: 0px;
+    padding: 0px;
+    border-bottom: 1px solid white;
+    p {
+      margin-bottom: 0px;
+    }
+  }
+  .col-md-9 {
+    padding-left: 0px;
+  }
+  .col-md-3 span.fa {
+    padding: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    top: 32px;
+    right: 8px;
+    &-edit {
+      background-color: rgba(19, 184, 19, 0.87);
+    }
+    &-reply {
+      background-color: rgba(28, 45, 202, 0.87);
+    }
+    &-thumbs-up {
+      background-color: rgba(165, 119, 19, 0.87);
+    }
+  }
+  >li {
+    &:last-child {
+      border-bottom: 0px;
+      text-align: center;
+      a,
+      i {
+        padding: 0px;
+        text-align: center;
+      }
+    }
+    .list-heading {
+      font-weight: bold;
+      color: white;
+      text-align: center;
+      padding-top: 4px;
+    }
+  }
+  .new {
+    background-color: rgba(46, 38, 38, 0.644) !important
   }
 }

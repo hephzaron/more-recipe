@@ -27,21 +27,26 @@ class Header extends Component {
 			notifications: [{
 				review: true,
 				imageAlt: 'imageAlt',
-				imageUrl: 'imageUrl',
-				message: 'message',
-				time: 'time'
+				newInfo: true,
+				imageUrl: require('../../../public/extra-images/review-img1.jpg'),
+				message: 'Adeyemi Adekunle reviewed American salad',
+				time: 'Yesterday at 10:45pm'
 			}, {
 				reply: true,
 				imageAlt: 'imageAlt',
-				imageUrl: 'imageUrl',
-				message: 'message',
-				time: 'time'
+				newInfo: true,
+				imageUrl: require('../../../public/extra-images/review-img1.jpg'),
+				message: 'Sunday Utobo replied to your review on Seyi\'s post',
+				time: 'Yesterday at 10:45pm'
 			}, {
 				like: true,
 				imageAlt: 'imageAlt',
-				imageUrl: 'imageUrl',
-				message: 'message',
-				time: 'time'
+				imageUrl: require('../../../public/extra-images/review-img1.jpg'),
+				message: 'Jide likes your review of Jollof rice',
+				time: 'Yesterday at 10:45pm'
+			}, {
+				loadMore: true,
+				aValue: 'Load more..'
 			}]
 		};
 	}

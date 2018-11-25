@@ -17,8 +17,7 @@ jQuery(document).ready(($) => {
 
     $menuTrigger.on("click", (e) => {
       e.preventDefault();
-      let $this = $(this);
-      $this.toggleClass('active').next('ul').toggleClass('active');
+      $menuTrigger.toggleClass('active').next('ul').toggleClass('active');
     });
 
     $notification.on("click", (e) => {

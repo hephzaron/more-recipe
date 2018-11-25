@@ -131,11 +131,11 @@ class Header extends Component {
 										<CustomList
 											key = {"viewRecipeMenu"}
 											listContent={viewRecipeList}
-											ulClass={"sub-menu level-2"}/>
+											ulClass={"sub-menu level-2 active"}/>
 										<CustomList
 											key = {"userOptionsMenu"}
 											listContent={userOptionsList}
-											ulClass={"sub-menu level-2"}/>
+											ulClass={"sub-menu level-2 active"}/>
 									</CustomList>
 								</nav>
 								{/** Navigation Ends**/}

@@ -112,7 +112,7 @@ class CustomList extends Component {
 					</a>
 					{
 						subNav &&
-						<span className={classnames('has-subnav')}>
+						<span className={classnames('has-subnav active')}>
 							<i className={classnames('fa fa-angle-down')}/>
 						</span>
 					}

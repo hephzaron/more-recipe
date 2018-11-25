@@ -176,7 +176,7 @@ span.has-subnav {
   border: none;
   float: left;
   margin-bottom: 0px;
-  min-height: auto;
+  min-height: auto !important;
   .navbar-collapse {
     padding-left: 8px;
   }

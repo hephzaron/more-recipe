@@ -2,7 +2,8 @@
 
 @media (min-width: 768px) and (max-width: 990px) {
   .menu.active {
-    width: 260px !important
+    width: 260px !important;
+    height: 450px
   }
   .menu,
   .menu>ul ul {
@@ -28,7 +29,7 @@
     border-bottom: none;
     left: 0px;
     top: 122px;
-    margin: 0px;
+    margin: 0px
   }
   a.menu-link {
     text-align: left;
@@ -42,7 +43,7 @@
   }
   .navbar-nav {
     margin: 0px;
-    padding-top: 10px;
+    padding-top: 10px !important;
     float: left;
     text-align: left;
   }
@@ -50,11 +51,11 @@
     display: none;
   }
   .wawrecipe-user-list .sub-menu {
-    border-bottom: none;
-    padding: 0px;
-    margin: 0px;
+    border-bottom: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
     float: left;
-    width: 100%;
+    width: 100% !important;
     position: relative;
     opacity: 1;
     visibility: visible;
@@ -62,11 +63,11 @@
     top: 0;
   }
   .navbar-nav .sub-menu {
-    border-bottom: none;
-    padding: 0px;
-    margin: 0px;
+    border-bottom: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
     float: left;
-    width: 100%;
+    width: 100% !important;
     position: relative;
     opacity: 1;
     visibility: visible;
@@ -104,17 +105,17 @@
     transition: all 0s cubic-bezier(0, 0, 0, 0);
   }
   .navbar-nav .sub-menu>li {
-    padding: 0px;
+    padding: 0px !important;
   }
   .wawrecipe-user-list .sub-menu>li {
-    padding: 0px;
+    padding: 0px !important;
   }
   .navbar-nav .sub-menu li a {
-    padding: 6px 20px;
+    padding: 6px 20px !important;
     color: #222;
   }
   .wawrecipe-user-list .sub-menu li a {
-    padding: 6px 20px;
+    padding: 6px 20px !important;
     color: #222;
   }
   .navbar-nav .sub-menu .sub-menu {
@@ -125,7 +126,7 @@
   }
   .navbar-nav>li>a {
     float: left;
-    width: 100%;
+    width: 100% !important;
     padding: 15px 20px 15px 20px;
     color: #555555 !important;
     line-height: 14px;
@@ -332,6 +333,7 @@
 @media (max-width: 767px) {
   .menu.active {
     width: 260px !important;
+    height: 450px;
   }
   .menu,
   .menu>ul ul {
@@ -380,11 +382,11 @@
   }
   .navbar-nav .sub-menu,
   .wawrecipe-user-list .sub-menu {
-    border-bottom: none;
-    padding: 0px;
-    margin: 0px;
+    border-bottom: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
     float: left;
-    width: 100%;
+    width: 100% !important;
     position: relative;
     opacity: 1;
     visibility: visible;
@@ -409,11 +411,11 @@
   }
   .navbar-nav .sub-menu>li,
   .wawrecipe-user-list .sub-menu>li {
-    padding: 0px;
+    padding: 0px !important;
   }
   .navbar-nav .sub-menu li a,
   .wawrecipe-user-list .sub-menu li a {
-    padding: 6px 20px;
+    padding: 6px 20px !important;
     color: #222;
   }
   .navbar-nav .sub-menu .sub-menu {

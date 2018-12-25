@@ -4,10 +4,10 @@ import '../public/css/bootstrap.css';
 import '../public/css/color.css';
 import '../public/css/image.css';
 import '../public/css/font-awesome.css';
-import '../public/css/responsive.css';
-//import '../../template/style.css';
-import '../public/scss/main.scss';
-import Header from './components/general/Header';
+import '../../template/css/responsive.css';
+import '../../template/style.css';
+//import '../public/scss/main.scss';
+//import Header from './components/general/Header';
 
 /**
  * @description The entry point - this will render the application with it's
@@ -16,6 +16,6 @@ import Header from './components/general/Header';
  */
 
 render(
-	<Header/>,
+	//<Header/>,
 	document.getElementById('app')
 );

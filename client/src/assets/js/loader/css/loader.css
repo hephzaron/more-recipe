@@ -5,9 +5,9 @@ body {
 }
 
 .loader {
-  border: 16px solid #f3f3f3;
+  border: 16px solid #0e0d0d;
   /* Light grey*/
-  border-top: 16px solid #076d20;
+  border-top: 16px solid #a55b06;
   /* Green */
   border-radius: 50% !important;
   width: 120px;

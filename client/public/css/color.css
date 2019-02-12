@@ -65,8 +65,9 @@
  .wawrecipe-recipies-tabs .nav-tabs>li.active>a:hover,
  .wawrecipe-recipies-tabs .nav-tabs>li.active>a:focus,
  .wawrecipe-recipies-list li:before,
- .wawrecipe-price-plan ul li:hover .wawrecipe-learn-btn {
-   color: #836233;
+ .wawrecipe-price-plan ul li:hover .wawrecipe-learn-btn,
+ .form>.btn:hover {
+   color: #dd8724;
  }
  
  .wawrecipe-banner-btn:hover:before,
@@ -153,7 +154,8 @@
  .wawrecipe-price-plan ul li:hover .wawrecipe-learn-btn .btn-shape:after,
  .wawrecipe-pagination>ul>li:hover>a,
  .wawrecipe-pagination>ul>li:hover>span,
- .wawrecipe-pagination>ul>li>.current {
+ .wawrecipe-pagination>ul>li>.current,
+ ul.nav li:before {
    background-color: #b99563;
  }
  
@@ -166,7 +168,8 @@
  .wawrecipe-recipies-tabs .nav-tabs>li.active>a:hover,
  .wawrecipe-recipies-tabs .nav-tabs>li.active>a:focus,
  .wawrecipe-contact-info ul li:hover .wawrecipe-contact-info-wrap i,
- .widget_tags a:hover {
+ .widget_tags a:hover,
+ .form>.btn:hover {
    border-color: #b99563;
  }
  

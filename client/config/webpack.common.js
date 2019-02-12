@@ -5,6 +5,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotEnv = require('dotenv');
+const autoprefixer = require('autoprefixer');
 
 dotEnv.config();
 
@@ -42,8 +43,9 @@ const DefinePlugin = new webpack.DefinePlugin({
 
 module.exports = {
   entry: {
+    aslider: path.resolve(__dirname, '../public/js/slick.slider.min.js'),
     bloader: path.resolve(__dirname, '../src/assets/js/loader/js/loader.js'),
-    chelper: path.resolve(__dirname, '../src/assets/helper.js'),
+    chelper: path.resolve(__dirname, '../public/js/helper.js'),
     dmain: path.resolve(__dirname, '../src/index.jsx')
   },
   resolve: {
@@ -100,6 +102,23 @@ module.exports = {
           loader: 'sass-loader',
           options: {
             sourceMap: true
+          }
+        }, {
+          loader: 'postcss-loader',
+          options: {
+            indent: 'postcss',
+            plugins: () => [
+              require('postcss-flexbugs-fixes'),
+              autoprefixer({
+                browsers: [
+                  '>1%',
+                  'last 4 versions',
+                  'Firefox ESR',
+                  'not ie < 9'
+                ],
+                flexbox: 'no-2009'
+              })
+            ]
           }
         }]
       }, {

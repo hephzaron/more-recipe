@@ -7,7 +7,7 @@ const propTypes = {
 	children: PropTypes.node,
 	ulClass: PropTypes.string.isRequired,
 	identifier: PropTypes.string,
-	notification: PropTypes.bool
+  notification: PropTypes.bool
 };
 
 /**
@@ -51,7 +51,7 @@ class CustomList extends Component {
 		const {
 			listContent,
 			ulClass,
-			identifier
+      identifier
 		} = this.props;
 
 		const listItems = listContent.map((item, index) => {
@@ -63,28 +63,26 @@ class CustomList extends Component {
 				spanValue,
 				icon,
 				onClick,
-				child,
-        dataToggle,
-        dataTarget
-			} = item;
+				child
+      } = item;
+
+      const toggle = (liClass === 'dropdown' ? 'dropdown-toggle' : '');
 			return (
 				<li key = {index}
 					className = {classnames(`${liClass}`)}
 					onClick = {onClick}>
           <a href={href}
-            dataToggle = {dataToggle}
-            dataTarget = {dataTarget}
-            className = {classnames(`${aClass}`)}>
+            className = {classnames(`${aClass}`, toggle)}>
 						{
 							spanValue &&
-								<span className={classnames('badge pull-right')}>
+								<span className={classnames('badge')}>
 									{spanValue}
 								</span>}
 						{
 							icon &&
 								<i className = {classnames('fa fa-lg', icon)}/>}
 						{aValue && ` ${aValue}`}
-          {child && this.getChildComponent(`${child}`)}
+         {(this.props.children && child) && this.getChildComponent(`${child}`)}
           </a>
 				</li>
 			);

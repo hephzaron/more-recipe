@@ -119,6 +119,28 @@ class Header extends Component {
 			}
     ];
 
+    const notificationContent = [
+      {
+        href: '#',
+        imageSrc: require('../../../public/extra-images/flavours-list-img1.jpg'),
+        imageAlt: '',
+        info: 'Lorem ipsum dolor sit amet, con sectetur yhbjh ghfhvh hjvj elit.',
+        duration: '2 days ago '
+      }, {
+        href: '#',
+        imageSrc: require('../../../public/extra-images/flavours-list-img1.jpg'),
+        imageAlt: '',
+        info: 'Lorem ipsum dolor sit amet, con sectetur yhbjh ghfhvh hjvj elit.',
+        duration: '2 days ago '
+      }, {
+        href: '#',
+        imageSrc: require('../../../public/extra-images/flavours-list-img1.jpg'),
+        imageAlt: '',
+        info: 'Lorem ipsum dolor sit amet, con sectetur yhbjh ghfhvh hjvj elit.',
+        duration: '2 days ago '
+      }
+    ];
+
 		return (
       <nav role="navigation" className="navbar navbar-default navbar-fixed-top">
         <div className="container">
@@ -150,7 +172,8 @@ class Header extends Component {
               listContent={navbarRightList}>
               <CustomList
                 key = "notifications"
-                ulClass="dropdown-menu"/>
+                ulClass="dropdown-menu"
+                notificationContent={notificationContent}/>
             </CustomList>
           </div>
         </div>

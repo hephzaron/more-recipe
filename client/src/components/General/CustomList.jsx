@@ -7,7 +7,8 @@ const propTypes = {
 	children: PropTypes.node,
 	ulClass: PropTypes.string.isRequired,
 	identifier: PropTypes.string,
-  notification: PropTypes.bool
+  notification: PropTypes.bool,
+  notificationContent: PropTypes.array
 };
 
 /**
@@ -51,7 +52,8 @@ class CustomList extends Component {
 		const {
 			listContent,
 			ulClass,
-      identifier
+      identifier,
+      notificationContent
 		} = this.props;
 
 		const listItems = listContent ? listContent.map((item, index) => {
@@ -89,11 +91,38 @@ class CustomList extends Component {
           </a>
 				</li>
 			);
-		}) : null;
+    }) : null;
+
+    const notificationItems = notificationContent ?
+    notificationContent.map((item, index) => {
+      const {
+        href,
+        imageSrc,
+        imageAlt,
+        info,
+        duration
+      } = item;
+
+      return (
+        <li>
+          <figure>
+            <a href={href}>
+              <img src={imageSrc} alt={imageAlt}/>
+            </a>
+          </figure>
+          <div className="notification-text">
+            <a>{info}</a>
+            <br/><a><i className="fa fa-clock-o"/>{duration}</a>
+          </div>
+        </li>
+      );
+    }) : null;
+
 		return (
 			<ul id = {identifier}
 				className = {classnames(`${ulClass}`)}>
-				{listItems}
+        {listItems}
+        {notificationItems}
 			</ul>
 		);
 	}

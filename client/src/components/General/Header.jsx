@@ -19,7 +19,8 @@ class Header extends Component {
 			user: {
 				username: 'Username'
 			},
-			baseUrl: '',
+      baseUrl: '',
+      numOfNewNotifications: 44
 		};
 	}
 
@@ -30,7 +31,7 @@ class Header extends Component {
 	 * @returns {JSX} - JSX Component
 	 */
 	render() {
-		const navbarList = [
+		const navbarLeftList = [
 			{
         liClass: 'active',
         href: '#',
@@ -58,6 +59,21 @@ class Header extends Component {
 				aValue: 'Register',
 				icon: 'fa-user-plus'
 			},
+    ];
+
+    
+		const navbarRightList = [
+			{
+        href: '#',
+				icon: 'fa-search',
+			}, {
+        liClass: 'dropdown',
+        icon: 'fa-bell-o',
+        itemId: 'notifications',
+        href: '#',
+        child: 'notifications',
+        spanValue: this.state.numOfNewNotifications
+			}
     ];
 
     const recipeList = [
@@ -119,7 +135,7 @@ class Header extends Component {
           <div id="navbarCollapse" className="collapse navbar-collapse">
             <CustomList
               ulClass="nav navbar-nav"
-              listContent={navbarList}>
+              listContent={navbarLeftList}>
               <CustomList
                 key="viewRecipeMenu"
                 ulClass="dropdown-menu"
@@ -128,6 +144,13 @@ class Header extends Component {
                 key="userOptionsMenu"
                 ulClass="dropdown-menu"
                 listContent={userMenuList}/>
+            </CustomList>
+            <CustomList
+              ulClass="nav navbar-nav navbar-right"
+              listContent={navbarRightList}>
+              <CustomList
+                key = "notifications"
+                ulClass="dropdown-menu"/>
             </CustomList>
           </div>
         </div>

@@ -54,8 +54,9 @@ class CustomList extends Component {
       identifier
 		} = this.props;
 
-		const listItems = listContent.map((item, index) => {
+		const listItems = listContent ? listContent.map((item, index) => {
 			const {
+        itemId,
 				liClass,
 				aClass,
 				aValue,
@@ -70,24 +71,25 @@ class CustomList extends Component {
 			return (
 				<li key = {index}
 					className = {classnames(`${liClass}`)}
-					onClick = {onClick}>
+          onClick = {onClick}
+          id = {itemId}>
           <a href={href}
             className = {classnames(`${aClass}`, toggle)}
             data-toggle = {liClass === 'dropdown' ? liClass : ''}>
 						{
-							spanValue &&
-								<span className={classnames('badge')}>
-									{spanValue}
-								</span>}
-						{
 							icon &&
-								<i className = {classnames('fa fa-lg', icon)}/>}
+                <i className = {classnames('fa fa-lg', icon)}/>}
+            {
+              spanValue &&
+              <span className={classnames('badge')}>
+                {spanValue}
+              </span>}
 						{aValue && ` ${aValue}`}
          {(this.props.children && child) && this.getChildComponent(`${child}`)}
           </a>
 				</li>
 			);
-		});
+		}) : null;
 		return (
 			<ul id = {identifier}
 				className = {classnames(`${ulClass}`)}>

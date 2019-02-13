@@ -72,7 +72,8 @@ class CustomList extends Component {
 					className = {classnames(`${liClass}`)}
 					onClick = {onClick}>
           <a href={href}
-            className = {classnames(`${aClass}`, toggle)}>
+            className = {classnames(`${aClass}`, toggle)}
+            data-toggle = {liClass === 'dropdown' ? liClass : ''}>
 						{
 							spanValue &&
 								<span className={classnames('badge')}>

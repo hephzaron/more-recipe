@@ -93,14 +93,14 @@ class CustomList extends Component {
 			);
     }) : null;
 
-    const notificationItems = notificationContent ?
-    notificationContent.map((item, index) => {
+    const notificationItems = notificationContent ? notificationContent.map((item, index) => {
       const {
         href,
         imageSrc,
         imageAlt,
         info,
-        duration
+        duration,
+        recipe
       } = item;
 
       return (
@@ -110,9 +110,12 @@ class CustomList extends Component {
               <img src={imageSrc} alt={imageAlt}/>
             </a>
           </figure>
-          <div className="notification-text">
-            <a>{info}</a>
-            <br/><a><i className="fa fa-clock-o"/>{duration}</a>
+          <div className={classnames(`${duration ? 'notification' : 'wawrecipe-flavours-list'}-text`)}>
+            {duration && <a>{info}</a>}
+            {duration && <br/>}
+            {duration && <a><i className="fa fa-clock-o"/>{duration}</a>}
+            {!duration && <h6><a href={recipe.href}>{recipe.title}</a></h6>}
+            {!duration && <p>{recipe.desc}</p>}
           </div>
         </li>
       );

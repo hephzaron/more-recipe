@@ -7,8 +7,7 @@ import '../public/css/main.css';
 import '../public/css/font-awesome.css';
 import '../public/css/flaticon.css';
 import '../public/css/slick-slider.css';
-import Header from './components/General/Header';
-import Footer from './components/General/Footer';
+import HomePage from './components/HomePage';
 /**
  * @description The entry point - this will render the application with it's
  * route on the DOM
@@ -16,6 +15,6 @@ import Footer from './components/General/Footer';
  */
 
 render(
-	<Footer/>,
+	<HomePage/>,
 	document.getElementById('app')
 );

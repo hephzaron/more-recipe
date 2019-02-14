@@ -8,6 +8,7 @@ import '../public/css/font-awesome.css';
 import '../public/css/flaticon.css';
 import '../public/css/slick-slider.css';
 import Header from './components/General/Header';
+import Footer from './components/General/Footer';
 /**
  * @description The entry point - this will render the application with it's
  * route on the DOM
@@ -15,6 +16,6 @@ import Header from './components/General/Header';
  */
 
 render(
-	<Header/>,
+	<Footer/>,
 	document.getElementById('app')
 );

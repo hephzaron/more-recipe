@@ -61,7 +61,6 @@ class Header extends Component {
 			},
     ];
 
-    
 		const navbarRightList = [
 			{
         href: '#',

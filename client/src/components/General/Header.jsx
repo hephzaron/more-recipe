@@ -20,7 +20,8 @@ class Header extends Component {
 				username: 'Username'
 			},
       baseUrl: '',
-      numOfNewNotifications: 44
+      numOfNewNotifications: 44,
+      isLoggedIn: true
 		};
 	}
 
@@ -31,13 +32,23 @@ class Header extends Component {
 	 * @returns {JSX} - JSX Component
 	 */
 	render() {
-		const navbarLeftList = [
+		let navbarLeftList = [
 			{
         liClass: 'active',
         href: '#',
 				aValue: 'Home',
 				icon: 'fa-home',
 			}, {
+				aValue: 'Login',
+				icon: 'fa-sign-in'
+			}, {
+				aValue: 'Register',
+				icon: 'fa-user-plus'
+			}
+    ];
+
+    const navbarLeftListLoggedIn = [
+      {
         liClass: 'dropdown',
 				aValue: 'View Recipes',
         icon: 'fa-align-justify',
@@ -52,20 +63,18 @@ class Header extends Component {
         icon: 'fa-user-circle',
         href: '#',
 				child: 'userOptionsMenu'
-			}, {
-				aValue: 'Login',
-				icon: 'fa-sign-in'
-			}, {
-				aValue: 'Register',
-				icon: 'fa-user-plus'
-			},
+			}
     ];
 
-		const navbarRightList = [
+		let navbarRightList = [
 			{
         href: '#',
 				icon: 'fa-search',
-			}, {
+			}
+    ];
+
+    const navbarRightListLoggedIn = [
+      {
         liClass: 'dropdown',
         icon: 'fa-bell-o',
         itemId: 'notifications',
@@ -74,6 +83,12 @@ class Header extends Component {
         spanValue: this.state.numOfNewNotifications
 			}
     ];
+
+    navbarLeftList = (this.state.isLoggedIn ? navbarLeftList
+      .concat(navbarLeftListLoggedIn) : navbarLeftList);
+    navbarRightList = (this.state.isLoggedIn ? navbarRightList
+      .concat(navbarRightListLoggedIn) : navbarRightList);
+
 
     const recipeList = [
 			{

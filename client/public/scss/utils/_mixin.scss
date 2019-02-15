@@ -1,0 +1,14 @@
+@mixin background-linear-gradient {
+  @each $prefix in -webkit-,
+  -moz-,
+  '' {
+    background: #{$prefix}linear-gradient(top, rgba(34, 34, 34, 0) 0%, rgba(34, 34, 34, 1) 99%, rgba(34, 34, 34, 1) 100%);
+  }
+}
+
+@mixin format-text($transform:uppercase, $weight:600, $spacing:0.6px, $margin:8px) {
+  margin: 0px 0px $margin;
+  letter-spacing: $spacing;
+  font-weight: $weight;
+  text-transform: $transform;
+}

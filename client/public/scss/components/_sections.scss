@@ -1,0 +1,195 @@
+.wawrecipe-main {
+  &-wrapper {
+    @extend %full-left
+  }
+  &-section {
+    @extend %full-left;
+    position: relative;
+    margin-bottom: 0px
+  }
+  &-content {
+    padding: 100px 0px 60px 0px;
+    @extend %full-left
+  }
+  &-header {
+    @extend %full-left
+  }
+}
+
+#wawrecipe-header {
+  @extend %full-left
+}
+
+.wawrecipe-banner {
+  @extend %full-left;
+  position: relative;
+  &-caption {
+    position: absolute;
+    left: 0px;
+    top: 50%;
+    width: 100%;
+    margin: -168px 0px 0px;
+  }
+  &-text {
+    float: left;
+    width: 84%;
+    position: relative;
+    padding: 97px 0px 0px;
+    h1 {
+      @include format-text($transform: null, $weight: null, $spacing: 2.7px, $margin: 2px);
+      font-size: 60px;
+      line-height: 1;
+      color: $primary-color-text;
+    }
+    h2 {
+      @include format-text( $spacing: 2.9px, $margin: 1px);
+      font-size: 65px;
+      color: $primary-color-text;
+      line-height: 1
+    }
+    h3 {
+      @include format-text($transform: null, $weight: null, $spacing: 3.1px, $margin: 25px);
+      font-size: 34px;
+      color: $primary-color-text;
+      line-height: 1.3
+    }
+    p {
+      @include format-text($transform: null, $weight: null, $spacing: 0.4px, $margin: 34px);
+      color: $primary-color-text;
+      font-size: 15px;
+    }
+  }
+}
+
+
+/**wawrecipe-main-content*/
+
+
+/*Fancy-title*/
+
+.wawrecipe-fancy-title {
+  @extend %full-left;
+  text-align: center;
+  margin: 0px 0px 70px;
+  span {
+    @include format-text($transform: null, $weight: null, $spacing: 1px, $margin: 1px);
+    font-size: 35px;
+    display: inline-block;
+    line-height: 1;
+  }
+  h2 {
+    @include format-text($spacing: 1.1px, $margin: 13px, $transform: null);
+    font-size: 30px;
+    line-height: 0.9
+  }
+}
+
+.wawrecipe-special-flavours-text {
+  @extend %full-left;
+  .wawrecipe-fancy-title {
+    text-align: left;
+    margin: 0px 0px 17px;
+  }
+  p {
+    @include format-text($spacing: 0.5px, $margin: 14px, $weight: null, $transform: null);
+    line-height: $default-font-size;
+    float: left
+  }
+}
+
+//////
+
+/*wawrecipe-flavours-thumb*/
+
+.wawrecipe-flavours-thumb {
+  margin: 0px;
+  @extend %full-left;
+  &>a {
+    position: relative;
+    @extend %full-left;
+    &:before {
+      @include background-linear-gradient;
+      content: '';
+      position: absolute;
+      left: 0px;
+      bottom: 0px;
+      width: 100%;
+      height: 100%;
+      opacity: 0.7
+    }
+  }
+  a img {
+    @extend %full-left
+  }
+  figcaption {
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    padding: 0px 0px 23px 30px;
+    span {
+      @include format-text($spacing: 0.5px, $margin: 6px, $weight: null);
+      color: $primary-color-text;
+      background-color: $accent-color;
+      font-size: 12px;
+      display: inline-block;
+      padding: 4px 10px 5px;
+      border-radius: 2px;
+    }
+    h2 {
+      @include format-text($spacing: null, $margin: 4px, $weight: bold);
+      font-size: $default-font-size;
+      line-height: 1;
+      a {
+        color: $primary-color-text
+      }
+    }
+    p {
+      @include format-text($spacing: 0.4px, $margin: 0px, $transform: null);
+      color: $primary-color-text;
+      font-size: 12px;
+      width: 234px;
+    }
+  }
+}
+
+
+/*wawrecipe-flavours-list*/
+
+.wawrecipe-flavours {
+  &-thumb {
+    padding: 25px 0px 0px
+  }
+  &-list {
+    @extend %full-left;
+    padding: 25px 0px 0px;
+    ul li {
+      @extend %full-left;
+      list-style: none;
+      margin: 0px 0px 10px
+    }
+    figure {
+      float: left;
+      width: 95px;
+      margin: 0px;
+      &~.wawrecipe-flavours-list-text {
+        padding: 7px 0px 0px 115px
+      }
+      a {
+        @extend %full-left;
+        img {
+          @extend %full-left
+        }
+      }
+    }
+    &-text {
+      h6 {
+        @include format-text()
+      }
+      p {
+        line-height: 22px;
+        margin: 0px
+      }
+    }
+  }
+}

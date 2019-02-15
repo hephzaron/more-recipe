@@ -1,0 +1,90 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i');
+@import url('https://fonts.googleapis.com/css?family=Sacramento');
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: $primary-color-text;
+  color: $input-text-color;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: $primary-color-span;
+    font-family: 'Open Sans', sans-serif;
+    font-style: normal;
+    line-height: 1.5;
+    margin: 0 0 8px
+  }
+}
+
+h1 {
+  font-size: 26px;
+}
+
+h2 {
+  font-size: 24px;
+}
+
+h3 {
+  font-size: 22px;
+}
+
+h4 {
+  font-size: 20px;
+}
+
+h5 {
+  font-size: 18px;
+}
+
+h6 {
+  font-size: 16px;
+}
+
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  color: $primary-color-span;
+}
+
+p {
+  line-height: 24px;
+  margin-bottom: 10px;
+  a {
+    color: $primary-color-span;
+  }
+}
+
+a {
+  text-decoration: none;
+  &:hover,
+  &:focus,
+  &:active {
+    outline: none;
+  }
+}
+
+ul {
+  margin-bottom: 0;
+}
+
+figure {
+  margin-bottom: 6px;
+  position: relative;
+}
+
+img {
+  height: auto;
+  max-width: 100%;
+}

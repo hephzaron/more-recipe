@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 const propTypes = {
-	listContent: PropTypes.array.isRequired,
+	listContent: PropTypes.array,
 	children: PropTypes.node,
 	ulClass: PropTypes.string.isRequired,
 	identifier: PropTypes.string,
@@ -87,7 +87,7 @@ class CustomList extends Component {
                 {spanValue}
               </span>}
 						{aValue && ` ${aValue}`}
-         {(this.props.children && child) && this.getChildComponent(`${child}`)}
+          {(this.props.children && child) && this.getChildComponent(`${child}`)}
           </a>
 				</li>
 			);

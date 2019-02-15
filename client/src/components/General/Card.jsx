@@ -15,9 +15,6 @@ const Card = (props) => (
     <figure>
       <a href="recipe-detail.html">
         <img src={props.imageSrc} alt={props.imageAlt}/>
-        <span className="hover-btn">
-          <i className="icon wawrecipe-link"/>
-        </span>
       </a>
     </figure>
     <div className="wawrecipe-blog-medium-text">

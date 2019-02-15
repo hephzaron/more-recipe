@@ -1,0 +1,102 @@
+/**Naviagtion bar**/
+
+%full-left {
+  float: left;
+  width: 100%;
+}
+
+#notifications {
+  span {
+    position: relative;
+    top: -10px;
+    left: -12px;
+    border-radius: 50%;
+    padding: 2px;
+    font-size: 12px;
+    font-weight: bold;
+    background-color: $accent-color;
+    color: $primary-color-text;
+    border: 1px solid $primary-color-text;
+  }
+  .dropdown-menu {
+    width: 400px;
+    float: left;
+    .notification-text p,
+    .notification-text a {
+      margin: 0 auto;
+      color: $primary-color-text;
+      width: 50px
+    }
+    figure {
+      float: left;
+      width: 50px;
+      margin: 0px 5px 0px;
+      border-radius: 50%;
+      overflow: hidden;
+      a {
+        @extend %full-left;
+        img {
+          @extend %full-left
+        }
+      }
+    }
+  }
+  ul.dropdown-menu li {
+    @extend %full-left;
+    padding: 5px;
+    &:hover {
+      color: $primary-color-dark;
+      border-left: 4px solid $primary-color-dark;
+      cursor: pointer;
+    }
+  }
+}
+
+ul {
+  &.dropdown-menu {
+    border-bottom: 4px solid $primary-color;
+    background-color: rgba(0, 0, 0, 0.7);
+    &>li {
+      &>a {
+        text-transform: capitalize;
+        color: $primary-color-text;
+        font-size: 15px;
+        padding: 10px, 5px;
+        width: 250px;
+        &>.fa,
+        &>.badge {
+          position: relative;
+          top: 3px;
+          float: right
+        }
+        &:hover {
+          color: $primary-color-dark;
+          font-weight: bold;
+          border-left: 2px solid $primary-color-dark;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  &.nav {
+    &>li {
+      &:not(:first-of-type):before {
+        content: '';
+        position: absolute;
+        bottom: 18px;
+        width: 3px;
+        height: 12px;
+      }
+      &>a {
+        color: $primary-color-text;
+        text-transform: capitalize;
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+nav {
+  background-color: rgba(14, 13, 13, 0.801);
+  border-bottom: 2px dashed $primary-color-text !important
+}

@@ -65,11 +65,23 @@ class CustomList extends Component {
 				href,
 				spanValue,
 				icon,
-				onClick,
-				child
+        onClick,
+				child,
+        modal,
+        dataTarget
       } = item;
 
       const toggle = (liClass === 'dropdown' ? 'dropdown-toggle' : '');
+      const dataToggle = () => {
+        if (liClass === 'dropdown') {
+          return liClass;
+        } else if (modal) {
+          return 'modal';
+        } else {
+          return '';
+        }
+      };
+
 			return (
 				<li key = {index}
 					className = {classnames(`${liClass}`)}
@@ -77,7 +89,8 @@ class CustomList extends Component {
           id = {itemId}>
           <a href={href}
             className = {classnames(`${aClass}`, toggle)}
-            data-toggle = {liClass === 'dropdown' ? liClass : ''}>
+            data-toggle = {dataToggle()}
+            data-target = {modal ? `#${dataTarget}` : ''}>
 						{
 							icon &&
                 <i className = {classnames('fa fa-lg', icon)}/>}

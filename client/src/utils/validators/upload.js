@@ -1,7 +1,6 @@
 import Validator from 'validator';
 import { isEmpty } from 'lodash';
 
-
 /**
  * @function defaultFunction
  * @description Validate file type and size

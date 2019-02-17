@@ -15,17 +15,19 @@ const SingleInput = (props) => (
       className={classnames(`form-control ${props.inputClass}`)}
       placeholder={props.placeholder}
       onChange={props.onChange}
+      onSubmit={props.onSubmit}
       value = {props.value}
     />
 );
 
 SingleInput.propTypes = {
   type: PropTypes.string.isRequired,
-  placeholder: PropTypes.string.isRequired,
+  placeholder: PropTypes.string,
   onChange: PropTypes.func,
+  onSubmit: PropTypes.func,
   value: PropTypes.string,
   inputClass: PropTypes.string,
-  name: PropTypes.string,
+  name: PropTypes.string.isRequired
 };
 
 SingleInput.defaultProps = {

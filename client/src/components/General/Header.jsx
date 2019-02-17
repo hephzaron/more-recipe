@@ -69,7 +69,9 @@ class Header extends Component {
 		let navbarRightList = [
 			{
         href: '#',
-				icon: 'fa-search',
+        icon: 'fa-search',
+        modal: true,
+        dataTarget: 'searchmodal'
 			}
     ];
 

@@ -18,7 +18,7 @@ const propTypes = {
  * @returns {JSX } -JSX Component
  */
 class CustomList extends Component {
-	/**
+/**
  * @description Creates an instance of Header class
  * @param { object } props
  */

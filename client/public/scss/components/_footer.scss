@@ -1,0 +1,148 @@
+/*wawrecipe-footer*/
+
+#wawrecipe-footer {
+  @extend %full-left
+}
+
+.wawrecipe-footer {
+  &-widget {
+    @extend %full-left;
+    padding: 0px 0px 40px;
+    .widget {
+      margin: 0px 0px 40px;
+    }
+  }
+  &-heading {
+    text-align: center;
+    width: 56%;
+    margin: 0 auto 70px;
+  }
+  &-one {
+    background-image: require('../extra-images/footer-back-img.jpg');
+    background-position: center;
+    padding: 38px 0px 0px;
+    margin: 42px 0px 0px;
+    position: relative;
+    &:before {
+      content: '';
+      background: url(../images/footer-shape.png);
+      position: absolute;
+      left: 0px;
+      top: -42px;
+      height: 42px;
+      width: 100%;
+      background-position: center;
+      opacity: 0.96;
+    }
+  }
+  &-transparent {
+    position: absolute;
+    background: url(../images/footer-back-transparent.png);
+    background-position: center;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    opacity: 0.95;
+  }
+  &-heading {
+    .logo {
+      margin: 0px 0px 23px;
+    }
+    p {
+      color: $primary-text-color;
+      margin: 0px;
+      line-height: 26px;
+      letter-spacing: 0.5px;
+    }
+  }
+}
+
+
+/*footer widget*/
+
+.footer-widget-title {
+  @include format-text($transform: null, $spacing: 1px, $margin: 34px);
+  @extend %full-left;
+  position: relative;
+  line-height: 0.8;
+  font-size: 20px;
+  color: $primary-color-text;
+  padding: 0px 0px 11px;
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 32px;
+    height: 1px;
+  }
+}
+
+.widget_latest_post {
+  ul {
+    @extend %full-left;
+    li {
+      @extend %full-left;
+      list-style: none;
+      margin: 0px 0px 20px;
+      border-bottom: 2px dashed rgba(255, 255, 255, 0.1);
+      padding: 0px 0px 14px;
+      &:hover h6 a {
+        color: $primary-color-text;
+      }
+      &:last-child {
+        border-bottom: none;
+        margin: 0px;
+        padding: 0px;
+      }
+    }
+  }
+  h6 {
+    font-size: 15px;
+    margin: 0px 0px 1px;
+    letter-spacing: 0.6px;
+    a {
+      color: $primary-text-color;
+    }
+  }
+  time {
+    letter-spacing: 0.5px;
+  }
+}
+
+
+/*widget_links*/
+
+.widget_links ul li {
+  float: left;
+  width: 50%;
+  list-style: none;
+  margin: 0px 0px 16px;
+  &:hover a {
+    color: $primary-color-text;
+    padding-left: 10px;
+  }
+  a {
+    display: block;
+    margin: 0px;
+    color: $primary-text-color;
+    line-height: 23px;
+    letter-spacing: 0.9px;
+  }
+}
+
+
+/*wawrecipe-copyright*/
+
+.wawrecipe-copyright {
+  @extend %full-left;
+  border-top: 2px dashed rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding: 22px 0px 24px;
+  p {
+    color: $primary-text-color;
+    margin: 0px;
+    letter-spacing: 0.7px;
+  }
+}

@@ -45,7 +45,9 @@ class Header extends Component {
         dataTarget: 'loginmodal'
 			}, {
 				aValue: 'Register',
-				icon: 'fa-user-plus'
+				icon: 'fa-user-plus',
+        modal: true,
+        dataTarget: 'signupmodal'
 			}
     ];
 

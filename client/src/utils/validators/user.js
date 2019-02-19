@@ -51,9 +51,6 @@ export default (inputs, type) => {
       if (Validator.isEmpty(lastName)) {
         errors.lastName = 'Please specify your last name';
       }
-      if (Validator.isEmpty(age)) {
-        errors.age = 'Please specify yor age';
-      }
       if ((!re.test(username)) && (!Validator.isEmpty(username))) {
         errors.username = 'Username must contain only letters, numbers and underscores';
       }

@@ -9,7 +9,7 @@ import '../public/css/font-awesome.css';
 import '../public/css/flaticon.css';
 import '../public/css/slick-slider.css';
 import HomePage from './components/HomePage';
-import SearchFormModal from './components/Modal/SearchFormModal';
+import Modal from './components/Modal';
 /**
  * @description The entry point - this will render the application with it's
  * route on the DOM
@@ -19,7 +19,7 @@ import SearchFormModal from './components/Modal/SearchFormModal';
 render(
 	<Fragment>
 		<HomePage/>
-		<SearchFormModal/>
+		<Modal/>
 	</Fragment>,
 	document.getElementById('app')
 );

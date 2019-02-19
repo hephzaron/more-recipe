@@ -29,7 +29,7 @@ Button.propTypes = {
 };
 
 Button.defaultProps = {
-    type: 'submit',
+    type: 'button',
     disabled: true,
     btnClass: 'btn-default'
 };

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Modal from './Modal';
-import SingleInput from '../Forms/SingleInput';
-import validateRecipe from '../../utils/validators/recipe';
+import Modal from '../Modal';
+import SingleInput from '../../Forms/SingleInput';
+import validateRecipe from '../../../utils/validators/recipe';
 
 /**
  * @class SearchFormModal

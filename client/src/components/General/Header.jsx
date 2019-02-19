@@ -40,7 +40,9 @@ class Header extends Component {
 				icon: 'fa-home',
 			}, {
 				aValue: 'Login',
-				icon: 'fa-sign-in'
+				icon: 'fa-sign-in',
+        modal: true,
+        dataTarget: 'loginmodal'
 			}, {
 				aValue: 'Register',
 				icon: 'fa-user-plus'

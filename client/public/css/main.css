@@ -2183,15 +2183,6 @@ form .fa-google-plus-square {
   border-radius: 0
 }
 
-.form,
-.loginmodal .wawrecipe-close-btn,
-.signupmodal .wawrecipe-close-btn,
-.forgetpasswordmodal .wawrecipe-close-btn,
-.changepasswordmodal .wawrecipe-close-btn,
-.newrecipemodal .wawrecipe-close-btn {
-  background-color: rgba(0, 0, 0, 0.527)
-}
-
 
 /* Search Modal */
 

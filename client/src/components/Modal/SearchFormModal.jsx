@@ -90,17 +90,19 @@ class SearchFormModal extends Component {
   render() {
     return (
       <Modal identifier = {'searchmodal'}>
-        <form>
-          <SingleInput
-            placeholder={'Type your keyword'}
-            onChange={this.onChange}
-            name={'searchText'}/>
-          <SingleInput
-            type={'submit'}
-            name={'searchSubmit'}
-            onSubmit={this.onSubmit}/>
-          <i className={'fa fa-search'}/>
-        </form>
+      <form>
+        <SingleInput
+          placeholder={'Type your keyword'}
+          onChange={this.onChange}
+          name={'searchText'}
+          value={this.state.recipe.searchText}
+          onSubmit={this.onSubmit}/>
+        <SingleInput
+          type={'submit'}
+          name={'searchSubmit'}
+          onSubmit={this.onSubmit}/>
+        <i className={'fa fa-search'}/>
+      </form>
       </Modal>
     );
   }

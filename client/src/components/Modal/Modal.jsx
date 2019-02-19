@@ -8,7 +8,7 @@ const propTypes = {
 };
 
 const Modal = (props) => (
-  <div className={classnames('modal fade', props.identifier)} id={props.identifier} tabIndex="-1" role="dialog">
+  <div className={classnames('modal fade in', props.identifier)} id={props.identifier} tabIndex="-1" role="dialog">
     <div className="modal-dialog" role="document">
       <div className="modal-body">
       <a href="#" className="wawrecipe-close-btn" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>

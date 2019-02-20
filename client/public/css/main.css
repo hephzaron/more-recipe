@@ -153,6 +153,10 @@ ul.nav>li:not(:first-of-type):before {
   height: 12px;
 }
 
+ul.nav>li:hover {
+  cursor: pointer
+}
+
 ul.nav>li>a {
   color: white;
   text-transform: capitalize;
@@ -2226,6 +2230,10 @@ form .fa-google-plus-square {
   width: 100%;
   padding: 0px;
   position: relative;
+}
+
+.modal-body {
+  background-color: white
 }
 
 .searchmodal form input[type="text"] {

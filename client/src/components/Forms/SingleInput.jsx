@@ -17,7 +17,7 @@ const SingleInput = (props) => (
       onChange={props.onChange}
       onSubmit={props.onSubmit}
       value = {props.value}
-    />
+      accept = {props.type === 'file' ? 'image/*' : ''}/>
 );
 
 SingleInput.propTypes = {

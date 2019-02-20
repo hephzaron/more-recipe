@@ -26,7 +26,7 @@ export default (inputs) => {
     errors.searchText = 'Please specify keyword';
   }
   if (Validator.isEmpty(description)) {
-    errors.description = 'Give a brief description of book here';
+    errors.description = 'Give a brief description of recipe here';
   }
   if (Validator.isEmpty(photoUrl)) {
     errors.description = 'Please upload an image file';

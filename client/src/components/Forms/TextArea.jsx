@@ -14,7 +14,7 @@ const TextArea = (props) => (
 			placeholder={props.placeholder}
 			value={props.value}
       onChange={props.onChange}
-      rows ={props.rows.toString()}/>
+      rows ={props.noRows.toString()}/>
 );
 
 TextArea.propTypes = {
@@ -22,7 +22,7 @@ TextArea.propTypes = {
   name: PropTypes.string.isRequired,
   value: PropTypes.string,
   onChange: PropTypes.fuunc,
-  rows: PropTypes.number.isRequired
+  noRows: PropTypes.number.isRequired
 };
 
 TextArea.defaultProps = {

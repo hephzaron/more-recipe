@@ -60,7 +60,9 @@ class Header extends Component {
 				child: 'viewRecipeMenu'
 			}, {
 				aValue: 'New Recipe',
-				icon: 'fa-pencil'
+				icon: 'fa-pencil',
+        modal: true,
+        dataTarget: 'newrecipemodal'
 			}, {
         liClass: 'dropdown',
 				aValue: this.state.user.username,

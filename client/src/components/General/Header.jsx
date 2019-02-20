@@ -123,9 +123,10 @@ class Header extends Component {
         aValue: 'Edit Profile',
         icon: 'fa-edit'
 			}, {
-        href: '#',
         aValue: 'Change Password',
-        icon: 'fa-pencil'
+        icon: 'fa-pencil',
+        modal: true,
+        dataTarget: 'changepasswordmodal'
 			}, {
         href: '#',
         aValue: 'View Profile',

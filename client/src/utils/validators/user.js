@@ -13,7 +13,6 @@ export default (inputs, type) => {
   const {
     firstName,
     lastName,
-    age,
     username,
     email,
     password,

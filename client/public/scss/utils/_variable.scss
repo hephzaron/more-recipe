@@ -3,3 +3,17 @@ $default-font-size: 26px;
   float: left;
   width: 100%;
 }
+
+//**Form**//
+%form-position {
+  @extend %full-left;
+  position: relative
+}
+
+%modal-body {
+  display: inline-block;
+  width: 100%;
+  padding: 0px;
+  position: relative;
+  background-color: $primary-color-text
+}

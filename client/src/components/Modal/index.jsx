@@ -3,6 +3,7 @@ import Login from './Login';
 import SignUp from './SignUp';
 import NewRecipe from './NewRecipe';
 import ChangePassword from './ChangePassword';
+import ForgetPasword from './ForgetPassword';
 import Search from './Search/SearchFormModal';
 
 export default () => (
@@ -12,5 +13,6 @@ export default () => (
     <Search/>
     <NewRecipe/>
     <ChangePassword/>
+    <ForgetPasword/>
   </Fragment>
 );

@@ -8,19 +8,6 @@
   padding: 10px;
 }
 
-form {
-  .fa-facebook-square {
-    color: $primary-color-text;
-    background-color: rgba(70, 28, 224, 0.74);
-    border: 0;
-  }
-  .fa-google-plus-square {
-    color: $primary-color-text;
-    background-color: rgba(235, 20, 20, 0.74);
-    border: 0;
-  }
-}
-
 .form {
   &>.form-control {
     border: 1px dashed #b99563;
@@ -43,7 +30,7 @@ form {
 .newrecipemodal {
   form {
     @extend %form-position;
-    i {
+    i.fa-search {
       position: absolute;
       right: 28px;
       top: 20px;
@@ -118,4 +105,8 @@ form {
   text-align: center;
   font-size: 30px;
   padding-top: 8px;
+}
+
+.my-3 button {
+  margin-right: 5px
 }

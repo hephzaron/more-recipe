@@ -181,7 +181,7 @@ class Login extends Component {
         isLoading = {this.state.isLoading}
         user = {this.state.user}>
         {
-          <div className="row my-3 d-flex justify-content-center">
+          <div className="row container my-3 justify-content-center">
             <GoogleLogin
               autoLoad={false}
               clientId={passportConfig.google.clientID}
@@ -189,9 +189,7 @@ class Login extends Component {
               onFailure={this.onGoogleFailure}
               tag="button"
               className="btn btn-danger mr-md-3 btn-sm"
-              type="button">
-              <i className="fa fa-google-plus text-white text-center" />
-            </GoogleLogin>
+              type="button"/>
             <FacebookLogin
               appId={passportConfig.facebook.clientID}
               autoLoad={false}
@@ -201,7 +199,7 @@ class Login extends Component {
               tag="button"
               cssClass="btn btn-primary mr-md-3 btn-sm"
               type="button"
-              icon="fa fa-facebook text-white text-center"/>
+              icon="fa-facebook mr-md-3 btn-sm"/>
           </div>
         }
       </LoginFormModal>

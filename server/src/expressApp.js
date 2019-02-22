@@ -14,7 +14,7 @@ export default (expressApp) => {
     extended: false
   }));
   expressApp.use(cors({
-    credentials: true
+    origin: process.env.CLIENT_ORIGIN
   }));
 
   expressApp

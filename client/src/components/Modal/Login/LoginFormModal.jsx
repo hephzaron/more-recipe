@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import SingleInput from '../../Forms/SingleInput';
 import Button from '../../Forms/Button';
+import FlashMessageList from '../../FlashMessage';
 
 /**
  * sign in page component begins
@@ -18,24 +19,15 @@ const propTypes = {
   validationError: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  goToFacebook: PropTypes.func,
-  goToGoogle: PropTypes.func
+  children: PropTypes.node.isRequired
 };
 
 const LoginFormModal = (props) => (
   <Modal
     identifier={'loginmodal'}>
     <form className = {'form'} id = {'loginForm'} onSubmit={props.onSubmit}>
-      <Button
-        iconClass={'fa-facebook-square'}
-        disabled ={props.isLoading}
-        onClick ={props.goToFacebook}
-        name ={'Login with Facebook'}/>
-      <Button
-        iconClass={'fa-google-plus-square'}
-        disabled ={props.isLoading}
-        onClick ={props.goToGoogle}
-        name={'Login with Google'}/>
+      <FlashMessageList/>
+        {props.children}
       <SingleInput
         placeholder={'Email'}
         onChange={props.onChange}
@@ -59,7 +51,8 @@ const LoginFormModal = (props) => (
         btnClass = {'btn-primary'}
         disabled ={props.isLoading}
         onClick ={props.onSubmit}
-        name={'Login'}/>
+        name={'Login'}
+        identifier = {'login'}/>
       <span className={'badge'}>or</span>
       <a className={'btn btn-default'} data-toggle="modal" data-target="#forgetpasswordmodal">Forgot Password ?</a>
     </form>

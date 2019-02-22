@@ -3,6 +3,7 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
+import cors from 'cors';
 import expressStaticGzip from 'express-static-gzip';
 import routes from '../routes';
 
@@ -12,7 +13,9 @@ export default (expressApp) => {
   expressApp.use(bodyParser.urlencoded({
     extended: false
   }));
-
+  expressApp.use(cors({
+    credentials: true
+  }));
 
   expressApp
     .get(

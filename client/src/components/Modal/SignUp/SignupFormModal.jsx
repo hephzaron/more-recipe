@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import SingleInput from '../../Forms/SingleInput';
 import Button from '../../Forms/Button';
+import FlashMessageList from '../../FlashMessage';
 
 /**
  * sign up page component
@@ -24,6 +25,7 @@ const LoginFormModal = (props) => (
   <Modal
     identifier={'signupmodal'}>
     <form className = {'form'} id = {'signupForm'} onSubmit={props.onSubmit}>
+      <FlashMessageList/>
       <SingleInput
         placeholder={'First name'}
         onChange={props.onChange}

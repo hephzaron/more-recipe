@@ -4,6 +4,7 @@ import Modal from '../Modal';
 import SingleInput from '../../Forms/SingleInput';
 import TextArea from '../../Forms/TextArea';
 import Button from '../../Forms/Button';
+import FlashMessageList from '../../FlashMessage';
 
 /**
  * create recipe page component
@@ -25,6 +26,7 @@ const CreateRecipeFormModal = (props) => (
   <Modal
     identifier={'newrecipemodal'}>
     <form className = {'form'} id = {'newrecipeForm'} onSubmit={props.onSubmit}>
+      <FlashMessageList/>
       <SingleInput
         placeholder={'Name of recipe'}
         onChange={props.onChange}

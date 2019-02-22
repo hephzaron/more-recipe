@@ -15,17 +15,19 @@ const Button = (props) => (
       props.iconClass ? `fa ${props.iconClass}` : '')}
      type = {props.type}
      disabled = {props.disabled}
-     onClick = {props.onClick}>
+     onClick = {props.onClick}
+     id = {props.identifier}>
       {props.name}
   </button>);
 
 Button.propTypes = {
-    type: PropTypes.string,
+    type: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    disabled: PropTypes.bool,
+    disabled: PropTypes.bool.isRequired,
     btnClass: PropTypes.string,
-    onClick: PropTypes.func,
-    iconClass: PropTypes.string
+    onClick: PropTypes.func.isRequired,
+    iconClass: PropTypes.string,
+    identifier: PropTypes.string
 };
 
 Button.defaultProps = {

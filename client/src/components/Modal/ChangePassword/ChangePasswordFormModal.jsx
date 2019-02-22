@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from '../Modal';
 import SingleInput from '../../Forms/SingleInput';
 import Button from '../../Forms/Button';
+import FlashMessageComponent from '../../FlashMessage';
 
 /**
  * change password page component begins
@@ -24,6 +25,7 @@ const ChangePasswordFormModal = (props) => (
   <Modal
     identifier={'changepasswordmodal'}>
     <form className = {'form'} id = {'changepasswordForm'} onSubmit={props.onSubmit}>
+      <FlashMessageComponent/>
       <SingleInput
         type={'password'}
         placeholder={'New Password'}

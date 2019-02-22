@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { GoogleLogin } from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 import LoginFormModal from './LoginFormModal';
+import passportConfig from '../../../config/passport';
+import { login } from '../../../actions/userAuth';
+import { addFlashMessage } from '../../../actions/flashMessage';
 import validateUser from '../../../utils/validators/user';
 
 
@@ -9,8 +16,8 @@ const contextTypes = {
 };
 
 const propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  signin: PropTypes.func.isRequired,
+  addFlashMessage: PropTypes.func,
+  login: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
@@ -38,8 +45,9 @@ class Login extends Component {
 
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-    this.goToFacebook = this.goToFacebook.bind(this);
-    this.goToGoogle = this.goToGoogle.bind(this);
+    this.onGoogleCallback = this.onGoogleCallback.bind(this);
+    this.onFacebookCallback = this.onFacebookCallback.bind(this);
+    this.onGoogleFailure = this.onGoogleFailure.bind(this);
   }
 
   /**
@@ -81,37 +89,82 @@ class Login extends Component {
   onSubmit(event) {
     event.preventDefault();
     if (!this.isFormValid()) { return; }
-    window.prompt(this.state.user)
+
+    this.setState({ errors: {} });
+    this.setState({ isLoading: true });
+    this.props.login(this.state.user)
+      .then((data) => {
+        if (data.response && data.response.status >= 400) {
+          this.setState({
+            isLoading: false
+          });
+        } else {
+          this.setState({ isLoading: false });
+          this.context.router.history.push('/recipes');
+        }
+      });
   }
 
   /**
    * @description This redirects user to login with facebook
-   * @param {object} event - event handler
+   * @param {object} response - facebook response
    * @returns {undefined}
    * @memberof SignIn
    */
-  goToFacebook(event) {
-    event.preventDefault();
-    if (!this.isFormValid()) { return; }
-
-    this.setState({ errors: {} });
-    this.setState({ isLoading: true });
-    window.prompt(this.state.user)
+  onFacebookCallback(response) {
+    if (response && response.email) {
+      this.setState({
+        user: {
+          email: response.email,
+          password: `${Math.random()}`,
+          oauthID: response.id
+        }
+      });
+      document.getElementById("login").click();
+    } else {
+      this.props.addFlashMessage({
+        type: 'error',
+        text: [
+          'We experienced an error validating you on facebook. Please try again'
+        ]
+      });
+    }
   }
 
   /**
    * @description This redirects user to login with Google
-   * @param {object} event - event handler
+   * @param {object} response - google response
    * @returns {undefined}
    * @memberof SignIn
    */
-  goToGoogle(event) {
-    event.preventDefault();
-    if (!this.isFormValid()) { return; }
+  onGoogleCallback(response) {
+    this.setState({
+      user: {
+        email: response.profileObj.email,
+        password: `${Math.random()}`,
+        oauthID: response.profileObj.googleId
+      }
+    });
+    document.getElementById("login").click();
+  }
 
-    this.setState({ errors: {} });
-    this.setState({ isLoading: true });
-    window.prompt(this.state.user)
+   /**
+   * @description This handles google login failure
+   * @param {object} response - google response
+   * @returns {undefined}
+   * @memberof SignIn
+   */
+  onGoogleFailure(response) {
+    if (response &&
+      (response.error === 'popup_closed_by_user' ||
+       response.error === 'access_denied')) {
+      this.props.addFlashMessage({
+        type: 'error',
+        text: [
+          'We experienced an error validating you on google. Please try again'
+        ]
+      });
+    }
   }
 
   /**
@@ -126,9 +179,32 @@ class Login extends Component {
         onChange = {this.onChange}
         onSubmit = {this.onSubmit}
         isLoading = {this.state.isLoading}
-        user = {this.state.user}
-        goToFacebook = {this.goToFacebook}
-        goToGoogle = {this.goToGoogle}/>
+        user = {this.state.user}>
+        {
+          <div className="row my-3 d-flex justify-content-center">
+            <GoogleLogin
+              autoLoad={false}
+              clientId={passportConfig.google.clientID}
+              onSuccess={this.onGoogleCallback}
+              onFailure={this.onGoogleFailure}
+              tag="button"
+              className="btn btn-danger mr-md-3 btn-sm"
+              type="button">
+              <i className="fa fa-google-plus text-white text-center" />
+            </GoogleLogin>
+            <FacebookLogin
+              appId={passportConfig.facebook.clientID}
+              autoLoad={false}
+              textButton=""
+              fields="name,email,picture"
+              callback={this.onFacebookCallback}
+              tag="button"
+              cssClass="btn btn-primary mr-md-3 btn-sm"
+              type="button"
+              icon="fa fa-facebook text-white text-center"/>
+          </div>
+        }
+      </LoginFormModal>
     );
    }
 }
@@ -136,4 +212,24 @@ class Login extends Component {
 Login.propTypes = propTypes;
 Login.contextTypes = contextTypes;
 
-export default Login;
+/**
+ * @description Maps state from store to props
+ * @param {object} state - redux store state
+ * @returns {object} map state to props
+ */
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+/**
+ * @description Maps dispatch to props
+ * @param {object} dispatch
+ * @returns {object} map dispatch to props
+ */
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  login,
+  addFlashMessage
+}, dispatch);
+
+export { Login };
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

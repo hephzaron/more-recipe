@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addFlashMessage } from '../../../actions/flashMessage';
+import { userSignupRequestAction } from '../../../actions/userSignup';
 import SignupFormModal from './SignupFormModal';
 import validateUser from '../../../utils/validators/user';
 
@@ -9,7 +13,7 @@ const contextTypes = {
 };
 
 const propTypes = {
-  signUpUser: PropTypes.func.isRequired,
+  userSignupRequestAction: PropTypes.func.isRequired
 };
 
 /**
@@ -81,7 +85,16 @@ class Signup extends Component {
   onSubmit(event) {
     event.preventDefault();
     if (!this.isFormValid()) { return; }
-    window.prompt(this.state.user)
+
+    this.setState({ isLoading: true });
+    this.props.userSignupRequestAction(this.state.user)
+      .then(data => {
+        if (data.response && data.response.status >= 400) {
+          this.setState({ isLoading: false });
+        } else {
+          this.context.router.history.push('/recipes');
+        }
+      });
   }
 
   /**
@@ -104,4 +117,16 @@ class Signup extends Component {
 Signup.propTypes = propTypes;
 Signup.contextTypes = contextTypes;
 
-export default Signup;
+
+/**
+ * @description Maps dispatch to props
+ * @param {object} dispatch
+ * @returns {object} map dispatch to props
+ */
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  userSignupRequestAction,
+  addFlashMessage
+}, dispatch);
+
+export { Signup };
+export default connect(null, mapDispatchToProps)(Signup);

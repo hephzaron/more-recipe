@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Modal from '../Modal';
 import SingleInput from '../../Forms/SingleInput';
 import validateRecipe from '../../../utils/validators/recipe';
+import FlashMessageList from '../../FlashMessage';
 
 /**
  * @class SearchFormModal
@@ -91,6 +92,7 @@ class SearchFormModal extends Component {
     return (
       <Modal identifier = {'searchmodal'}>
       <form>
+        <FlashMessageList/>
         <SingleInput
           placeholder={'Type your keyword'}
           onChange={this.onChange}

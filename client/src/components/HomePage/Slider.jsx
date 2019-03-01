@@ -7,8 +7,8 @@ const propTypes = {
 
 const Slider = (props) => (
   <div className="wawrecipe-banner">
-    {props.banners && props.banners.map((banner) => (
-			<div className="wawrecipe-banner-layer">
+    {props.banners && props.banners.map((banner, index) => (
+			<div className="wawrecipe-banner-layer" key={index}>
 				<img src={banner.imageSrc} alt={banner.imageAlt}/>
 				<span className="wawrecipe-banner-transparent"/>
 				<div className="wawrecipe-banner-caption">

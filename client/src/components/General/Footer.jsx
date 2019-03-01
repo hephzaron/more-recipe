@@ -93,7 +93,7 @@ class Footer extends Component {
               <h2 className="footer-widget-title">Recent Post</h2>
               <ul>
                 {recentPosts.map((item, index) => (
-                  <li>
+                  <li key={index}>
                     <h6><a href={item.href}>{item.aValue}</a></h6>
                     <time>{item.postDate}</time>
                   </li>))}

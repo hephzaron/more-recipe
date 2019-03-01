@@ -1,6 +1,20 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import CustomList from './CustomList';
+import { logoutUser } from '../../actions/userAuth';
 
+
+const propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired
+};
+
+const contextTypes = {
+  router: PropTypes.object.isRequired
+};
 /**
  * @class Header
  * @extends { React.Component }
@@ -16,14 +30,23 @@ class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			user: {
-				username: 'Username'
-			},
       baseUrl: '',
-      numOfNewNotifications: 44,
-      isLoggedIn: true
-		};
-	}
+      numOfNewNotifications: 44
+    };
+    this.onLogout = this.onLogout.bind(this);
+  }
+
+  /**
+   * @description This handles user logout
+   * @param { object } event
+   * @memberof Header
+   * @returns {void} null
+   */
+  onLogout(event) {
+    event.preventDefault();
+    this.props.logoutUser();
+    this.context.router.history.push('/');
+  }
 
 	/**
 	 * @memberof CustomList
@@ -65,7 +88,7 @@ class Header extends Component {
         dataTarget: 'newrecipemodal'
 			}, {
         liClass: 'dropdown',
-				aValue: this.state.user.username,
+				aValue: this.props.user.username,
         icon: 'fa-user-circle',
         href: '#',
 				child: 'userOptionsMenu'
@@ -92,9 +115,9 @@ class Header extends Component {
 			}
     ];
 
-    navbarLeftList = (this.state.isLoggedIn ? navbarLeftList
+    navbarLeftList = (this.props.isAuthenticated ? navbarLeftList.slice(0, 1)
       .concat(navbarLeftListLoggedIn) : navbarLeftList);
-    navbarRightList = (this.state.isLoggedIn ? navbarRightList
+    navbarRightList = (this.props.isAuthenticated ? navbarRightList
       .concat(navbarRightListLoggedIn) : navbarRightList);
 
 
@@ -138,7 +161,8 @@ class Header extends Component {
 			}, {
         href: '#',
         aValue: 'Sign Out',
-        icon: 'fa-sign-out'
+        icon: 'fa-sign-out',
+        onClick: this.onLogout
 			}
     ];
 
@@ -205,4 +229,27 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+Header.propTypes = propTypes;
+Header.contextTypes = contextTypes;
+
+/**
+ * @description Maps state from store to props
+ * @param {object} state - redux store state
+ * @returns {object} map state to props
+ */
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  user: state.auth.user
+});
+
+/**
+ * @description Maps dispatch to props
+ * @param {object} dispatch
+ * @returns {object} map dispatch to props
+ */
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+  logoutUser
+}, dispatch);
+
+export { Header };
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

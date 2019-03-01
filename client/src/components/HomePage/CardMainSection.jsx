@@ -25,6 +25,7 @@ const CardMainSection = (props) => (
                 href = {item.href}
                 caption = {item.caption}
                 note = {item.note}
+                key = {index}
               />))}
             </div>
           </div>

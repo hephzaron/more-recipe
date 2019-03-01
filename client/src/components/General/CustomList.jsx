@@ -85,7 +85,7 @@ class CustomList extends Component {
 			return (
 				<li key = {index}
 					className = {classnames(`${liClass}`)}
-          onClick = {onClick}
+          onClick = {onClick ? onClick : null}
           id = {itemId}>
           <a href={href}
             className = {classnames(`${aClass}`, toggle)}
@@ -117,7 +117,7 @@ class CustomList extends Component {
       } = item;
 
       return (
-        <li>
+        <li key={index}>
           <figure>
             <a href={href}>
               <img src={imageSrc} alt={imageAlt}/>
@@ -145,5 +145,9 @@ class CustomList extends Component {
 }
 
 CustomList.propTypes = propTypes;
+
+CustomList.defaultProps = {
+  ulClass: ''
+};
 
 export default CustomList;

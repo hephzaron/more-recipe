@@ -11,8 +11,9 @@ import '../public/scss/main.scss';
 import '../public/css/font-awesome.css';
 import '../public/css/flaticon.css';
 import '../public/css/slick-slider.css';
-import HomePage from './components/HomePage';
-import Modal from './components/Modal';
+//import HomePage from './components/HomePage';
+//import Modal from './components/Modal';
+import Routes from './routes';
 import store from './store';
 import { addFlashMessage } from './actions/flashMessage';
 import { setCurrentUser, logoutUser } from './actions/userAuth';
@@ -62,10 +63,7 @@ if (localStorage.authToken) {
 
 render(
 	<Provider store= {store}>
-		<Fragment>
-			<HomePage/>
-			<Modal/>
-		</Fragment>
+		<Routes/>
 	</Provider>,
 	document.getElementById('app')
 );

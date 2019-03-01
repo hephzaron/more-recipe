@@ -1,10 +1,7 @@
 import axios from 'axios';
-import dotEnv from 'dotenv';
 import setAuthToken from '../utils/setAuthToken';
 import { addFlashMessage } from './flashMessage';
 import types from './types';
-
-dotEnv.config();
 
 const { SERVER_URL } = process.env;
 
@@ -48,7 +45,7 @@ export const loginUser = (userData) => (
 export const login = (userData) => (
   (dispatch) => (
     axios
-    .post('http://127.0.0.1:5000/api/v1/login', userData)
+    .post(`${SERVER_URL}/login`, userData)
     .then((response) => {
       dispatch(addFlashMessage({
         type: 'success',

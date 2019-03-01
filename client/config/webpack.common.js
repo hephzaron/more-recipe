@@ -7,7 +7,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotEnv = require('dotenv');
 const autoprefixer = require('autoprefixer');
 
-dotEnv.config();
+// call dotenv and it will return an Object with a parsed key 
+const env = dotEnv.config().parsed;
+
+// reduce it to a nice object, the same as before
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 /**
  * Sorts chunk in alphabetical order
@@ -31,15 +38,7 @@ const ProvidePlugin = new webpack.ProvidePlugin({
   'window.jQuery': 'jquery'
 });
 
-const DefinePlugin = new webpack.DefinePlugin({
-  "process.env": {
-    PORT: JSON.stringify(process.env.PORT),
-    NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    ROOT_URL: JSON.stringify(process.env.ROOT_URL),
-    SOCKET_URL: JSON.stringify(process.env.SOCKET_URL),
-    API_VERSION: JSON.stringify(process.env.API_VERSION)
-  }
-});
+const DefinePlugin = new webpack.DefinePlugin(envKeys);
 
 module.exports = {
   entry: {

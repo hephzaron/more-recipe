@@ -1,9 +1,7 @@
 import axios from 'axios';
-import dotEnv from 'dotenv';
 import { loginUser } from './userAuth';
 import { addFlashMessage } from './flashMessage';
 
-dotEnv.config();
 const { SERVER_URL } = process.env;
 
 console.log('url', SERVER_URL);
@@ -15,7 +13,7 @@ console.log('url', SERVER_URL);
 export const userSignupRequestAction = (userData) => (
   (dispatch) => (
     axios
-    .post('http://127.0.0.1:5000/api/v1/signup', userData)
+    .post(`${SERVER_URL}/signup`, userData)
     .then((response) => {
       dispatch(addFlashMessage({
         type: 'success',

@@ -6,6 +6,7 @@ import {
 import App from '../components/App';
 import Modal from '../components/Modal';
 import HomePage from '../components/HomePage';
+import LoginPage from '../components/Modal/Login';
 
 /**
  * @function Routes

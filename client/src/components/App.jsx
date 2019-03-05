@@ -4,6 +4,7 @@ import moment from 'moment-timezone';
 
 const { TIMEZONE } = process.env;
 moment().tz(TIMEZONE).format();
+
 const propTypes = {
   children: PropTypes.node.isRequired
 };

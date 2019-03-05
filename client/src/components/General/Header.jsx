@@ -34,6 +34,9 @@ class Header extends Component {
       numOfNewNotifications: 44
     };
     this.onLogout = this.onLogout.bind(this);
+    this.showLoginForm = this.showLoginForm.bind(this);
+    this.showSignupForm = this.showSignupForm.bind(this);
+    this.showSearchForm = this.showSearchForm.bind(this);
   }
 
   /**
@@ -46,6 +49,62 @@ class Header extends Component {
     event.preventDefault();
     this.props.logoutUser();
     this.context.router.history.push('/');
+  }
+
+  /**
+   * @description This handles login form display
+   * @param { object } event
+   * @memberof Header
+   * @returns {void} null
+   */
+  showLoginForm(event) {
+    event.preventDefault();
+    this.context.router.history.push('/login');
+    window.addEventListener('load', () => {
+      document.getElementById('loginmodal').click();
+    });
+  }
+
+  /**
+   * @description This handles signup form display
+   * @param { object } event
+   * @memberof Header
+   * @returns {void} null
+   */
+  showSignupForm(event) {
+    event.preventDefault();
+    this.context.router.history.push('/signup');
+    window.addEventListener('load', () => {
+      document.getElementById('signupmodal').click();
+    });
+  }
+
+  /**
+   * @description This handles search form display
+   * @param { object } event
+   * @memberof Header
+   * @returns {void} null
+   */
+  showSearchForm(event) {
+    event.preventDefault();
+    this.context.router.history.push('/search');
+    window.addEventListener('load', () => {
+      document.getElementById('searchmodal').click();
+    });
+  }
+
+  /**
+   * @description This handles recipeAdd form display
+   * @param { object } event
+   * @memberof Header
+   * @returns {void} null
+   */
+  showRecipeAddForm(event) {
+    event.preventDefault();
+    this.context.router.history.push('/recipes/add');
+    window.addEventListener('load', () => {
+      document.getElementById('newrecipemodal').click();
+    });
   }
 
 	/**
@@ -65,11 +124,13 @@ class Header extends Component {
 				aValue: 'Login',
 				icon: 'fa-sign-in',
         modal: true,
+        onClick: this.showLoginForm,
         dataTarget: 'loginmodal'
 			}, {
 				aValue: 'Register',
 				icon: 'fa-user-plus',
         modal: true,
+        onClick: this.showSignupForm,
         dataTarget: 'signupmodal'
 			}
     ];
@@ -85,6 +146,7 @@ class Header extends Component {
 				aValue: 'New Recipe',
 				icon: 'fa-pencil',
         modal: true,
+        onClick: this.showRecipeAddForm,
         dataTarget: 'newrecipemodal'
 			}, {
         liClass: 'dropdown',
@@ -100,6 +162,7 @@ class Header extends Component {
         href: '#',
         icon: 'fa-search',
         modal: true,
+        onClick: this.showSearchForm,
         dataTarget: 'searchmodal'
 			}
     ];

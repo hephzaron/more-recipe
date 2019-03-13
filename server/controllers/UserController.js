@@ -321,6 +321,11 @@ class UserController {
         message: 'You are not authorize to perform this action'
       });
     }
+    if (!password) {
+      return res.status(400).send({
+        message: 'Please provide a password'
+      });
+    }
     if (password !== confirmPassword) {
       return res.status(400).send({
         message: 'Password does not match'

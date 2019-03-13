@@ -4,7 +4,6 @@ import { addFlashMessage } from './flashMessage';
 
 const { SERVER_URL } = process.env;
 
-console.log('url', SERVER_URL);
 /**
  * @description This makes network request to create an  account for user
  * @param {object} userData - user data for creating a new user
@@ -29,7 +28,6 @@ export const userSignupRequestAction = (userData) => (
           text: errors.response.data.message
         }));
       }
-      console.log(errors);
       return errors;
     })
   )

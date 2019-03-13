@@ -19,7 +19,8 @@ const propTypes = {
   validationError: PropTypes.object.isRequired,
   isLoading: PropTypes.bool.isRequired,
   user: PropTypes.object.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  showResetForm: PropTypes.func.isRequired
 };
 
 const LoginFormModal = (props) => (
@@ -54,7 +55,11 @@ const LoginFormModal = (props) => (
         name={'Login'}
         identifier = {'login'}/>
       <span className={'badge'}>or</span>
-      <a className={'btn btn-default'} data-toggle="modal" data-target="#forgetpasswordmodal">Forgot Password ?</a>
+      <a
+        className={'btn btn-default'}
+        data-toggle="modal"
+        data-target="#forgetpasswordmodal"
+        onClick={props.showResetForm}>Forgot Password ?</a>
     </form>
   </Modal>
 );

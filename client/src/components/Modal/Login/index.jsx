@@ -48,6 +48,7 @@ class Login extends Component {
     this.onGoogleCallback = this.onGoogleCallback.bind(this);
     this.onFacebookCallback = this.onFacebookCallback.bind(this);
     this.onGoogleFailure = this.onGoogleFailure.bind(this);
+    this.showResetForm = this.showResetForm.bind(this);
   }
 
   /**
@@ -78,6 +79,20 @@ class Login extends Component {
       this.setState({ errors });
     }
     return isValid;
+  }
+
+  /**
+   * @description This validates user entry
+   * @param {object} event
+   * @returns {void} null
+   * @memberof Login
+   */
+  showResetForm(event) {
+    event.preventDefault();
+    this.context.router.history.push('/users/reset_password');
+    window.addEventListener('load', () => {
+      document.getElementById('forgetpasswordmodal').click();
+    });
   }
 
    /**
@@ -179,7 +194,8 @@ class Login extends Component {
         onChange = {this.onChange}
         onSubmit = {this.onSubmit}
         isLoading = {this.state.isLoading}
-        user = {this.state.user}>
+        user = {this.state.user}
+        showResetForm = {this.showResetForm}>
         {
           <div className="row container my-3 justify-content-center">
             <GoogleLogin

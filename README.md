@@ -25,25 +25,32 @@ More-Recipe is an online recipe mannagement application, where users can upload 
 2. Navigate to working directory and install dependencies:
 
 ```
-npm install 
+npm install
 ```
-
-3. Install sequelize-cli, Create Postgresql database, Navigate to server directory and run migrations:
+3. Create more-recipe database
+```
+createdb -U user more-recipe
+```
+4. Install sequelize-cli, Create Postgresql database, Navigate to server directory and run migrations:
 
 ```
 npm install -g seqeulize-cli
-cd server
 sequelize db:migrate
 ```
 
-4. Create a `.env` file in the root directory of the application. Use a different database for your testing and development. Example of the content of a .env file looks like this
+5. Create a `.env` file in the root directory of the application. Use a different database for your testing and development. Example of the content of a .env file looks like this
 
 ```
 PRIVATE_KEY=myprivatekey
-TEST_DATABASE_URL=postgres://127.0.0.1:5000/more-recipe-test
+TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/more-recipe
+DEVELOPMENT_DB_NAME = name
+DEVELOPMENT_DB_HOST = host
+DEVELOPMENT_DB_PORT = port
+DEVELOPMENT_DB_PASSWORD = password
+DEVELOPMENT_DB_USERNAME = user
 ```
 
-5. Start the server:
+6. Start the server:
 
 ```
 npm run start:dev
@@ -68,7 +75,7 @@ Ensure the underlisted are installed on your PC before running this application
 2. Navigate to working directory and install dependencies:
 
 ```
-npm install 
+npm install
 ```
 
 3. Install sequelize-cli, Create Postgresql database, Navigate to server directory and run migrations:

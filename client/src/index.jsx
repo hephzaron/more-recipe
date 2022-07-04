@@ -1,13 +1,6 @@
 import React from 'react';
-import { render } from 'react-dom';
-import '../public/css/bootstrap.css';
-import '../public/css/color.css';
-import '../public/css/image.css';
-import '../public/css/font-awesome.css';
-import '../public/css/responsive.css';
-//import '../../template/style.css';
-import '../public/scss/main.scss';
-import Header from './components/general/Header';
+import ReactDOM from 'react-dom';
+import App from './App';
 
 /**
  * @description The entry point - this will render the application with it's
@@ -15,7 +8,4 @@ import Header from './components/general/Header';
  * @returns {void}
  */
 
-render(
-	<Header/>,
-	document.getElementById('app')
-);
+ ReactDOM.render(<App />, document.getElementById('root'));

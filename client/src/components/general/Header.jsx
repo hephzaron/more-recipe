@@ -19,39 +19,34 @@ class Header extends Component {
   }
 
   render =() => (
-      <div className="App-header">
-        <h1
-          onClick={() => {
-            this.navTo('');
-          }}>
-          WAW-RECIPE
-        </h1>
-        <h2
-          onClick={() => {
-            this.navTo('');
-          }}>
-          Home
-        </h2>
-        <h2
-          onClick={() => {
-            this.navTo('/recipes');
-          }}>
-          View Recipe
-        </h2>
-        <h2
-          onClick={() => {
-            this.navTo('/recipe');
-          }}>
-          New Post
-        </h2>
-		<h2
-          onClick={() => {
-            this.navTo('/user');
-          }}>
-          User
-        </h2>
+      <div className="topnav">
+        <a className="active" onClick={() => {
+          this.navTo('/');
+          }}>Home</a>
+        <a onClick={() => {
+          this.navTo('/recipes');
+          }}>Add</a>
+        <a onClick={() => {
+          this.navTo('/recipes');
+          }}>My Recipe</a>
+        <div className="search-container">
+          <form action="/action_page.php">
+            <input type="text" placeholder="Search.." name="search"/>
+            <button type="submit"><i className="fa fa-search"/></button>
+          </form>
+        </div>
+        <div className="user-profile">
+          <div className="user-notification">
+            <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
+            <span className="no-of-notification">2</span>
+          </div>
+          <span className="partition"/>
+          <div className="user-image">
+            <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
+          </div>
+        </div>
       </div>
-    );
+  );
 }
 
 export default Header;

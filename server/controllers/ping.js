@@ -8,6 +8,6 @@ import { OrderReviews } from '../middlewares';
  * @returns { promise } res
  */
 export default (req, res) => {
-  const inst = new OrderReviews();
-  return res.status(200).send(inst.structure(userReviews));
+  const orderReviews = new OrderReviews();
+  return res.status(200).send(orderReviews.structure(userReviews));
 };

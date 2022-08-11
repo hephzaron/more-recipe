@@ -10,33 +10,6 @@ import Header from '../general/Header';
  * @returns { JSX } JSX component
  */
 class HomePage extends Component {
-    /**
-     * Create an instance of HomePage Component
-     * @method constructor
-     * @memberof HomePage
-     * @param {object} props
-     * @returns { null } void
-     */
-    constructor(props) {
-        super(props);
-        this.state = {
-            recipes: []
-        };
-    }
-
-    /**
-     * A class method of superclass Component
-     * @method componentDidMount
-     * @memberof HomePage
-     * @param {null} void
-     * @returns { null } void
-     */
-    componentDidMount() {
-        this.setState({
-            recipes: [...this.props.recipes]
-        });
-    }
-
  /**
    * Renders HomePage Component
    * @method render
@@ -45,7 +18,7 @@ class HomePage extends Component {
    * @returns { JSX }  JSX component
    */
     render() {
-        const { recipes } = this.state;
+        const { recipes } = this.props;
         return (
             <div>
                 <Header/>

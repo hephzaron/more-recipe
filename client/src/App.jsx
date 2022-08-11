@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import '../public/css/bootstrap.css';
-import '../public/css/color.css';
-import '../public/css/image.css';
-import '../public/css/font-awesome.css';
-import '../public/css/responsive.css';
-import '../public/scss/main.scss';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import './assets/css/card.css';
 import './assets/css/header.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -29,6 +25,20 @@ class App extends Component {
     };
   }
 
+
+  /**
+   * A class method of superclass Component
+   * @method componentDidMount
+   * @memberof App
+   * @param {null} void
+   * @returns { null } void
+   */
+  componentDidMount() {
+    this.setState({
+      recipes: [...this.props.recipes]
+    });
+  }
+
   /**
    * Renders HomePage Component
    * @method render
@@ -44,4 +54,13 @@ class App extends Component {
     );
 }
 
-export default App;
+App.propTypes = {
+  recipes: PropTypes.array.isRequired
+};
+
+const mapStateToProps = (state) => ({
+  recipes: state.recipes
+});
+
+export { App };
+export default connect(mapStateToProps)(App);

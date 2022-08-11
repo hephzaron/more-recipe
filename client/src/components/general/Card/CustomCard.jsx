@@ -1,6 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+/**
+ * @function CustomCard
+ * @description This renders the Notification component
+ * @param { object } props
+ * @return { JSX } - JSX Notification Component
+ */
 const CustomCard = (props) => {
     const {
         id,

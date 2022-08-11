@@ -5,10 +5,10 @@ import '../public/css/image.css';
 import '../public/css/font-awesome.css';
 import '../public/css/responsive.css';
 import '../public/scss/main.scss';
+import './assets/css/card.css';
+import './assets/css/header.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Header from './components/general/Header';
-import Notification from './components/general/Notification';
-
+import HomePage from './components/pages/HomePage';
 /**
  * React App
  * @class App
@@ -16,13 +16,30 @@ import Notification from './components/general/Notification';
  */
 class App extends Component {
   /**
-   * render
+   * Create an App instance
+   * @method constructor
    * @memberof App
-   * @returns { object } JSX
+   * @param { object } props
+   * @returns { null } void
+   */
+  constructor(props) {
+    super(props);
+    this.state = {
+      recipes: []
+    };
+  }
+
+  /**
+   * Renders HomePage Component
+   * @method render
+   * @memberof App
+   * @param {null} void
+   * @returns { JSX }  JSX component
    */
   render = () => (
       <div>
-        <Header path />
+        <HomePage
+          recipes= {this.state.recipes}/>
       </div>
     );
 }

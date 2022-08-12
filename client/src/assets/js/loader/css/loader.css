@@ -4,10 +4,12 @@
   border-top: 16px solid #6d075c;
   /* Green */
   border-radius: 50% !important;
-  width: 60px;
-  height: 60px;
   animation: spin 2s linear infinite;
+  position: absolute;
   margin: auto;
+  display: block;
+  top: 30%;
+  left: 50%;
   height: 250px;
   width: 250px;
   z-index: 111;

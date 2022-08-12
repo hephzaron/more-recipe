@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import CardComponent from '../general/Card';
 import Header from '../general/Header';
-
+import { fetchRecipes } from '../../actions/recipeActions';
 /**
  * Class component for homepage
  * @class HomePage
@@ -10,7 +12,18 @@ import Header from '../general/Header';
  * @returns { JSX } JSX component
  */
 class HomePage extends Component {
- /**
+    /**
+   * Renders HomePage Component
+   * @method render
+   * @memberof HomePage
+   * @param {null} void
+   * @returns { JSX }  JSX component
+   */
+    componentDidMount() {
+        this.props.dispatch(fetchRecipes());
+      }
+
+  /**
    * Renders HomePage Component
    * @method render
    * @memberof HomePage
@@ -18,12 +31,22 @@ class HomePage extends Component {
    * @returns { JSX }  JSX component
    */
     render() {
-        const { recipes } = this.props;
+        const { recipes, error, loading } = this.props;
+
+        if (error) {
+            return <div> Error: {error.message}</div>;
+        }
+
+        if (loading) {
+            return <div>Loading...</div>;
+        }
+
         return (
             <div>
                 <Header/>
                 {recipes && recipes.map(recipe => (
                     <CardComponent
+                        key = {recipe.id}
                         recipe = {recipe}/>))}
             </div>
         );
@@ -31,7 +54,16 @@ class HomePage extends Component {
 }
 
 HomePage.propTypes = {
-    recipes: PropTypes.array.isRequired
+    recipes: PropTypes.array,
+    loading: PropTypes.bool,
+    error: PropTypes.object,
+    dispatch: PropTypes.func
 };
 
-export default HomePage;
+const mapStateToProps = (state) => ({
+    recipes: state.recipeReducer.recipes || [],
+    loading: state.recipeReducer.loading,
+    error: state.recipeReducer.error
+  });
+
+export default connect(mapStateToProps)(HomePage);

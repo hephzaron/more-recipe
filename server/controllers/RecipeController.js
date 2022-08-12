@@ -216,7 +216,7 @@ class RecipeController {
     return Recipe
       .findAll({
         where,
-        limit: limit || 10,
+        limit: limit || 8,
         offset: offset || 0,
         include: [{
           model: RecipeVote,

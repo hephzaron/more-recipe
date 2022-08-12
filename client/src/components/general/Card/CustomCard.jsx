@@ -24,6 +24,8 @@ const CustomCard = (props) => {
         upVotes
     } = props.recipe;
 
+    const shortDescription = description.slice(0, 40).concat('...');
+
     const photoUrl = "https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"
     return (
         <figure className="recipe">
@@ -44,7 +46,7 @@ const CustomCard = (props) => {
                     </div>
                 </div>
                 <p className="recipe_description">
-                    {description}
+                    {shortDescription}
                     <a href="">Read More</a>
                 </p>
                 <div className="recipe_details">

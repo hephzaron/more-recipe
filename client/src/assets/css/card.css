@@ -65,11 +65,11 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
 }
 
 .recipe_tag--1 {
-    background-color: #A9C9FF;
+    background-color: #7f9fd8;
 }
 
 .recipe_tag--2 {
-    background-color: #FFBBEC;
+    background-color: #e68ecd;
 }
 
 .recipe_description {
@@ -89,8 +89,8 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
     align-items: center;
 }
 
-.icons i {
-    margin-right: 3px;
+.icons .fas {
+    margin-right: 2px;
     font-size: 18px;
 }
 

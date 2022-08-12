@@ -1,5 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Moment from "react-moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faSave, faMugHot, faUser, faClock, faTrash, faThumbsUp, faHeart
+} from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @function CustomCard
@@ -13,21 +18,30 @@ const CustomCard = (props) => {
         userId,
         name,
         description,
-        photoUrl,
+        //photoUrl,
         createdAt,
-        likes
+        likes,
+        upVotes
     } = props.recipe;
+
+    const photoUrl = "https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"
     return (
         <figure className="recipe">
             <div className="recipe_img_container">
-                <span className="save-recipe"><i className="fas fa-save"/></span>
+                <span className="save-recipe"><FontAwesomeIcon className="fas fa-save" icon={faSave}/></span>
                 <img src={photoUrl} alt="Recipe" className="recipe_img"/>
             </div>
             <div className="recipe_content">
                 <div className="recipe_title">
-                    <h1 className="heading_primary">{name}<i className="fas fa-mug-hot"/></h1>
-                    <div className="recipe_tag recipe_tag--1">{id}</div>
-                    <div className="recipe_tag recipe_tag--2">{likes}</div>
+                    <h1 className="heading_primary">{name}<FontAwesomeIcon className="fas" icon={faMugHot}/></h1>
+                    <div className="recipe_tag recipe_tag--1">
+                        <FontAwesomeIcon className="fas" icon={faThumbsUp}/>
+                        {likes}
+                    </div>
+                    <div className="recipe_tag recipe_tag--2">
+                        <FontAwesomeIcon className="fas" icon={faHeart}/>
+                        {upVotes}
+                    </div>
                 </div>
                 <p className="recipe_description">
                     {description}
@@ -36,18 +50,21 @@ const CustomCard = (props) => {
                 <div className="recipe_details">
                     <p className="recipe_detail">
                         <span className="icons icons-red">
-                            <i className="fas fa-user"/>
+                            <FontAwesomeIcon className="fas" icon={faUser}/>
                         </span>
-                        <b><a href="">{userId}</a></b>
+                        <b><a href="">{`userfirstname surname${userId}`}</a></b>
                     </p>
                     <p className="recipe_detail">
                         <span className="icons icons-grey">
-                            <i className="fas fa-clock"/>
-                        </span>{createdAt}
+                            <FontAwesomeIcon className="fas" icon={faClock}/>
+                        </span>
+                        <Moment fromNow>
+                            {createdAt}
+                        </Moment>
                     </p>
                     <p className="recipe_detail">
                         <span className="icons icons-grey">
-                            <i className="fas fa-trash"/>
+                        <FontAwesomeIcon className="fas fa-trash" icon={faTrash}/>
                         </span>
                     </p>
                 </div>

@@ -8,7 +8,7 @@ import React, { Component } from 'react';
  * @return { JSX } - JSX Header Component
  */
 class Header extends Component {
-  /**
+/**
  * @description Creates an instance of Header class
  * @return {void}
  */

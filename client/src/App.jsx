@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './assets/css/card.css';
 import './assets/css/header.css';
+import './assets/css/homepage.css';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import HomePage from './components/pages/HomePage';
 /**

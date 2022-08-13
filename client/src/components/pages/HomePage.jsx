@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CardComponent from '../general/Card';
+import Pagination from '../general/Pagination';
 import Header from '../general/Header';
 import { fetchRecipes } from '../../actions/recipeActions';
 /**
@@ -44,10 +45,13 @@ class HomePage extends Component {
         return (
             <div>
                 <Header/>
+                <div className="recipe-list">
                 {recipes && recipes.map(recipe => (
                     <CardComponent
                         key = {recipe.id}
                         recipe = {recipe}/>))}
+                </div>
+                <Pagination/>
             </div>
         );
     }

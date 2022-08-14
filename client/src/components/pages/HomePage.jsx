@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
@@ -14,25 +15,59 @@ import { fetchRecipes } from '../../actions/recipeActions';
  */
 class HomePage extends Component {
     /**
-   * Renders HomePage Component
-   * @method render
-   * @memberof HomePage
-   * @param {null} void
-   * @returns { JSX }  JSX component
-   */
+     * Creates an instance of HomePage component
+     * @method constructor
+     * @param {object} props
+     * @returns {null} void
+     */
+    constructor(props) {
+        super(props);
+        this.state = {
+            currentPage: 1,
+            currentRecipes: []
+        };
+    }
+
+    /**
+     * Life Cycle method when component mounts
+     * @method componentDidMount
+     * @memberof HomePage
+     * @param {null} void
+     * @returns { null }  void
+     */
     componentDidMount() {
         this.props.dispatch(fetchRecipes());
-      }
+    }
 
-  /**
-   * Renders HomePage Component
-   * @method render
-   * @memberof HomePage
-   * @param {null} void
-   * @returns { JSX }  JSX component
-   */
+    /**
+     * Lifecycle method when components update
+     * @method componentDidUpdate
+     * @memberof HomePage
+     * @param {object} prevProps
+     * @returns {null} void
+     */
+    componentDidUpdate(prevProps) {
+        if (this.props.currentPage !== prevProps.currentPage) {
+            const { recipes, currentPage } = this.props;
+            const end = (currentPage * 8);
+            const start = end - 8;
+            const currentRecipes = recipes.slice(start, end);
+            this.setState({ currentRecipes, currentPage });
+        }
+    }
+
+    /**
+     * Renders HomePage Component
+     * @method render
+     * @memberof HomePage
+     * @param {null} void
+     * @returns { JSX }  JSX component
+     */
     render() {
-        const { recipes, error, loading } = this.props;
+        const { currentRecipes } = this.state;
+        const { error, loading, recipes } = this.props;
+
+        const activeRecipes = currentRecipes.length === 0 ? recipes.slice(0, 8) : currentRecipes;
 
         if (error) {
             return <div> Error: {error.message}</div>;
@@ -46,7 +81,7 @@ class HomePage extends Component {
             <div>
                 <Header/>
                 <div className="recipe-list">
-                {recipes && recipes.map(recipe => (
+                {activeRecipes && activeRecipes.map(recipe => (
                     <CardComponent
                         key = {recipe.id}
                         recipe = {recipe}/>))}
@@ -61,13 +96,15 @@ HomePage.propTypes = {
     recipes: PropTypes.array,
     loading: PropTypes.bool,
     error: PropTypes.object,
+    currentPage: PropTypes.number,
     dispatch: PropTypes.func
 };
 
 const mapStateToProps = (state) => ({
     recipes: state.recipeReducer.recipes || [],
     loading: state.recipeReducer.loading,
-    error: state.recipeReducer.error
+    error: state.recipeReducer.error,
+    currentPage: state.paginationReducer.currentPage
   });
 
 export default connect(mapStateToProps)(HomePage);

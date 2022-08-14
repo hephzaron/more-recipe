@@ -25,13 +25,14 @@ export const fetchRecipesFailure = (error) => ({
 /**
  * Get recipes
  * @description Get recipes from server
- * @param {void} null - no parameter
+ * @param {String} offset - offset query to fetch paginated items
  * @returns { promise } -Axios http response
  */
-export const fetchRecipes = () => (
+export const fetchRecipes = (offset = 0) => (
     dispatch => {
+        const limit = 40;
         dispatch(fetchRecipesBegin());
-        axios.get('http://localhost:5000/api/v1/recipes')
+        axios.get(`http://localhost:5000/api/v1/recipes?offset=${offset}&limit=${limit}`)
         .then((response) => {
             dispatch(fetchRecipesSuccess(response.data.recipes));
             return response;

@@ -1,6 +1,6 @@
 
 import types from '../actions/actionTypes';
-import { initialState } from './initialState';
+import { initialRecipeState } from './initialState';
 
 const {
     FETCH_RECIPES_BEGIN,
@@ -8,7 +8,7 @@ const {
     FETCH_RECIPES_FAILURE
 } = types;
 
-const recipeReducer = (state = initialState, action = {}) => {
+const recipeReducer = (state = initialRecipeState, action = {}) => {
     switch (action.type) {
         case FETCH_RECIPES_BEGIN:
             return {

@@ -23,15 +23,17 @@
   
 .pagination li a {
     display: block;
-    color: rgb(218, 113, 113);
+    color: rgb(51, 26, 26);
     text-align: center;
     padding: 16px;
     text-decoration: none;
 }
 
 .pagination li a:hover {
-    background-color: #071e3b;
-    border-radius: 50%;
+    background-color: #a5a8ac;
+    color: #042e61;
+    border-radius: 15%;
+    font-weight: bold;
 }
 
 

@@ -1,7 +1,10 @@
-export const initialState = {
+export const initialRecipeState = {
     recipes: [],
     loading: false,
     error: null
 };
 
-export default { initialState };
+export const initialPagerState = {
+    recipePages: [],
+    currentPage: 1
+};

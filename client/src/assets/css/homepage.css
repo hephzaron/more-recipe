@@ -29,11 +29,11 @@
     text-decoration: none;
 }
 
-.pagination li a:hover {
+.pagination li a:hover,
+.pagination .active {
     background-color: #a5a8ac;
     color: #042e61;
     border-radius: 15%;
     font-weight: bold;
 }
-
 

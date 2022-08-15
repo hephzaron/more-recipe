@@ -41,7 +41,6 @@ class Pagination extends Component {
     componentDidMount() {
         this.props.dispatch(setFetchedPages(this.props.recipes, 1, 8));
         const { recipePages } = this.props;
-        console.log('pages1', recipePages);
         this.setState({ recipePages });
     }
 
@@ -54,8 +53,8 @@ class Pagination extends Component {
      */
     componentDidUpdate(prevProps) {
         if (this.props.recipePages !== prevProps.recipePages) {
-            const { recipePages } = this.props;
-            this.setState({ recipePages });
+            const { recipePages, currentPage } = this.props;
+            this.setState({ recipePages, currentPage });
         }
     }
 
@@ -67,7 +66,9 @@ class Pagination extends Component {
      * @returns { null }  void
      */
     setSelectedPage(pageNumber) {
-        this.props.dispatch(setPage(pageNumber));
+        if (this.props.recipePages.includes(pageNumber)) {
+            this.props.dispatch(setPage(pageNumber));
+        }
     }
 
     /**
@@ -91,21 +92,25 @@ class Pagination extends Component {
      * @returns { JSX }  JSX component
      */
     render() {
-        const { recipePages, currentPage } = this.state;
+        const { recipePages, currentPage } = this.props;
         return (
             <div className="pagination">
                 <ul>
                     <li><a>First</a></li>
-                    <li><a><FontAwesomeIcon icon={faAngleDoubleLeft}/></a></li>
+                    <li><a onClick={() => this.setSelectedPage(currentPage - 1)}>
+                        <FontAwesomeIcon icon={faAngleDoubleLeft}/></a>
+                    </li>
                     {
                         recipePages && recipePages.map(pageNumber => (
                             <li key={`${pageNumber}`}
                                 className={`${pageNumber === currentPage ? 'active' : ''}`}>
-                                    <a>{ pageNumber }</a>
+                                    <a onClick={() => this.setSelectedPage(pageNumber)}>{ pageNumber }</a>
                             </li>
                         ))
                     }
-                    <li><a><FontAwesomeIcon icon={faAngleDoubleRight}/></a></li>
+                    <li><a onClick={() => this.setSelectedPage(currentPage + 1)}>
+                        <FontAwesomeIcon icon={faAngleDoubleRight}/></a>
+                    </li>
                     <li><a>Last</a></li>
                 </ul>
             </div>);

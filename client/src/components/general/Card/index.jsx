@@ -31,8 +31,7 @@ class CardComponent extends Component {
     render() {
         return (
             <CustomCard
-                recipe={this.props.recipe}
-                cardActions={this.props.cardActions}/>
+                recipe={this.props.recipe}/>
         );
     }
 }

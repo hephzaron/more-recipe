@@ -30,7 +30,7 @@ export const setRecipesPages = (recipePages) => ({
 export const setFetchedPages = (recipes, beginAt = 1, recipesPerPage = 8) => (
     dispatch => {
         const numberOfFetchedPages = Math.ceil(recipes.length / recipesPerPage);
-        const fetchedPages = [...Array(numberOfFetchedPages).keys()].map(i => i + beginAt);
+        const fetchedPages = Object.assign({}, [...Array(numberOfFetchedPages).keys()].map(i => i + beginAt));
         dispatch(setRecipesPages(fetchedPages));
         return fetchedPages;
     }

@@ -54,7 +54,7 @@ const CustomCard = (props) => {
                         <span className="icons icons-red">
                             <FontAwesomeIcon className="fas" icon={faUser}/>
                         </span>
-                        <b><a href="">{`userfirstname surname${userId}`}</a></b>
+                        <b><a href="">{`Id: ${id} userId: ${userId}`}</a></b>
                     </p>
                     <p className="recipe_detail">
                         <span className="icons icons-grey">

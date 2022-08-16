@@ -4,9 +4,7 @@ import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faAngleDoubleLeft,
-    faAngleDoubleRight,
-    faAngleLeft,
-    faAngleRight
+    faAngleDoubleRight
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import { fetchRecipes } from '../../../actions/recipeActions';
@@ -29,11 +27,10 @@ class Pagination extends Component {
         super(props);
         this.state = {
             currentPage: 1,
-            recipePages: [],
+            recipePages: {},
             offset: 8
         };
         this.setSelectedPage = this.setSelectedPage.bind(this);
-        this.getNextPagesOfRecipes = this.getNextPagesOfRecipes.bind(this);
     }
 
     /**
@@ -44,8 +41,8 @@ class Pagination extends Component {
      * @returns { null }  void
      */
     componentDidMount() {
-        this.props.dispatch(setFetchedPages(this.props.recipes, 1, 8));
-        const { recipePages } = this.props;
+        const { recipePages, recipes } = this.props;
+        this.props.dispatch(setFetchedPages(recipes, recipePages['0'], 8));
         this.setState({ recipePages });
     }
 
@@ -57,9 +54,11 @@ class Pagination extends Component {
      * @returns { null }  void
      */
     componentDidUpdate(prevProps) {
-        if (this.props.recipePages !== prevProps.recipePages) {
-            const { recipePages, currentPage } = this.props;
-            this.setState({ recipePages, currentPage });
+        const { recipePages } = prevProps;
+        const { recipes, currentPage } = this.props;
+        if (currentPage === recipePages['4'] + 1) {
+            this.props.dispatch(setFetchedPages(recipes, currentPage, 8));
+            this.setState({ recipePages });
         }
     }
 
@@ -71,44 +70,12 @@ class Pagination extends Component {
      * @returns { null }  void
      */
     setSelectedPage(pageNumber) {
-        if (this.props.recipePages.includes(pageNumber)) {
-            this.props.dispatch(setPage(pageNumber));
-            this.setState({ currentPage: pageNumber });
+        const { recipePages, currentPage } = this.props;
+        if (Object.keys(recipePages).length === 5 && recipePages['4'] === currentPage) {
+            this.props.dispatch(fetchRecipes(Object.keys(recipePages).length * 8));
         }
-    }
-
-    /**
-     * fetch Next Recipes
-     * @method fetchNextRecipes
-     * @memberof Pagination
-     * @param {bool} prev
-     * @returns { null }  void
-     */
-    fetchNextRecipes(prev) {
-        const { recipes } = this.props;
-        const offset = recipes.length;
-        this.props.dispatch(fetchRecipes(offset));
-    }
-
-    /**
-     * Sets pages fetched from the backend
-     * @method getNextPagesOfRecipes
-     * @memberof Pagination
-     * @param {bool} prev
-     * @returns { null }  void
-     */
-    getNextPagesOfRecipes(prev = false) {
-        const { recipes, recipePages } = this.props;
-        let beginAt = 1;
-        if (recipes !== []) {
-            beginAt = recipePages[recipePages.length - 1] + 1;
-        }
-        if (prev && (recipePages[0] > 1)) {
-            beginAt = recipePages[0] - 4;
-        }
-        this.props.dispatch(setFetchedPages(recipes, beginAt, 8));
-        this.props.dispatch(setPage(beginAt));
-        this.setState({ currentPage: beginAt });
+        this.props.dispatch(setPage(pageNumber));
+        this.setState({ currentPage: pageNumber });
     }
 
     /**
@@ -123,24 +90,18 @@ class Pagination extends Component {
         return (
             <div className="pagination">
                 <ul>
-                    <li><a onClick={() => this.getNextPagesOfRecipes(true)}>
+                    <li><a onClick={() => this.setSelectedPage(currentPage - 1)}>
                         <FontAwesomeIcon icon={faAngleDoubleLeft}/></a>
                     </li>
-                    <li><a onClick={() => this.setSelectedPage(currentPage - 1)}>
-                        <FontAwesomeIcon icon={faAngleLeft}/></a>
-                    </li>
                     {
-                        recipePages && recipePages.map(pageNumber => (
+                        recipePages && Object.entries(recipePages).map(([recipeIndex, pageNumber]) => (
                             <li key={`${pageNumber}`}
                                 className={`${pageNumber === currentPage ? 'active' : ''}`}>
-                                    <a onClick={() => this.setSelectedPage(pageNumber)}>{ pageNumber }</a>
+                                    <a onClick={() => this.setSelectedPage(parseInt(recipeIndex, 10) + 1)}>{ pageNumber }</a>
                             </li>
                         ))
                     }
                     <li><a onClick={() => this.setSelectedPage(currentPage + 1)}>
-                        <FontAwesomeIcon icon={faAngleRight}/></a>
-                    </li>
-                    <li><a onClick={() => this.getNextPagesOfRecipes()}>
                         <FontAwesomeIcon icon={faAngleDoubleRight}/></a>
                     </li>
                 </ul>
@@ -149,7 +110,7 @@ class Pagination extends Component {
 }
 
 Pagination.propTypes = {
-    recipePages: PropTypes.array,
+    recipePages: PropTypes.object,
     currentPage: PropTypes.number,
     dispatch: PropTypes.func,
     recipes: PropTypes.array

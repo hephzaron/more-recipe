@@ -241,7 +241,8 @@ class RecipeController {
       .then((recipes) => {
         if (!recipes || recipes.length === 0) {
           return res.status(200).send({
-            message: 'Oops! No recipe exists in this selection'
+            message: 'Oops! No recipe exists in this selection',
+            recipes: []
           });
         }
         if (recipes.length === 1) {

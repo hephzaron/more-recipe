@@ -5,6 +5,6 @@ export const initialRecipeState = {
 };
 
 export const initialPagerState = {
-    recipePages: [],
+    recipePages: {},
     currentPage: 1
 };

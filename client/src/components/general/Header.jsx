@@ -68,6 +68,7 @@ class Header extends Component {
               <button type="submit"><i className="fa fa-search"/></button>
             </form>
           </div>
+          <button className="user-auth-join-us"> JOIN US </button>
           <div className="user-profile">
             <div className="user-notification">
               <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>

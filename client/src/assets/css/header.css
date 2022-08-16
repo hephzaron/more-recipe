@@ -20,6 +20,7 @@ body {
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    cursor: pointer;
 }
 
 .topnav a:hover {
@@ -42,6 +43,8 @@ body {
     margin-top: 8px;
     font-size: 17px;
     border: none;
+    width: 20em;
+    border-radius: 5px;
 }
 
 .topnav .search-container button {

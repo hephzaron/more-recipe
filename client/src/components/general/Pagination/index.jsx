@@ -71,7 +71,9 @@ class Pagination extends Component {
      */
     setSelectedPage(pageNumber) {
         const { recipePages, currentPage } = this.props;
-        if (Object.keys(recipePages).length === 5 && recipePages['4'] === currentPage) {
+        if (Object.keys(recipePages).length === 5 &&
+            recipePages['4'] === currentPage &&
+            pageNumber >= recipePages['4']) {
             this.props.dispatch(fetchRecipes(Object.keys(recipePages).length * 8));
         }
         this.props.dispatch(setPage(pageNumber));
@@ -96,8 +98,8 @@ class Pagination extends Component {
                     {
                         recipePages && Object.entries(recipePages).map(([recipeIndex, pageNumber]) => (
                             <li key={`${pageNumber}`}
-                                className={`${pageNumber === currentPage ? 'active' : ''}`}>
-                                    <a onClick={() => this.setSelectedPage(parseInt(recipeIndex, 10) + 1)}>{ pageNumber }</a>
+                                className={`${pageNumber === recipePages[`${currentPage - 1}`] ? 'active' : ''}`}>
+                               <a onClick={() => this.setSelectedPage(parseInt(recipeIndex, 10) + 1)}>{ pageNumber }</a>
                             </li>
                         ))
                     }

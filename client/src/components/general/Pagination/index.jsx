@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import { fetchRecipes } from '../../../actions/recipeActions';
 import { setPage, setFetchedPages } from '../../../actions/paginationActions';
+import recipe from '../../../../../server/tests/seeds/recipe';
 
 /**
  * @class Pagination
@@ -56,7 +57,8 @@ class Pagination extends Component {
     componentDidUpdate(prevProps) {
         const { recipePages } = prevProps;
         const { recipes, currentPage } = this.props;
-        if (currentPage === recipePages['4'] + 1) {
+        if ((currentPage === recipePages['4'] + 1) ||
+            (currentPage === recipePages['0'] - 1 && currentPage > 0)) {
             this.props.dispatch(setFetchedPages(recipes, currentPage, 8));
             this.setState({ recipePages });
         }
@@ -73,9 +75,10 @@ class Pagination extends Component {
         const { recipePages, currentPage } = this.props;
         if (Object.keys(recipePages).length === 5 &&
             recipePages['4'] === currentPage &&
-            pageNumber >= recipePages['4']) {
+            pageNumber > recipePages['4']) {
             this.props.dispatch(fetchRecipes(Object.keys(recipePages).length * 8));
         }
+        //const [pageVal] = Object.keys(recipePages).filter((key) => recipePages[key] === pageNumber);
         this.props.dispatch(setPage(pageNumber));
         this.setState({ currentPage: pageNumber });
     }

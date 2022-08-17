@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 /**
  * @class Header
@@ -68,11 +69,13 @@ class Header extends Component {
               <button type="submit"><i className="fa fa-search"/></button>
             </form>
           </div>
-          <button className="user-auth-join-us"> JOIN US </button>
+          <button onClick={() => {
+            this.navTo('/register');
+            }} className="user-auth-join-us">JOIN US </button>
           <div className="user-profile">
             <div className="user-notification">
               <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
-              <span className="no-of-notification">2</span>
+              <span className="no-of-notification"/>
             </div>
             <span className="partition"/>
             <div className="user-image">

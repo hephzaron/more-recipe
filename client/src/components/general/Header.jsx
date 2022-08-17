@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome,  faSearch } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * @class Header
@@ -51,27 +52,26 @@ class Header extends Component {
         <div className="topnav">
           <a className="active" onClick={() => {
             this.navTo('/');
-            }}>Home</a>
+            }}><FontAwesomeIcon icon={faHome}/></a>
           <a onClick={() => {
-            this.navTo('/recipes');
-            }}>Add</a>
-          <a onClick={() => {
-            this.navTo('/recipes');
-            }}>My Recipe</a>
+            this.navTo('/about-us');
+            }}>About Us</a>
           <div className="search-container">
-            <form onSubmit={this.submitSearchForm}>
+            <form className="search-item" onSubmit={this.submitSearchForm}>
+              <FontAwesomeIcon className="fa-search" icon={faSearch}/>
               <input
                 type="text"
-                placeholder="Search.."
                 name="searchTerm"
                 value={values.searchTerm}
                 onChange={this.inputChangeHandler}/>
-              <button type="submit"><i className="fa fa-search"/></button>
             </form>
           </div>
           <button onClick={() => {
             this.navTo('/register');
             }} className="user-auth-join-us">JOIN US </button>
+          <button onClick={() => {
+            this.navTo('/login');
+            }} className="user-auth-login">LOGIN </button>
           <div className="user-profile">
             <div className="user-notification">
               <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>

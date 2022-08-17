@@ -6,7 +6,8 @@ import './assets/css/homepage.css';
 import './assets/css/user-form.css';
 import './assets/css/custom-header.css';
 import HomePage from './components/pages/HomePage';
-import UserForm from './components/pages/UserForm';
+import SignupForm from './components/pages/UserForm/SignupForm';
+import LoginForm from './components/pages/UserForm/LoginForm';
 import Header from './components/general/Header';
 //import CustomHeader from './components/general/CustomHeader';
 
@@ -33,7 +34,10 @@ class App extends Component {
               <HomePage />
             </Route>
             <Route path="/register">
-              <UserForm />
+              <SignupForm />
+            </Route>
+            <Route path="/login">
+              <LoginForm/>
             </Route>
           </Switch>
         </div>

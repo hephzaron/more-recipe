@@ -31,10 +31,12 @@ export const loginUser = (userPayload) => (
             localStorage.setItem('x-access-token', token);
             setAccessToken(token);
             dispatch(setCurrentUser(user));
+            console.log('response', response);
             return response;
         })
         .catch((error) => {
             dispatch(setCurrentUserFailure(error));
+            console.log('error', error);
             return error;
         });
     }

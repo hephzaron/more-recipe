@@ -1,5 +1,10 @@
 import axios from 'axios';
+import dotEnv from 'dotenv';
 import types from './actionTypes';
+
+dotEnv.config();
+
+const { SERVER_URL } = process.env;
 
 const { FETCH_RECIPES_BEGIN, FETCH_RECIPES_SUCCESS, FETCH_RECIPES_FAILURE } = types;
 
@@ -32,7 +37,7 @@ export const fetchRecipes = (offset = 0) => (
     dispatch => {
         const limit = 40;
         dispatch(fetchRecipesBegin());
-        axios.get(`http://localhost:5000/api/v1/recipes?offset=${offset}&limit=${limit}`)
+        axios.get(`${SERVER_URL}/recipes?offset=${offset}&limit=${limit}`)
         .then((response) => {
             dispatch(fetchRecipesSuccess(response.data.recipes));
             return response;

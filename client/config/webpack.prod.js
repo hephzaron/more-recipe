@@ -5,7 +5,12 @@ const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const dotEnv = require('dotenv');
 const common = require('./webpack.common');
+
+dotEnv.config();
+
+const { PRODUTION_SERVER_URL } = process.env;
 
 const extractSass = new ExtractTextPlugin({
   filename: 'css/[name].[contenthash].css',
@@ -38,6 +43,9 @@ module.exports = merge(common, {
     new CompressionPlugin({
       threshold: 10240,
     }),
+    new webpack.EnvironmentPlugin({
+      SERVER_URL: PRODUTION_SERVER_URL
+    })
   ],
   optimization: {
     minimize: true

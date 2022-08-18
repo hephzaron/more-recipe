@@ -8,7 +8,7 @@ const common = require('./webpack.common');
 
 dotEnv.config();
 
-const { PORT, HOST } = process.env;
+const { PORT, HOST, SERVER_URL } = process.env;
 
 module.exports = merge(common, {
   mode: 'development',
@@ -24,7 +24,10 @@ module.exports = merge(common, {
     publicPath: `http://localhost:${PORT}/`
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.EnvironmentPlugin({
+      SERVER_URL: SERVER_URL
+    })
   ],
   devServer: {
     historyApiFallback: true,

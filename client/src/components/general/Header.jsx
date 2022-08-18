@@ -21,6 +21,7 @@ class Header extends Component {
         searchTerm: "",
       }
     };
+    this.toggleNav = this.toggleNav.bind(this);
   }
 
 /**
@@ -41,6 +42,11 @@ class Header extends Component {
     this.setState({ values: { [event.target.name]: event.target.value } });
   }
 
+  toggleNav = () => {
+    const topNav = document.getElementById('topnav');
+    topNav.style.display = topNav.style.display === "block" ? "" : "block";
+  }
+
   /**
  * @description Creates an instance of Header class
  * @param { void } null
@@ -49,7 +55,11 @@ class Header extends Component {
   render() {
     const { values } = this.state;
     return (
-        <div className="topnav">
+        <div>
+          <span id="toggle-nav" onClick= {() => this.toggleNav()}>
+            <i className="fa fa-bars"/>
+          </span>
+        <div className="topnav" id="topnav">
           <a className="active" onClick={() => {
             this.navTo('/');
             }}><FontAwesomeIcon icon={faHome}/></a>
@@ -66,12 +76,14 @@ class Header extends Component {
                 onChange={this.inputChangeHandler}/>
             </form>
           </div>
+          <div className="center-nav">
           <button onClick={() => {
             this.navTo('/register');
             }} className="user-auth-join-us">JOIN US </button>
           <button onClick={() => {
             this.navTo('/login');
             }} className="user-auth-login">LOGIN </button>
+          </div>
           <div className="user-profile">
             <div className="user-notification">
               <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
@@ -82,6 +94,7 @@ class Header extends Component {
               <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
             </div>
           </div>
+        </div>
         </div>
       );
     }

@@ -2,10 +2,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import CardComponent from '../general/Card';
 import Pagination from '../general/Pagination';
-import Header from '../general/Header';
 import { fetchRecipes } from '../../actions/recipeActions';
 /**
  * Class component for homepage

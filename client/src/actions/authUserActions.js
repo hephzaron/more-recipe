@@ -27,16 +27,14 @@ export const loginUser = (userPayload) => (
     dispatch => {
         axios.post(`${SERVER_URL}/login`, userPayload)
         .then((response) => {
-            const { user, token } = response;
+            const { user, token } = response.data;
             localStorage.setItem('x-access-token', token);
             setAccessToken(token);
             dispatch(setCurrentUser(user));
-            console.log('response', response);
-            return response;
+            return response.data;
         })
         .catch((error) => {
-            dispatch(setCurrentUserFailure(error));
-            console.log('error', error);
+            dispatch(setCurrentUserFailure(error['message']));
             return error;
         });
     }

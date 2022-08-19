@@ -12,5 +12,5 @@ export const initialPagerState = {
 export const initialUserState = {
     user: {},
     isAuthenticated: false,
-    error: null
+    error: ''
 };

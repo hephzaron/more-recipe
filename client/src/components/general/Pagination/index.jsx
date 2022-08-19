@@ -9,7 +9,6 @@ import {
 import { connect } from 'react-redux';
 import { fetchRecipes } from '../../../actions/recipeActions';
 import { setPage, setFetchedPages } from '../../../actions/paginationActions';
-import recipe from '../../../../../server/tests/seeds/recipe';
 
 /**
  * @class Pagination

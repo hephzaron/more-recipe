@@ -1,34 +1,60 @@
+/* eslint-disable react/no-did-update-set-state */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { loginUser } from '../../../actions/authUserActions';
 
-/**
- * Form for new user
- * @returns { JSX } - JSX element
- */
 
 const propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    dispatch: PropTypes.func,
+    error: PropTypes.string,
+    isAuthenticated: PropTypes.bool
 };
 
 /**
- *
+ * Class component for LoginForm
+ * @class LoginForm
+ * @param { props } object
+ * @returns { JSX } JSX component
  */
 class LoginForm extends Component {
     /**
-     *
+     * Creates an instance of LoginForm component
+     * @method constructor
      * @param {object} props
+     * @returns {null} void
      */
     constructor(props) {
         super(props);
         this.state = {
-            user: {}
+            user: {},
+            isAuthenticated: false,
+            error: null
         };
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.submitAuthForm = this.submitAuthForm.bind(this);
     }
 
     /**
-     *
-     * @param {*} event
+     * React lifecyle to executes when component updates
+     * @method componentDidUpdate
+     * @memberof LoginForm
+     * @param {object} prevProps
+     * @returns { null }  void
+     */
+    componentDidUpdate(prevProps) {
+        if (this.props.isAuthenticated !== prevProps.isAuthenticated) {
+            const { isAuthenticated, user } = this.props;
+            this.setState({ isAuthenticated, user });
+        }
+    }
+
+    /**
+     * Handles input changes in field entries
+     * @method inputChangeHandler
+     * @memberof LoginForm
+     * @param {object} event
      * @returns {null} void
      */
     inputChangeHandler(event) {
@@ -42,14 +68,30 @@ class LoginForm extends Component {
     }
 
     /**
-     *
+     * Submit completed UserForm
+     * @method submitAuthForm
+     * @memberof LoginForm
+     * @param {object} event
      * @returns {null} void
+     */
+     submitAuthForm(event) {
+        event.preventDefault();
+        const { user } = this.state;
+        this.props.dispatch(loginUser(user));
+    }
+
+    /**
+     * Renders LoginForm Component
+     * @method render
+     * @memberof LoginForm
+     * @param {null} void
+     * @returns { JSX }  JSX component
      */
     render() {
         const { user } = this.state;
         return (
             <div className="user-page login">
-                <form>
+                <form onSubmit={this.submitAuthForm}>
                     <h3>Login</h3>
                     <hr/>
                     <label htmlFor="email">Email *</label>
@@ -75,5 +117,11 @@ class LoginForm extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    user: state.userAuthReducer.user,
+    isAuthenticated: state.userAuthReducer.isAuthenticated,
+    error: state.userAuthReducer.error
+});
+
 LoginForm.propTypes = propTypes;
-export default LoginForm;
+export default connect(mapStateToProps)(LoginForm);

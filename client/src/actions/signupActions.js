@@ -1,6 +1,6 @@
 import axios from 'axios';
 import dotEnv from 'dotenv';
-import { loginUser } from './authUserActions';
+import { loginUser, setCurrentUserFailure } from './authUserActions';
 
 dotEnv.config();
 
@@ -11,19 +11,19 @@ const { SERVER_URL } = process.env;
  * @param {object} userPayload - user payload for creating a new user
  * @returns { promise } Axios http response
  */
-const registerUser = (userPayload) => (
+export const registerUser = (userPayload) => (
     dispatch => {
         const { email, password } = userPayload;
         axios.post(`${SERVER_URL}/signup`, userPayload)
         .then((response) => {
             dispatch(loginUser({ email, password }));
-            return response;
+            return response.data;
         })
         .catch((error) => {
-            dispatch();
+            dispatch(setCurrentUserFailure(error['message']));
             return error;
         });
     }
 );
 
-export default registerUser;
+export default {};

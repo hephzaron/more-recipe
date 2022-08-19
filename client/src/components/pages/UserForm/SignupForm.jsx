@@ -1,22 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-
-/**
- * Form for new user
- * @returns { JSX } - JSX element
- */
+import { connect } from 'react-redux';
+import { registerUser } from '../../../actions/signupActions';
 
 const propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    dispatch: PropTypes.func,
+    error: PropTypes.string
 };
 
 /**
- *
+ * Class component for SignupForm
+ * @class SignupForm
+ * @param { props } object
+ * @returns { JSX } JSX component
  */
 class SignupForm extends Component {
     /**
-     *
+     * Creates an instance of SignupForm component
+     * @method constructor
      * @param {object} props
+     * @returns {null} void
      */
     constructor(props) {
         super(props);
@@ -24,11 +28,14 @@ class SignupForm extends Component {
             user: {}
         };
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
+        this.submitUserForm = this.submitUserForm.bind(this);
     }
 
     /**
-     *
-     * @param {*} event
+     * Handles input changes in field entries
+     * @method inputChangeHandler
+     * @memberof SignupForm
+     * @param {object} event
      * @returns {null} void
      */
     inputChangeHandler(event) {
@@ -42,14 +49,30 @@ class SignupForm extends Component {
     }
 
     /**
-     *
+     * Submit completed UserForm
+     * @method submitUserForm
+     * @memberof SignupForm
+     * @param {object} event
      * @returns {null} void
+     */
+    submitUserForm(event) {
+        event.preventDefault();
+        const { user } = this.state;
+        this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }));
+    }
+
+    /**
+     * Renders SignupForm Component
+     * @method render
+     * @memberof SignupForm
+     * @param {null} void
+     * @returns { JSX }  JSX component
      */
     render() {
         const { user } = this.state;
         return (
             <div className="user-page signup">
-                <form>
+                <form onSubmit={this.submitUserForm}>
                     <h3>Sign Up</h3>
                     <hr/>
                     <label htmlFor="username">Username *</label>
@@ -66,19 +89,19 @@ class SignupForm extends Component {
                         name="email"
                         value={user.email || ''}
                         onChange={this.inputChangeHandler}/>
-                    <label htmlFor="firstname">Firstname *</label>
+                    <label htmlFor="firstName">Firstname *</label>
                     <input
                         type="text"
-                        id="firstname"
-                        name="firstname"
-                        value={user.firstname || ''}
+                        id="firstName"
+                        name="firstName"
+                        value={user.firstName || ''}
                         onChange={this.inputChangeHandler}/>
-                    <label htmlFor="lastname">Lastname *</label>
+                    <label htmlFor="lastName">Lastname *</label>
                     <input
                         type="text"
-                        id="lastname"
-                        name="lastname"
-                        value={user.lastname || ''}
+                        id="lastName"
+                        name="lastName"
+                        value={user.lastName || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="age">Age *</label>
                     <input
@@ -116,5 +139,11 @@ class SignupForm extends Component {
     }
 }
 
+const mapStateToProps = (state) => ({
+    user: state.userAuthReducer.user,
+    isAuthenticated: state.userAuthReducer.isAuthenticated,
+    error: state.userAuthReducer.error
+});
+
 SignupForm.propTypes = propTypes;
-export default SignupForm;
+export default connect(mapStateToProps)(SignupForm);

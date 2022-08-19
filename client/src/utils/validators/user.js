@@ -1,6 +1,13 @@
 import validator from 'validator';
 import { isEmpty, isInteger } from 'lodash';
 
+/**
+ * @description Function to validate user form entries
+ * @param { string } field - form field to be validated
+ * @param { object } user - user payload
+ * @returns { object } validationErrors - An object containing form validation errors
+ * @returns { bool } isValid - status of form validation errors
+ */
 export const userValidator = (field, user) => {
     let validationErrors = {};
     const alphaNumRe = /^\w+$/;

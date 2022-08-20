@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { validateUserForm } from '../../../utils/validators/user';
 import { loginUser } from '../../../actions/authUserActions';
 
 
@@ -30,7 +31,8 @@ class LoginForm extends Component {
         this.state = {
             user: {},
             isAuthenticated: false,
-            error: null
+            errors: {},
+            isValid: false
         };
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submitAuthForm = this.submitAuthForm.bind(this);
@@ -77,7 +79,17 @@ class LoginForm extends Component {
      submitAuthForm(event) {
         event.preventDefault();
         const { user } = this.state;
-        this.props.dispatch(loginUser(user));
+        const { validationErrors } = validateUserForm(user);
+        const { email, password } = validationErrors;
+        const isValid = !(email || password);
+        this.setState({
+            errors: { email, password },
+            isValid
+        });
+
+        if (this.state.isValid) {
+            this.props.dispatch(loginUser(user));
+        }
     }
 
     /**
@@ -88,13 +100,17 @@ class LoginForm extends Component {
      * @returns { JSX }  JSX component
      */
     render() {
-        const { user } = this.state;
+        const { user, errors } = this.state;
         return (
             <div className="user-page login">
                 <form onSubmit={this.submitAuthForm}>
                     <h3>Login</h3>
                     <hr/>
                     <label htmlFor="email">Email *</label>
+                    {
+                        errors.email &&
+                        <p className="error-text">{errors.email}</p>
+                    }
                     <input
                         type="text"
                         id="email"
@@ -102,6 +118,10 @@ class LoginForm extends Component {
                         value={user.email || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="password">Password *</label>
+                    {
+                        errors.password &&
+                        <p className="error-text">{errors.password}</p>
+                    }
                     <input
                         type="password"
                         id="password"

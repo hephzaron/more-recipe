@@ -77,3 +77,9 @@
 .user-page.login form{
     height:270px;
 }
+.error-text {
+    color:red;
+    font-size:small;
+    padding-left: 10px;
+    font-weight: bold
+}

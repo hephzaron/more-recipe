@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import { registerUser } from '../../../actions/signupActions';
+import { validateUserForm } from '../../../utils/validators/user';
 
 const propTypes = {
     user: PropTypes.object,
@@ -25,11 +27,22 @@ class SignupForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            user: {}
+            user: {
+                username: '',
+                email: '',
+                firstName: '',
+                lastName: '',
+                age: '',
+                password: '',
+                confirmPassword: ''
+            },
+            errors: {},
+            isValid: false
         };
         this.inputChangeHandler = this.inputChangeHandler.bind(this);
         this.submitUserForm = this.submitUserForm.bind(this);
     }
+
 
     /**
      * Handles input changes in field entries
@@ -40,10 +53,11 @@ class SignupForm extends Component {
      */
     inputChangeHandler(event) {
         event.preventDefault();
+        const { name, value } = event.target;
         this.setState({
             user: {
                 ...this.state.user,
-                [event.target.name]: event.target.value
+                [name]: value
             }
         });
     }
@@ -58,7 +72,15 @@ class SignupForm extends Component {
     submitUserForm(event) {
         event.preventDefault();
         const { user } = this.state;
-        this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }));
+        const { validationErrors, isValid } = validateUserForm(user);
+        this.setState({
+            errors: { ...validationErrors },
+            isValid
+        });
+
+        if (this.state.isValid) {
+            this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }));
+        }
     }
 
     /**
@@ -69,13 +91,17 @@ class SignupForm extends Component {
      * @returns { JSX }  JSX component
      */
     render() {
-        const { user } = this.state;
+        const { user, errors } = this.state;
         return (
             <div className="user-page signup">
                 <form onSubmit={this.submitUserForm}>
                     <h3>Sign Up</h3>
                     <hr/>
                     <label htmlFor="username">Username *</label>
+                    {
+                        errors.username &&
+                        <p className="error-text">{errors.username}</p>
+                    }
                     <input
                         type="text"
                         id="username"
@@ -83,6 +109,10 @@ class SignupForm extends Component {
                         value={user.username || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="email">Email *</label>
+                    {
+                        errors.email &&
+                        <p className="error-text">{errors.email}</p>
+                    }
                     <input
                         type="text"
                         id="email"
@@ -90,6 +120,10 @@ class SignupForm extends Component {
                         value={user.email || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="firstName">Firstname *</label>
+                    {
+                        errors.firstName &&
+                        <p className="error-text">{errors.firstName}</p>
+                    }
                     <input
                         type="text"
                         id="firstName"
@@ -97,6 +131,10 @@ class SignupForm extends Component {
                         value={user.firstName || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="lastName">Lastname *</label>
+                    {
+                        errors.lastName &&
+                        <p className="error-text">{errors.lastName}</p>
+                    }
                     <input
                         type="text"
                         id="lastName"
@@ -104,6 +142,10 @@ class SignupForm extends Component {
                         value={user.lastName || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="age">Age *</label>
+                    {
+                        errors.age &&
+                        <p className="error-text">{errors.age}</p>
+                    }
                     <input
                         type="number"
                         id="age"
@@ -117,6 +159,10 @@ class SignupForm extends Component {
                         <option value="male">Male</option>
                     </select>
                     <label htmlFor="password">Password *</label>
+                    {
+                        errors.pasword &&
+                        <p className="error-text">{errors.password}</p>
+                    }
                     <input
                         type="password"
                         id="password"
@@ -124,6 +170,10 @@ class SignupForm extends Component {
                         value={user.password || ''}
                         onChange={this.inputChangeHandler}/>
                     <label htmlFor="confirmPassword">Confirm Password *</label>
+                    {
+                        errors.confirmPassword &&
+                        <p className="error-text">{errors.confirmPassword}</p>
+                    }
                     <input
                         type="password"
                         id="confirmPassword"

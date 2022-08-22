@@ -112,6 +112,7 @@ class Header extends Component {
               this.props.isAuthenticated &&
               <ul className="auth-header">
                 <li><a>My Favorites</a></li>
+                <li><a>My Recipes</a></li>
                 <li><a>Create Recipe</a></li>
                 <li><a id="user-notification"><FontAwesomeIcon icon={faBell}/>
                   <span className="no-of-notification"/></a>

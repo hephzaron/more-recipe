@@ -154,8 +154,8 @@ class SignupForm extends Component {
                     <label htmlFor="sex">Gender *</label>
                     <select id="sex" name="sex"
                         onChange={this.inputChangeHandler}>
-                        <option value="female">Female</option>
-                        <option value="male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
                     </select>
                     <label htmlFor="password">Password *</label>
                     {

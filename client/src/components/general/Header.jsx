@@ -81,7 +81,7 @@ class Header extends Component {
             </form>
           </div>
           {
-            this.props.isAuthenticated &&
+            !this.props.isAuthenticated &&
             <div className="center-nav">
               <button onClick={() => {
                 this.navTo('/register');
@@ -91,21 +91,8 @@ class Header extends Component {
                 }} className="user-auth-login">LOGIN </button>
             </div>
           }
-          {/*
-            <div className="user-profile">
-              <button> Create Recipe</button>
-              <div className="user-notification">
-                <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
-                <span className="no-of-notification"/>
-              </div>
-              <span className="partition"/>
-              <div className="user-image">
-                <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
-              </div>
-            </div>
-          */}
           {
-            !this.props.isAuthenticated &&
+            this.props.isAuthenticated &&
             <ul className="auth-header">
               <li><a>My Favorites</a></li>
               <li><a>Create Recipe</a></li>

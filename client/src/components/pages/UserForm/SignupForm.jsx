@@ -77,7 +77,7 @@ class SignupForm extends Component {
             isValid
         });
 
-        if (this.state.isValid) {
+        if (isValid) {
             this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }));
         }
     }

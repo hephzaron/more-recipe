@@ -87,7 +87,7 @@ class LoginForm extends Component {
             isValid
         });
 
-        if (this.state.isValid) {
+        if (isValid) {
             this.props.dispatch(loginUser(user));
         }
     }

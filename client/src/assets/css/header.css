@@ -119,9 +119,11 @@ body {
     display: none;
     margin: auto;
     cursor: pointer;
+    position: fixed;
+    z-index:111;
  }
 
-@media screen and (max-width: 660px) {
+@media screen and (max-width: 802px) {
     #toggle-nav {
         padding: 10px;
         display: block;
@@ -148,9 +150,9 @@ body {
         position: fixed;
         width: 375px;
         padding-bottom: 10px;
-        height: 100%;
-        background-color: #18b6e2;
-        z-index: 111;
+        height: 100% ;
+        background-color: #93cedf;
+        z-index: 100;
     }
     .topnav .search-container {
         float: none;
@@ -213,7 +215,7 @@ form.search-item input[type=text]{
 
 @media screen and (max-width: 1090px) {
     .topnav{
-        height: auto !important;
+        height: auto;
     }
 }
 

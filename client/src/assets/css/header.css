@@ -133,6 +133,10 @@ body {
         font-weight:bold
     }
 
+    .profile-dropdown {
+        display: none;
+    }
+
     a#user-profile img {
         margin: 0 !important;
     }
@@ -151,8 +155,11 @@ body {
         width: 375px;
         padding-bottom: 10px;
         height: 100% ;
-        background-color: #93cedf;
+        background-color: rgb(233, 244, 255);
         z-index: 100;
+    }
+    .topnav .hidden-header{
+        display: block;
     }
     .topnav .search-container {
         float: none;
@@ -220,7 +227,7 @@ form.search-item input[type=text]{
 }
 
 /**
-Auth header
+Css styles for header when authenticated
 **/
 ul.auth-header {
     list-style-type: none;
@@ -252,4 +259,63 @@ ul.auth-header li a{
     width: 40px;
     height: 40px;
     border-radius: 50%;
+}
+
+/*CSS styles for user profile list*/
+.profile-dropdown{
+    border-radius: 10px 0 10px 10px;
+    border: 1px solid rgb(163, 160, 160);
+    height: 200px;
+    width: 300px;
+    position: fixed;
+    right: 10px;
+    background-color: white;
+    z-index: 110;
+    display: none; 
+}
+
+ul#profile-menu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul#profile-menu li{
+    padding: 5px;
+}
+
+ul#profile-menu li a{
+    margin: 5px;
+    color:rgb(163, 160, 160);
+    font-size: medium;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+ul#profile-menu li a:hover{
+    cursor:pointer;
+    font-weight: bold;
+    color: #08206e;
+}
+
+ul#profile-menu li img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+
+ul#profile-menu li img+a{
+    position: absolute;
+    font-weight: bold;
+}
+
+.profile-dropdown-caret {
+    float: right;
+    color: white;
+    position: relative;
+    bottom: 10px;
+    right: 5px;
+}
+
+.hidden-header {
+    display: none;
 }

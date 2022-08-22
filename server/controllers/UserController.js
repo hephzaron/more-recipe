@@ -58,8 +58,9 @@ class UserController {
       age,
       sex,
       facebookOauthID,
-      googleOauthID,
+      googleOauthID
     }).then((user) => {
+      console.log('user', user);
       const { token } = signToken(req);
       if (!token) {
         return res.status(500).send({

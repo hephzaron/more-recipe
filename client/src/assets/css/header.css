@@ -62,7 +62,7 @@ body {
 
 .user-profile {
     float:right;
-    top: -30px;
+    top: 0px;
     position: relative;
 }
 
@@ -101,25 +101,18 @@ body {
     width: 15%
 }
 
-.user-image {
-    float: right;
-    width: 50%;
-    margin-top: 5px;
-    margin-left: auto;
-    padding-left: 20px;
-}
-
 .no-of-notification {
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: small;
     font-weight: bold;
     border-radius: 50%;
-    padding: 5px;
+    width:8px;
+    height: 8px;
     position: relative;
-    right:10px;
+    right:8px;
     bottom: 5px;
     float: right;
-    background-color: rgb(9, 133, 36);
+    background-color: rgb(230, 19, 19);
 }
 
 #toggle-nav {
@@ -136,12 +129,28 @@ body {
         background-color: #08262e;
         color:white;
         font-weight:bold
-     }
+    }
 
-    .topnav{
+    a#user-profile img {
+        margin: 0 !important;
+    }
+
+    ul.auth-header li{
+        float: none !important;
+    }
+    ul.auth-header li a{
+        width: 375px;
+    }
+    .topnav {
         flex-direction: column;
         justify-content:center;
         display: none;
+        position: fixed;
+        width: 375px;
+        padding-bottom: 10px;
+        height: 100%;
+        background-color: #18b6e2;
+        z-index: 111;
     }
     .topnav .search-container {
         float: none;
@@ -203,10 +212,42 @@ form.search-item input[type=text]{
 }
 
 @media screen and (max-width: 1090px) {
-    .user-profile{
-        top: 0px;
-    }
     .topnav{
         height: auto !important;
     }
+}
+
+/**
+Auth header
+**/
+ul.auth-header {
+    list-style-type: none;
+    margin: 0;
+    padding:0;
+    float: right
+}
+
+ul.auth-header li {
+    float: left
+}
+
+ul.auth-header li a{
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+#user-notification{
+    border-right: 2px solid black
+}
+#user-profile {
+    overflow: hidden;
+    text-align: justify;
+    padding: 0;
+}
+
+#user-profile img {
+    margin :5px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }

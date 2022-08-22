@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faHome, faSearch, faBell } from "@fortawesome/free-solid-svg-icons";
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 /**
  * @class Header
@@ -31,6 +33,8 @@ class Header extends Component {
  */
   navTo = (uri) => {
     window.location.href = window.location.origin + uri;
+    const aTag = document.getElementsByTagName('a');
+    console.log(aTag);
   }
 
   submitSearchForm = async (event) => {
@@ -53,17 +57,17 @@ class Header extends Component {
  * @return {JSX} JSX Elements
  */
   render() {
-    const { values } = this.state;
+    const { values, uri } = this.state;
     return (
         <div>
           <span id="toggle-nav" onClick= {() => this.toggleNav()}>
             <i className="fa fa-bars"/>
           </span>
         <div className="topnav" id="topnav">
-          <a className="active" onClick={() => {
+          <a className={`${uri === '/' ? 'active' : ''}`} onClick={() => {
             this.navTo('/');
             }}><FontAwesomeIcon icon={faHome}/></a>
-          <a onClick={() => {
+          <a className={`${uri === '/about-us' ? 'active' : ''}`} onClick={() => {
             this.navTo('/about-us');
             }}>About Us</a>
           <div className="search-container">
@@ -76,28 +80,60 @@ class Header extends Component {
                 onChange={this.inputChangeHandler}/>
             </form>
           </div>
-          <div className="center-nav">
-          <button onClick={() => {
-            this.navTo('/register');
-            }} className="user-auth-join-us">JOIN US </button>
-          <button onClick={() => {
-            this.navTo('/login');
-            }} className="user-auth-login">LOGIN </button>
-          </div>
-          <div className="user-profile">
-            <div className="user-notification">
-              <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
-              <span className="no-of-notification"/>
+          {
+            this.props.isAuthenticated &&
+            <div className="center-nav">
+              <button onClick={() => {
+                this.navTo('/register');
+                }} className="user-auth-join-us">JOIN US </button>
+              <button onClick={() => {
+                this.navTo('/login');
+                }} className="user-auth-login">LOGIN </button>
             </div>
-            <span className="partition"/>
-            <div className="user-image">
-              <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
+          }
+          {/*
+            <div className="user-profile">
+              <button> Create Recipe</button>
+              <div className="user-notification">
+                <span className="notification"><i className="fa fa-bell-o fa-lg"/></span>
+                <span className="no-of-notification"/>
+              </div>
+              <span className="partition"/>
+              <div className="user-image">
+                <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
+              </div>
             </div>
-          </div>
+          */}
+          {
+            !this.props.isAuthenticated &&
+            <ul className="auth-header">
+              <li><a>My Favorites</a></li>
+              <li><a>Create Recipe</a></li>
+              <li><a id="user-notification"><FontAwesomeIcon icon={faBell}/>
+                <span className="no-of-notification"/></a>
+              </li>
+              <li>
+                <a className="user-image" id="user-profile">
+                <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all" alt="Recipe" className="profile_img" />
+                </a>
+              </li>
+            </ul>
+          }
         </div>
         </div>
       );
     }
 }
 
-export default Header;
+Header.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired,
+  user: PropTypes.object
+};
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.userAuthReducer.isAuthenticated,
+  user: state.userAuthReducer.user
+});
+
+
+export default connect(mapStateToProps)(Header);

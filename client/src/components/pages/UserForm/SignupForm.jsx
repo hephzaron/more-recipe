@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { isEmpty } from 'lodash';
 import { registerUser } from '../../../actions/signupActions';
 import { validateUserForm } from '../../../utils/validators/user';
 

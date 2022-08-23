@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { validateRecipeForm } from '../../../utils/validators/recipe';
 
 /**
  * @function useRecipeForm
@@ -13,6 +14,11 @@ const useRecipeForm = (callback) => {
         photoUrl: ''
     });
 
+    const [formErrors, setFormErrors] = useState({
+        name: '',
+        photoUrl: ''
+    });
+
     /**
      * @function submitRecipeForm
      * @description Handles recipe form submission
@@ -23,8 +29,13 @@ const useRecipeForm = (callback) => {
         if (event) {
             event.preventDefault();
         }
-        callback(recipe);
-        setRecipe({});
+        const { validationErrors, isValid } = validateRecipeForm(recipe);
+        setFormErrors({ ...formErrors, ...validationErrors });
+
+        if (isValid) {
+            callback(recipe);
+            setRecipe({});
+        }
     };
 
     /**
@@ -40,6 +51,7 @@ const useRecipeForm = (callback) => {
 
     return {
         recipe,
+        formErrors,
         submitRecipeForm,
         handleInputChange
     };

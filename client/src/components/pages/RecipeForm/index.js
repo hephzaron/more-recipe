@@ -7,7 +7,12 @@ const createRecipe = (recipe) => {
 };
 
 const RecipeForm = () => {
-    const { recipe, submitRecipeForm, handleInputChange } = useRecipeForm(createRecipe);
+    const {
+        recipe,
+        formErrors,
+        submitRecipeForm,
+        handleInputChange
+    } = useRecipeForm(createRecipe);
 
     return (
         <div className="user-recipe-form">
@@ -15,6 +20,10 @@ const RecipeForm = () => {
                 <h3>Create Recipe</h3>
                 <hr/>
                 <label htmlFor="name">Recipe Name:</label>
+                {
+                    formErrors.name &&
+                    <p className="error-text">{formErrors.name}</p>
+                }
                 <input
                     type="text"
                     id="name" required
@@ -29,6 +38,10 @@ const RecipeForm = () => {
                     name="description"
                     value={recipe.description}/>
                 <label htmlFor="photoUrl">Upload picture:</label>
+                {
+                    formErrors.photoUrl &&
+                    <p className="error-text">{formErrors.photoUrl}</p>
+                }
                 <input
                     type="file"
                     id="photoUrl" required

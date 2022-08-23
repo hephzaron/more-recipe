@@ -34,8 +34,11 @@ export const loginUser = (userPayload) => (
             return response.data;
         })
         .catch((error) => {
-            dispatch(setCurrentUserFailure(error['message']));
-            return error;
+            dispatch(setCurrentUserFailure(error.response.data['message']));
+            if (error.response.status > 201) {
+                return Promise.reject(error.response.data);
+            }
+            return error.response.data;
         })
     )
 );

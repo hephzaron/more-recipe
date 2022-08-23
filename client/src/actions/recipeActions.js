@@ -37,14 +37,14 @@ export const fetchRecipes = (offset = 0) => (
     dispatch => {
         const limit = 40;
         dispatch(fetchRecipesBegin());
-        axios.get(`${SERVER_URL}/recipes?offset=${offset}&limit=${limit}`)
+        return axios.get(`${SERVER_URL}/recipes?offset=${offset}&limit=${limit}`)
         .then((response) => {
             dispatch(fetchRecipesSuccess(response.data.recipes));
-            return response;
+            return response.data;
         })
         .catch((error) => {
             dispatch(fetchRecipesFailure());
-            return error;
+            return error.response.data;
         });
     }
 );

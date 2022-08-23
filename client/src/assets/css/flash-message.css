@@ -1,0 +1,21 @@
+.success {
+    background-color: green;
+}
+.failure {
+    background-color: red;
+}
+.warning {
+    background-color: rgb(205, 177, 50)
+}
+
+.flash-icon {
+    float: right;
+    font-size: 20px;
+}
+.flash-icon:hover {
+    cursor: pointer
+}
+
+#flash-message {
+    height: 50px;
+}

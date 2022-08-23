@@ -14,3 +14,8 @@ export const initialUserState = {
     isAuthenticated: false,
     error: ''
 };
+
+export const initialFlashMessageState = {
+    message: '',
+    type: ''
+};

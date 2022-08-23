@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { registerUser } from '../../../actions/signupActions';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { validateUserForm } from '../../../utils/validators/user';
 
 const propTypes = {
@@ -78,7 +79,15 @@ class SignupForm extends Component {
         });
 
         if (isValid) {
-            this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }));
+            this.props.dispatch(registerUser({ ...user, age: parseInt(user.age, 10) }))
+                .then((response) => this.props.dispatch(addFlashMessage({
+                    message: response.message,
+                    type: 'success'
+                })))
+                .catch((error) => this.props.dispatch(addFlashMessage({
+                    message: error.message,
+                    type: 'failure'
+                })));
         }
     }
 

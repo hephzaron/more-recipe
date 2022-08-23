@@ -14,7 +14,7 @@ const { SERVER_URL } = process.env;
 export const registerUser = (userPayload) => (
     dispatch => {
         const { email, password } = userPayload;
-        axios.post(`${SERVER_URL}/signup`, userPayload)
+        return axios.post(`${SERVER_URL}/signup`, userPayload)
         .then((response) => {
             dispatch(loginUser({ email, password }));
             return response.data;

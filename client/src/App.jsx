@@ -5,6 +5,7 @@ import './assets/css/header.css';
 import './assets/css/homepage.css';
 import './assets/css/user-form.css';
 import './assets/css/custom-header.css';
+import './assets/css/flash-message.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/UserForm/SignupForm';
 import LoginForm from './components/pages/UserForm/LoginForm';
@@ -44,5 +45,6 @@ class App extends Component {
       </Router>
     );
 }
+
 
 export default App;

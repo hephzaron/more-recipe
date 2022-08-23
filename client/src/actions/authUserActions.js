@@ -24,7 +24,7 @@ export const unsetCurrentUser = () => ({
 });
 
 export const loginUser = (userPayload) => (
-    dispatch => {
+    dispatch => (
         axios.post(`${SERVER_URL}/login`, userPayload)
         .then((response) => {
             const { user, token } = response.data;
@@ -36,8 +36,8 @@ export const loginUser = (userPayload) => (
         .catch((error) => {
             dispatch(setCurrentUserFailure(error['message']));
             return error;
-        });
-    }
+        })
+    )
 );
 
 export const logoutUser = () => (

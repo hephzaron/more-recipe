@@ -4,13 +4,16 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { validateUserForm } from '../../../utils/validators/user';
 import { loginUser } from '../../../actions/authUserActions';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
+import FlashMessage from '../../general/FlashMessage';
 
 
 const propTypes = {
     user: PropTypes.object,
     dispatch: PropTypes.func,
     error: PropTypes.string,
-    isAuthenticated: PropTypes.bool
+    isAuthenticated: PropTypes.bool,
+    flashMessageType: PropTypes.string
 };
 
 /**
@@ -88,7 +91,15 @@ class LoginForm extends Component {
         });
 
         if (isValid) {
-            this.props.dispatch(loginUser(user));
+            this.props.dispatch(loginUser(user))
+            .then((response) => this.props.dispatch(addFlashMessage({
+                message: response.message,
+                type: 'success'
+            })))
+            .catch((error) => this.props.dispatch(addFlashMessage({
+                message: error.message,
+                type: 'failure'
+            })));
         }
     }
 
@@ -104,6 +115,7 @@ class LoginForm extends Component {
         return (
             <div className="user-page login">
                 <form onSubmit={this.submitAuthForm}>
+                    { this.props.flashMessageType && <FlashMessage/> }
                     <h3>Login</h3>
                     <hr/>
                     <label htmlFor="email">Email *</label>
@@ -140,7 +152,8 @@ class LoginForm extends Component {
 const mapStateToProps = (state) => ({
     user: state.userAuthReducer.user,
     isAuthenticated: state.userAuthReducer.isAuthenticated,
-    error: state.userAuthReducer.error
+    error: state.userAuthReducer.error,
+    flashMessageType: state.flashMessageReducer.type
 });
 
 LoginForm.propTypes = propTypes;

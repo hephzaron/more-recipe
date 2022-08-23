@@ -6,10 +6,12 @@ import './assets/css/homepage.css';
 import './assets/css/user-form.css';
 import './assets/css/custom-header.css';
 import './assets/css/flash-message.css';
+import './assets/css/recipe-form.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/UserForm/SignupForm';
 import LoginForm from './components/pages/UserForm/LoginForm';
 import Header from './components/general/Header';
+import RecipeForm from './components/pages/RecipeForm';
 //import CustomHeader from './components/general/CustomHeader';
 
 /**
@@ -39,6 +41,9 @@ class App extends Component {
             </Route>
             <Route path="/login">
               <LoginForm/>
+            </Route>
+            <Route path="/recipe">
+              <RecipeForm/>
             </Route>
           </Switch>
         </div>

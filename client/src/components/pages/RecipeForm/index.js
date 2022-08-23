@@ -1,0 +1,44 @@
+import React from 'react';
+import useRecipeForm from './RecipeCustomHooks';
+
+const createRecipe = (recipe) => {
+    console.log(recipe);
+    alert(`Recipe ${recipe.name} created`);
+};
+
+const RecipeForm = () => {
+    const { recipe, submitRecipeForm, handleInputChange } = useRecipeForm(createRecipe);
+
+    return (
+        <div className="user-recipe-form">
+            <form onSubmit={submitRecipeForm}>
+                <h3>Create Recipe</h3>
+                <hr/>
+                <label htmlFor="name">Recipe Name:</label>
+                <input
+                    type="text"
+                    id="name" required
+                    onChange={handleInputChange}
+                    name="name"
+                    value={recipe.name}/>
+                <label htmlFor="description">Description:</label>
+                <textarea
+                    type="text"
+                    id="description" required
+                    onChange={handleInputChange}
+                    name="description"
+                    value={recipe.description}/>
+                <label htmlFor="photoUrl">Upload picture:</label>
+                <input
+                    type="text"
+                    id="photoUrl" required
+                    onChange={handleInputChange}
+                    name="photoUrl"
+                    value={recipe.photoUrl}/>
+                <input type="submit"/>
+            </form>
+        </div>
+    );
+};
+
+export default RecipeForm;

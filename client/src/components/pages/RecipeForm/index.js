@@ -30,12 +30,11 @@ const RecipeForm = () => {
                     value={recipe.description}/>
                 <label htmlFor="photoUrl">Upload picture:</label>
                 <input
-                    type="text"
+                    type="file"
                     id="photoUrl" required
                     onChange={handleInputChange}
-                    name="photoUrl"
-                    value={recipe.photoUrl}/>
-                <input type="submit"/>
+                    name="photoUrl" accept="image/*"/>
+                <input type="submit" value="Create"/>
             </form>
         </div>
     );

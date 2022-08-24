@@ -29,6 +29,7 @@ export const loginUser = (userPayload) => (
         .then((response) => {
             const { user, token } = response.data;
             localStorage.setItem('x-access-token', token);
+            localStorage.setItem('userPayload', JSON.stringify(user));
             setAccessToken(token);
             dispatch(setCurrentUser(user));
             return response.data;

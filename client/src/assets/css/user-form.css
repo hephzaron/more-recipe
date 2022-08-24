@@ -80,6 +80,11 @@
 .error-text {
     color:red;
     font-size:small;
+    font-weight: bold;
     padding-left: 10px;
-    font-weight: bold
+    background-color: rgb(216, 199, 199);
+    padding: 4px;
+    width: fit-content;
+    border-radius: 4px;
+    margin-left: 5px;
 }

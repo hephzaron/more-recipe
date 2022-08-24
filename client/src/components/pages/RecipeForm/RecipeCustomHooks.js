@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { validateRecipeForm } from '../../../utils/validators/recipe';
 
 /**
@@ -19,6 +20,8 @@ const useRecipeForm = (callback) => {
         photoUrl: ''
     });
 
+    const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
+
     /**
      * @function submitRecipeForm
      * @description Handles recipe form submission
@@ -35,6 +38,7 @@ const useRecipeForm = (callback) => {
         if (isValid) {
             callback(recipe);
             setRecipe({});
+            setFormErrors({});
         }
     };
 
@@ -52,6 +56,7 @@ const useRecipeForm = (callback) => {
     return {
         recipe,
         formErrors,
+        flashMessageType,
         submitRecipeForm,
         handleInputChange
     };

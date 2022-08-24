@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import './assets/css/card.css';
 import './assets/css/header.css';
 import './assets/css/homepage.css';
@@ -32,20 +32,19 @@ class App extends Component {
         <div>
           <Header/>
           <hr/>
-          <Switch>
-            <Route exact path="/">
-              <HomePage />
+          <Routes>
+            <Route path="/">
+              <Route path="" element={<HomePage/>}/>
+              <Route path="register" element={<SignupForm/>}/>
+              <Route path="login" element={<LoginForm/>}/>
+              <Route path="recipes" element={<RecipeForm/>}/>
+              <Route path="*"
+                    element={
+                    <main style={{ padding: "1rem" }}>
+                      <p>There's nothing here!</p>
+                    </main>}/>
             </Route>
-            <Route path="/register">
-              <SignupForm />
-            </Route>
-            <Route path="/login">
-              <LoginForm/>
-            </Route>
-            <Route path="/recipe">
-              <RecipeForm/>
-            </Route>
-          </Switch>
+          </Routes>
         </div>
       </Router>
     );

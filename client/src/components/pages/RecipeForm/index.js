@@ -1,5 +1,6 @@
 import React from 'react';
 import useRecipeForm from './RecipeCustomHooks';
+import FlashMessage from '../../general/FlashMessage';
 
 const createRecipe = (recipe) => {
     console.log(recipe);
@@ -10,6 +11,7 @@ const RecipeForm = () => {
     const {
         recipe,
         formErrors,
+        flashMessageType,
         submitRecipeForm,
         handleInputChange
     } = useRecipeForm(createRecipe);
@@ -17,6 +19,7 @@ const RecipeForm = () => {
     return (
         <div className="user-recipe-form">
             <form onSubmit={submitRecipeForm}>
+                { flashMessageType && <FlashMessage/> }
                 <h3>Create Recipe</h3>
                 <hr/>
                 <label htmlFor="name">Recipe Name:</label>

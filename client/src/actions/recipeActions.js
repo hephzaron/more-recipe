@@ -6,7 +6,13 @@ dotEnv.config();
 
 const { SERVER_URL } = process.env;
 
-const { FETCH_RECIPES_BEGIN, FETCH_RECIPES_SUCCESS, FETCH_RECIPES_FAILURE } = types;
+const {
+    FETCH_RECIPES_BEGIN,
+    FETCH_RECIPES_SUCCESS,
+    FETCH_RECIPES_FAILURE,
+    CREATE_RECIPE_SUCCESS,
+    CREATE_RECIPE_FAILURE
+} = types;
 
 /**
  * Set recipes
@@ -27,6 +33,17 @@ export const fetchRecipesFailure = (error) => ({
     type: FETCH_RECIPES_FAILURE,
     payload: { error }
 });
+
+export const createRecipeSuccess = (recipe) => ({
+    type: CREATE_RECIPE_SUCCESS,
+    payload: { recipe }
+});
+
+export const createRecipeFailure = (error) => ({
+    type: CREATE_RECIPE_FAILURE,
+    payload: { error }
+});
+
 /**
  * Get recipes
  * @description Get recipes from server
@@ -44,6 +61,28 @@ export const fetchRecipes = (offset = 0) => (
         })
         .catch((error) => {
             dispatch(fetchRecipesFailure());
+            return error.response.data;
+        });
+    }
+);
+
+export const addRecipe = (recipe) => (
+    dispatch => {
+        const {
+            userId, name, description, photoUrl
+        } = recipe;
+        return axios.post(`${SERVER_URL}/recipes`, {
+            userId, name, description, photoUrl
+        })
+        .then((response) => {
+            dispatch(createRecipeSuccess(response.data.recipe));
+            return response.data;
+        })
+        .catch((error) => {
+            dispatch(createRecipeFailure(error.response.data['message']));
+            if (error.response.status > 201) {
+                return Promise.reject(error.response.data);
+            }
             return error.response.data;
         });
     }

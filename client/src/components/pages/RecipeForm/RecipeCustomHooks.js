@@ -11,9 +11,10 @@ import { validateRecipeForm } from '../../../utils/validators/recipe';
 const useRecipeForm = (callback) => {
     const [recipe, setRecipe] = useState({
         name: '',
-        description: '',
-        photoUrl: ''
+        description: ''
     });
+
+    const [imageFile, setImageFile] = useState(null);
 
     const [formErrors, setFormErrors] = useState({
         name: '',
@@ -32,12 +33,15 @@ const useRecipeForm = (callback) => {
         if (event) {
             event.preventDefault();
         }
-        const { validationErrors, isValid } = validateRecipeForm(recipe);
+        const { name, description } = recipe;
+        const { photoUrl } = imageFile;
+        const { validationErrors, isValid } = validateRecipeForm({ name, description, photoUrl });
         setFormErrors({ ...formErrors, ...validationErrors });
 
         if (isValid) {
-            callback(recipe);
+            callback({ name, description, photoUrl });
             setRecipe({});
+            setImageFile({});
             setFormErrors({});
         }
     };
@@ -50,7 +54,12 @@ const useRecipeForm = (callback) => {
      */
     const handleInputChange = (event) => {
         event.persist();
-        setRecipe({ ...recipe, [event.target.name]: [event.target.value] });
+        if (event.target.name !== 'photoUrl') {
+            setRecipe({ ...recipe, [event.target.name]: [event.target.value] });
+        } else {
+            setImageFile({ ...imageFile,  [event.target.name]: event.target.files[0]});
+            console.log('file', event.target.files[0]);
+        }
     };
 
     return {

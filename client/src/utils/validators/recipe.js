@@ -18,7 +18,7 @@ export const validateRecipeForm = (recipe) => {
 
     for (let i = 0; i < Object.entries(recipe).length; i++) {
         let key = Object.entries(recipe)[i][0];
-        if (isEmpty(recipe[key])) {
+        if (isEmpty(recipe[key]) && key !== 'photoUrl') {
             validationErrors[key] = `${key} is required`;
         }
     }

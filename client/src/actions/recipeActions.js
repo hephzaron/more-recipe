@@ -1,10 +1,12 @@
 import axios from 'axios';
 import dotEnv from 'dotenv';
+import { scale } from "@cloudinary/url-gen/actions/resize";
 import types from './actionTypes';
+import { cloudinary } from '../../config/cloudinary';
 
 dotEnv.config();
 
-const { SERVER_URL } = process.env;
+const { SERVER_URL, CLOUDINARY_API_KEY, CLOUDINARY_UPLOAD_URL } = process.env;
 
 const {
     FETCH_RECIPES_BEGIN,
@@ -87,3 +89,35 @@ export const addRecipe = (recipe) => (
         });
     }
 );
+
+export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
+    const file = photoUrl;
+    const uploadUrl = CLOUDINARY_UPLOAD_URL;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('api_key', CLOUDINARY_API_KEY);
+    formData.append("eager", "h_163,w_200|c_crop,h_200,w_260");
+    formData.append("folder", "signed_upload_recipe_form");
+
+    const recipeImage = cloudinary.image(`${name}-${userId}`);
+    recipeImage.resize(scale().width(200).height(163)).format('png');
+    return recipeImage.toURL();
+};
+
+
+/**
+export const uploadImage = ({ photoUrl, userId, name }) => (
+    cloudinary.uploader.upload(photoUrl, {
+      tags: 'more_recipe',
+      public_id: `${name}-${userId}`,
+      width: 200,
+      height: 163,
+      crop: 'fill'
+    }, (error, result) => {
+      if (error) {
+        console.log('error', error);
+      }
+      console.log('result', result);
+    }));
+
+    */

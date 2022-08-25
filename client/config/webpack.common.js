@@ -1,12 +1,19 @@
 /* eslint-disable
  */
-
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotEnv = require('dotenv');
 
 dotEnv.config();
+ 
+const {
+  CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET,
+  CLOUDINARY_URL,
+  CLOUDINARY_UPLOAD_URL
+} = process.env;
 
 /**
  * Sorts chunk in alphabetical order
@@ -34,11 +41,17 @@ const DefinePlugin = new webpack.DefinePlugin({
   "process.env": {
     PORT: JSON.stringify(process.env.PORT),
     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    ROOT_URL: JSON.stringify(process.env.ROOT_URL),
-    SOCKET_URL: JSON.stringify(process.env.SOCKET_URL),
     API_VERSION: JSON.stringify(process.env.API_VERSION)
   }
 });
+
+const EnvironmentPlugin = new webpack.EnvironmentPlugin({
+  CLOUDINARY_CLOUD_NAME: CLOUDINARY_CLOUD_NAME,
+  CLOUDINARY_API_KEY: CLOUDINARY_API_KEY,
+  CLOUDINARY_API_SECRET: CLOUDINARY_API_SECRET,
+  CLOUDINARY_URL: CLOUDINARY_URL,
+  CLOUDINARY_UPLOAD_URL: CLOUDINARY_UPLOAD_URL
+})
 
 module.exports = {
   entry: {
@@ -115,7 +128,8 @@ module.exports = {
   plugins: [
     HtmlWebpackPluginConfig,
     ProvidePlugin,
-    DefinePlugin
+    DefinePlugin,
+    EnvironmentPlugin
   ],
   optimization: {
     splitChunks: {

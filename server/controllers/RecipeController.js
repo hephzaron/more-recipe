@@ -1,7 +1,6 @@
 import Sequelize from 'sequelize';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
-import uploadImage from './ImageUploadController';
 import { ManageVotes } from '../middlewares';
 
 const { Recipe, Review, RecipeVote } = models;
@@ -34,7 +33,6 @@ class RecipeController {
             message: 'A recipe with the same name already exist, you can add a review to existing recipe '
           });
         }
-        uploadImage(recipe);
         return Recipe
           .create(req.body, {
             fields: [

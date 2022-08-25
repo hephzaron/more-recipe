@@ -20,13 +20,19 @@ class CloudinaryController {
     * @returns { object } server response
     */
   static getCloudinarySignature(req, res) {
-    const { timestamp, signature } = signImage();
-    return res.status(200).send({
-      signature,
-      timestamp,
-      cloudName,
-      apiKey
-    });
+    try {
+      const { timestamp, signature } = signImage();
+      return res.status(200).send({
+        signature,
+        timestamp,
+        cloudName,
+        apiKey
+      });
+    } catch (error) {
+      return res.status(400).send({
+        message: error.message
+      });
+    }
   }
 }
 

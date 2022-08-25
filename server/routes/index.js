@@ -4,6 +4,7 @@ import {
   UserController,
   ReviewController,
   SavedRecipeController,
+  CloudinaryController,
   ping
 } from '../controllers';
 import { UserAuth, ManageVotes } from '../middlewares';
@@ -35,6 +36,8 @@ const {
   unsaveRecipe,
   getSavedRecipe
 } = SavedRecipeController;
+
+const { getCloudinarySignature } = CloudinaryController;
 
 const { verifyUser } = UserAuth;
 
@@ -78,5 +81,10 @@ router.delete('/recipes/:userId/reviews/:reviewId', verifyUser, deleteReview);
  */
 router.post('/users/reset_password', sendPasswordResetLink);
 router.post('/auth/reset_password', resetPassword);
+
+/**
+ * Get cloudinary credentials
+ */
+router.get('/upload/verify_image', getCloudinarySignature);
 
 export default router;

@@ -95,9 +95,7 @@ export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
         .then((response) => response)
         .catch((error) => error);
     })
-    .catch((error) => {
-        return Promise.reject(error);
-    });
+    .catch((error) => Promise.reject(error));
 };
 
 export const addRecipe = (recipe) => (

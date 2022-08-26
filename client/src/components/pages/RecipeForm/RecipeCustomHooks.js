@@ -47,13 +47,10 @@ const useRecipeForm = (callback) => {
                 message: response.message,
                 type: 'success'
             })))
-            .catch((error) => {
-                return dispatch(addFlashMessage({
+            .catch((error) => dispatch(addFlashMessage({
                 message: error.message,
                 type: 'failure'
-            }))});
-            setRecipe({});
-            setImageFile({});
+            })));
             setFormErrors({});
         }
     };
@@ -67,10 +64,13 @@ const useRecipeForm = (callback) => {
     const handleInputChange = (event) => {
         event.persist();
         if (event.target.name !== 'photoUrl') {
-            setRecipe({ ...recipe, [event.target.name]: [event.target.value] });
+            setRecipe(prevRecipe => ({
+                ...prevRecipe, [event.target.name]: [event.target.value]
+            }));
         } else {
-            setImageFile({ ...imageFile, [event.target.name]: event.target.files[0] });
-            console.log('file', event.target.files[0]);
+            setImageFile(prevImageFile => ({
+                ...prevImageFile, [event.target.name]: event.target.files[0]
+            }));
         }
     };
 

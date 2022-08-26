@@ -104,6 +104,12 @@ export const uploadRecipePhoto = ({ photoFile }) => {
     .catch((error) => Promise.reject(error));
 };
 
+/**
+ * addRecipe
+ * @description creates a recipe
+ * @param {object} recipe - recipe payload to be created
+ * @returns { promise } -Axios http response from the server
+ */
 export const addRecipe = (recipe) => (
     async dispatch => {
         try {
@@ -118,7 +124,8 @@ export const addRecipe = (recipe) => (
                 photoUrl: data['secure_url']
             });
             dispatch(createRecipeSuccess(response.data.recipe));
-            return response.data
+            dispatch(fetchRecipes());
+            return response.data;
         } catch (error) {
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {

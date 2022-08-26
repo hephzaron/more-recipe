@@ -95,7 +95,7 @@ export const uploadRecipePhoto = ({ photoFile }) => {
         formData.append('folder', 'signed_recipe_upload');
 
         let Axios = axios.create();
-        delete Axios.defaults.headers.common['X-Access-Token'];
+        delete Axios.defaults.headers.common['authorization'];
 
         return Axios.post(cloudinaryUrl, formData)
         .then((response) => response.data)
@@ -111,13 +111,18 @@ export const addRecipe = (recipe) => (
                 photoFile: recipe.photoUrl
             });
             console.log('pic_url', data);
+            console.log('sentdata', { ...recipe });
+            const { userId, name, description } = recipe;
             const response = await axios.post(`${SERVER_URL}/recipes`, {
-                ...recipe, photoUrl: data['secure_url']
+                userId,
+                name: name[0],
+                description: description[0],
+                photoUrl: data['secure_url']
             });
             console.log('data_r', response.data);
 
             dispatch(createRecipeSuccess(response.data.recipe));
-            return Promise(data);
+            return response.data
         } catch (error) {
             console.log('general', error);
             /** handle error response sent from App server and cloudinary */

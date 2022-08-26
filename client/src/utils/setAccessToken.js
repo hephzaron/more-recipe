@@ -8,9 +8,9 @@ import axios from 'axios';
 const setAccessToken = (accessToken) => {
     axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
     if (accessToken) {
-        axios.defaults.headers.common['X-Access-Token'] = accessToken;
+        axios.defaults.headers.common['authorization'] = accessToken;
     } else {
-        delete axios.defaults.headers.common['X-Access-Token'];
+        delete axios.defaults.headers.common['authorization'];
     }
 };
 

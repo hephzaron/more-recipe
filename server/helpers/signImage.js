@@ -9,7 +9,7 @@ const signImage = () => {
 
   const signature = cloudinary.utils.api_sign_request({
     timestamp,
-    eager: 'c_fill, h_163, w_200',
+    eager: 'c_crop,w_400,h_400,g_face|w_200,h_200,c_scale',
     folder: 'signed_recipe_upload'
   }, apiSecret);
 

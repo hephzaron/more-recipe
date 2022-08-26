@@ -67,9 +67,13 @@ export const fetchRecipes = (offset = 0) => (
     }
 );
 
-export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
-    const file = photoUrl;
-    const publicId = `${name}-${userId}`;
+/**
+ * uploadRecipePhoto
+ * @description uploads image file to cloudinary
+ * @param {object} photoFile - Picture file to be uploaded
+ * @returns { promise } -Axios http response from cloudinary
+ */
+export const uploadRecipePhoto = ({ photoFile }) => {
     const formData = new FormData();
 
     return axios.get(`${SERVER_URL}/upload/sign`)
@@ -83,7 +87,7 @@ export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
 
         const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
 
-        formData.append('file', file);
+        formData.append('file', photoFile);
         formData.append('signature', signature);
         formData.append('api_key', apiKey);
         formData.append('timestamp', timestamp);
@@ -93,32 +97,29 @@ export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
         let Axios = axios.create();
         delete Axios.defaults.headers.common['X-Access-Token'];
 
-        Axios.post(cloudinaryUrl, formData)
-        .then((response) => response)
+        return Axios.post(cloudinaryUrl, formData)
+        .then((response) => response.data)
         .catch((error) => Promise.reject(error));
     })
     .catch((error) => Promise.reject(error));
 };
 
 export const addRecipe = (recipe) => (
-    dispatch => {
-        const {
-            userId, name, description, photoUrl
-        } = recipe;
-        return uploadRecipePhoto(recipe)
-        .then(() => (
-            axios.post(`${SERVER_URL}/recipes`, {
-                userId, name, description, photoUrl
-            })
-            .then((response) => {
-                dispatch(createRecipeSuccess(response.data.recipe));
-                return response.data;
-            })
-            .catch((error) => {
-                dispatch(createRecipeFailure(error.response.data['message']));
-                return Promise.reject(error.response.data);
-            })))
-        .catch((error) => {
+    async dispatch => {
+        try {
+            const data = await uploadRecipePhoto({
+                photoFile: recipe.photoUrl
+            });
+            console.log('pic_url', data);
+            const response = await axios.post(`${SERVER_URL}/recipes`, {
+                ...recipe, photoUrl: data['secure_url']
+            });
+            console.log('data_r', response.data);
+
+            dispatch(createRecipeSuccess(response.data.recipe));
+            return Promise(data);
+        } catch (error) {
+            console.log('general', error);
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
                 /** Return error response on failed request to cloudinary*/
@@ -131,7 +132,7 @@ export const addRecipe = (recipe) => (
                 }
             }
             /** Error handler for network error */
+            dispatch(createRecipeFailure(error.response.data['message']));
             return Promise.reject(error);
-        });
-    }
-);
+        }
+    });

@@ -85,6 +85,6 @@ router.post('/auth/reset_password', resetPassword);
 /**
  * Get cloudinary credentials
  */
-router.get('/upload/verify_image', getCloudinarySignature);
+router.get('/upload/sign', getCloudinarySignature);
 
 export default router;

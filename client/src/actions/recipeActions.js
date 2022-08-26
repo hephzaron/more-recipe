@@ -1,12 +1,11 @@
+/* eslint-disable no-shadow */
 import axios from 'axios';
 import dotEnv from 'dotenv';
-import { scale } from "@cloudinary/url-gen/actions/resize";
 import types from './actionTypes';
-import { cloudinary } from '../../config/cloudinary';
 
 dotEnv.config();
 
-const { SERVER_URL, CLOUDINARY_API_KEY, CLOUDINARY_UPLOAD_URL } = process.env;
+const { SERVER_URL } = process.env;
 
 const {
     FETCH_RECIPES_BEGIN,
@@ -68,56 +67,65 @@ export const fetchRecipes = (offset = 0) => (
     }
 );
 
+export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
+    const file = photoUrl;
+    const publicId = `${name}-${userId}`;
+    const formData = new FormData();
+
+    return axios.get(`${SERVER_URL}/upload/sign`)
+    .then((response) => {
+        const {
+            apiKey,
+            timestamp,
+            signature,
+            cloudName
+        } = response.data;
+
+        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+
+        formData.append('file', file);
+        formData.append('signature', signature);
+        formData.append('api_key', apiKey);
+        formData.append('public_id', publicId);
+        formData.append('timestamp', timestamp);
+        formData.append('eager', 'c_fill, h_163, w_200');
+        formData.append('folder', 'signed_recipe_upload');
+
+        return axios.post(cloudinaryUrl, formData)
+        .then((response) => response)
+        .catch((error) => error);
+    })
+    .catch((error) => {
+        return Promise.reject(error);
+    });
+};
+
 export const addRecipe = (recipe) => (
     dispatch => {
         const {
             userId, name, description, photoUrl
         } = recipe;
-        return axios.post(`${SERVER_URL}/recipes`, {
-            userId, name, description, photoUrl
-        })
-        .then((response) => {
-            dispatch(createRecipeSuccess(response.data.recipe));
-            return response.data;
-        })
+        return uploadRecipePhoto(recipe)
+        .then(() => (
+            axios.post(`${SERVER_URL}/recipes`, {
+                userId, name, description, photoUrl
+            })
+            .then((response) => {
+                dispatch(createRecipeSuccess(response.data.recipe));
+                return response.data;
+            })
+            .catch((error) => {
+                dispatch(createRecipeFailure(error.response.data['message']));
+                return Promise.reject(error.response.data);
+            })))
         .catch((error) => {
-            dispatch(createRecipeFailure(error.response.data['message']));
-            if (error.response.status > 201) {
+            /** handle error response sent from App server */
+            if (error.response && error.response.status > 201) {
+                dispatch(createRecipeFailure(error.response.data['message']));
                 return Promise.reject(error.response.data);
             }
-            return error.response.data;
+            /** Return error response from cloudinary request */
+            return Promise.reject(error);
         });
     }
 );
-
-export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
-    const file = photoUrl;
-    const uploadUrl = CLOUDINARY_UPLOAD_URL;
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('api_key', CLOUDINARY_API_KEY);
-    formData.append("eager", "h_163,w_200|c_crop,h_200,w_260");
-    formData.append("folder", "signed_upload_recipe_form");
-
-    const recipeImage = cloudinary.image(`${name}-${userId}`);
-    recipeImage.resize(scale().width(200).height(163)).format('png');
-    return recipeImage.toURL();
-};
-
-
-/**
-export const uploadImage = ({ photoUrl, userId, name }) => (
-    cloudinary.uploader.upload(photoUrl, {
-      tags: 'more_recipe',
-      public_id: `${name}-${userId}`,
-      width: 200,
-      height: 163,
-      crop: 'fill'
-    }, (error, result) => {
-      if (error) {
-        console.log('error', error);
-      }
-      console.log('result', result);
-    }));
-
-    */

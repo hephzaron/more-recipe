@@ -6,14 +6,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const dotEnv = require('dotenv');
 
 dotEnv.config();
- 
-const {
-  CLOUDINARY_CLOUD_NAME,
-  CLOUDINARY_API_KEY,
-  CLOUDINARY_API_SECRET,
-  CLOUDINARY_URL,
-  CLOUDINARY_UPLOAD_URL
-} = process.env;
 
 /**
  * Sorts chunk in alphabetical order
@@ -44,14 +36,6 @@ const DefinePlugin = new webpack.DefinePlugin({
     API_VERSION: JSON.stringify(process.env.API_VERSION)
   }
 });
-
-const EnvironmentPlugin = new webpack.EnvironmentPlugin({
-  CLOUDINARY_CLOUD_NAME: CLOUDINARY_CLOUD_NAME,
-  CLOUDINARY_API_KEY: CLOUDINARY_API_KEY,
-  CLOUDINARY_API_SECRET: CLOUDINARY_API_SECRET,
-  CLOUDINARY_URL: CLOUDINARY_URL,
-  CLOUDINARY_UPLOAD_URL: CLOUDINARY_UPLOAD_URL
-})
 
 module.exports = {
   entry: {
@@ -128,8 +112,7 @@ module.exports = {
   plugins: [
     HtmlWebpackPluginConfig,
     ProvidePlugin,
-    DefinePlugin,
-    EnvironmentPlugin
+    DefinePlugin
   ],
   optimization: {
     splitChunks: {

@@ -1,11 +1,8 @@
 import React from 'react';
 import useRecipeForm from './RecipeCustomHooks';
 import FlashMessage from '../../general/FlashMessage';
+import { addRecipe } from '../../../actions/recipeActions';
 
-const createRecipe = (recipe) => {
-    console.log(recipe);
-    alert(`Recipe ${recipe.name} created`);
-};
 
 const RecipeForm = () => {
     const {
@@ -14,7 +11,7 @@ const RecipeForm = () => {
         flashMessageType,
         submitRecipeForm,
         handleInputChange
-    } = useRecipeForm(createRecipe);
+    } = useRecipeForm(addRecipe);
 
     return (
         <div className="user-recipe-form">
@@ -49,6 +46,7 @@ const RecipeForm = () => {
                     type="file"
                     id="photoUrl" required
                     onChange={handleInputChange}
+                    value={recipe.photoUrl}
                     name="photoUrl" accept="image/*"/>
                 <input type="submit" value="Create"/>
             </form>

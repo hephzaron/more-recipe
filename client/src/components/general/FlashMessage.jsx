@@ -6,7 +6,7 @@ import { faWindowClose } from '@fortawesome/free-regular-svg-icons';
 import { removeFlashMessage } from '../../actions/flashMessageActions';
 
 const propTypes = {
-    message: PropTypes.string.isRequired,
+    message: PropTypes.string,
     type: PropTypes.string.isRequired,
     dispatch: PropTypes.func
 };

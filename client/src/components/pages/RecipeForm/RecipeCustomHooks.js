@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateRecipeForm } from '../../../utils/validators/recipe';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
 
 /**
  * @function useRecipeForm
@@ -14,7 +15,7 @@ const useRecipeForm = (callback) => {
         description: ''
     });
 
-    const [imageFile, setImageFile] = useState(null);
+    const [imageFile, setImageFile] = useState({});
 
     const [formErrors, setFormErrors] = useState({
         name: '',
@@ -22,6 +23,8 @@ const useRecipeForm = (callback) => {
     });
 
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
+
+    const dispatch = useDispatch();
 
     /**
      * @function submitRecipeForm
@@ -39,7 +42,16 @@ const useRecipeForm = (callback) => {
         setFormErrors({ ...formErrors, ...validationErrors });
 
         if (isValid) {
-            callback({ name, description, photoUrl });
+            dispatch(callback({ name, description, photoUrl }))
+            .then((response) => dispatch(addFlashMessage({
+                message: response.message,
+                type: 'success'
+            })))
+            .catch((error) => {
+                return dispatch(addFlashMessage({
+                message: error.message,
+                type: 'failure'
+            }))});
             setRecipe({});
             setImageFile({});
             setFormErrors({});
@@ -57,7 +69,7 @@ const useRecipeForm = (callback) => {
         if (event.target.name !== 'photoUrl') {
             setRecipe({ ...recipe, [event.target.name]: [event.target.value] });
         } else {
-            setImageFile({ ...imageFile,  [event.target.name]: event.target.files[0]});
+            setImageFile({ ...imageFile, [event.target.name]: event.target.files[0] });
             console.log('file', event.target.files[0]);
         }
     };

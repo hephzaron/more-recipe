@@ -23,6 +23,7 @@ const useRecipeForm = (callback) => {
     });
 
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
+    const userId = useSelector((state) => state.userAuthReducer.user.id);
 
     const dispatch = useDispatch();
 
@@ -42,7 +43,7 @@ const useRecipeForm = (callback) => {
         setFormErrors({ ...formErrors, ...validationErrors });
 
         if (isValid) {
-            dispatch(callback({ name, description, photoUrl }))
+            dispatch(callback({ userId, name, description, photoUrl }))
             .then((response) => dispatch(addFlashMessage({
                 message: response.message,
                 type: 'success'

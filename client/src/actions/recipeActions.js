@@ -86,14 +86,16 @@ export const uploadRecipePhoto = ({ photoUrl, userId, name }) => {
         formData.append('file', file);
         formData.append('signature', signature);
         formData.append('api_key', apiKey);
-        formData.append('public_id', publicId);
         formData.append('timestamp', timestamp);
-        formData.append('eager', 'c_fill, h_163, w_200');
+        formData.append('eager', 'c_crop,w_400,h_400,g_face|w_200,h_200,c_scale');
         formData.append('folder', 'signed_recipe_upload');
 
-        return axios.post(cloudinaryUrl, formData)
+        let Axios = axios.create();
+        delete Axios.defaults.headers.common['X-Access-Token'];
+
+        Axios.post(cloudinaryUrl, formData)
         .then((response) => response)
-        .catch((error) => error);
+        .catch((error) => Promise.reject(error));
     })
     .catch((error) => Promise.reject(error));
 };
@@ -117,12 +119,18 @@ export const addRecipe = (recipe) => (
                 return Promise.reject(error.response.data);
             })))
         .catch((error) => {
-            /** handle error response sent from App server */
+            /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
-                dispatch(createRecipeFailure(error.response.data['message']));
-                return Promise.reject(error.response.data);
+                /** Return error response on failed request to cloudinary*/
+                if (error.response.data.error) {
+                    dispatch(createRecipeFailure(error.response.data.error['message']));
+                    return Promise.reject(error.response.data.error);
+                } else {
+                    dispatch(createRecipeFailure(error.response.data['message']));
+                    return Promise.reject(error.response.data);
+                }
             }
-            /** Return error response from cloudinary request */
+            /** Error handler for network error */
             return Promise.reject(error);
         });
     }

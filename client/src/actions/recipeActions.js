@@ -110,8 +110,6 @@ export const addRecipe = (recipe) => (
             const data = await uploadRecipePhoto({
                 photoFile: recipe.photoUrl
             });
-            console.log('pic_url', data);
-            console.log('sentdata', { ...recipe });
             const { userId, name, description } = recipe;
             const response = await axios.post(`${SERVER_URL}/recipes`, {
                 userId,
@@ -119,12 +117,9 @@ export const addRecipe = (recipe) => (
                 description: description[0],
                 photoUrl: data['secure_url']
             });
-            console.log('data_r', response.data);
-
             dispatch(createRecipeSuccess(response.data.recipe));
             return response.data
         } catch (error) {
-            console.log('general', error);
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
                 /** Return error response on failed request to cloudinary*/

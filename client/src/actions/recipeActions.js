@@ -136,7 +136,6 @@ export const addRecipe = (recipe) => (
             const data = await uploadRecipePhoto({
                 photoFile: recipe.photoUrl
             });
-            console.log('image_data', data);
             photoDeleteToken = data['delete_token'];
             const { userId, name, description } = recipe;
             const response = await axios.post(`${SERVER_URL}/recipes`, {

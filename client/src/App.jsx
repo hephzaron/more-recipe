@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import './assets/css/card.css';
 import './assets/css/header.css';
@@ -37,7 +39,7 @@ class App extends Component {
               <Route path="" element={<HomePage/>}/>
               <Route path="register" element={<SignupForm/>}/>
               <Route path="login" element={<LoginForm/>}/>
-              <Route path="recipes" element={<RecipeForm/>}/>
+              {this.props.isAuthenticated && <Route path="recipes" element={<RecipeForm/>}/>}
               <Route path="*"
                     element={
                     <main style={{ padding: "1rem" }}>
@@ -50,5 +52,11 @@ class App extends Component {
     );
 }
 
+App.propTypes = {
+  isAuthenticated: PropTypes.bool.isRequired
+}
+const mapStateToProps = (state) => {
+  isAuthenticated: state.userAuthReducer.isAuthenticated
+};
 
-export default App;
+export connect(mapStateToProps)(App);

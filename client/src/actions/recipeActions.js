@@ -67,6 +67,8 @@ export const fetchRecipes = (offset = 0) => (
     }
 );
 
+let cloudinaryName;
+let photoDeleteToken;
 /**
  * uploadRecipePhoto
  * @description uploads image file to cloudinary
@@ -86,11 +88,13 @@ export const uploadRecipePhoto = ({ photoFile }) => {
         } = response.data;
 
         const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
+        cloudinaryName = cloudName;
 
         formData.append('file', photoFile);
         formData.append('signature', signature);
         formData.append('api_key', apiKey);
         formData.append('timestamp', timestamp);
+        formData.append('return_delete_token', true);
         formData.append('eager', 'c_crop,w_400,h_400,g_face|w_200,h_200,c_scale');
         formData.append('folder', 'signed_recipe_upload');
 
@@ -101,6 +105,22 @@ export const uploadRecipePhoto = ({ photoFile }) => {
         .then((response) => response.data)
         .catch((error) => Promise.reject(error));
     })
+    .catch((error) => Promise.reject(error));
+};
+
+/**
+ * deleteRecipePhoto
+ * @description deletes a recipe photo on failure to create recipe
+ * @param { string } cloudName - cloudinary cloud_name
+ * @param { string } deleteToken - delete_token of saved photo in cloudinary
+ * @returns { promise } -Axios http response from the server
+ */
+export const deleteRecipePhoto = ({ cloudName, deleteToken }) => {
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/delete_by_token`;
+    let Axios = axios.create();
+    delete Axios.defaults.headers.common['authorization'];
+    return Axios.post(cloudinaryUrl, { token: deleteToken })
+    .then((response) => response.data)
     .catch((error) => Promise.reject(error));
 };
 
@@ -116,6 +136,8 @@ export const addRecipe = (recipe) => (
             const data = await uploadRecipePhoto({
                 photoFile: recipe.photoUrl
             });
+            console.log('image_data', data);
+            photoDeleteToken = data['delete_token'];
             const { userId, name, description } = recipe;
             const response = await axios.post(`${SERVER_URL}/recipes`, {
                 userId,
@@ -127,6 +149,7 @@ export const addRecipe = (recipe) => (
             dispatch(fetchRecipes());
             return response.data;
         } catch (error) {
+            deleteRecipePhoto({ cloudName: cloudinaryName, deleteToken: photoDeleteToken });
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
                 /** Return error response on failed request to cloudinary*/

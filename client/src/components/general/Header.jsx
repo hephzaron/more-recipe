@@ -145,6 +145,7 @@ class Header extends Component {
                 <li>
                   <a id="user-notification">
                     <FontAwesomeIcon className="header-icon" icon={faBell}/>
+                    <i className="no-of-notification"/>
                     <span className="header-content">Notifications</span>
                   </a>
                 </li>

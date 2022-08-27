@@ -203,8 +203,8 @@ body {
         left: 50px !important
     }
     .no-of-notification {
-        top: 0px;
-        left: 70px !important;
+        top: -2px;
+        left: 45px !important;
     }
 }
 

@@ -10,19 +10,23 @@ body {
 .topnav {
     overflow: hidden;
     background-color: #e9e9e9;
-    height: 50px;
+    height: 55px;
+    position: fixed;
+    width: 100vw;
+    z-index: 110;
+    border-bottom: 1px solid #5a59599c;
 }
 
 .topnav a {
     float: left;
     display: block;
-    color: black;
+    color: rgb(41, 2, 24);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
     cursor: pointer;
-    font-weight: bold;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .topnav a:hover {
@@ -60,20 +64,16 @@ body {
     cursor: pointer;
 }
 
-.user-profile {
-    float:right;
-    top: 0px;
-    position: relative;
-}
-
-.user-profile img {
+.profile-img {
     width: 100%;
     border-radius: 50%;
     padding: 5px;
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     margin-right: 10px;
     cursor: pointer;
+    position: relative;
+    top:-8px
 }
 
 .user-profile .fa-bell-o {
@@ -109,8 +109,8 @@ body {
     width:8px;
     height: 8px;
     position: relative;
-    right:8px;
-    bottom: 5px;
+    right:64px;
+    bottom: 20px;
     float: right;
     background-color: rgb(230, 19, 19);
 }
@@ -133,30 +133,27 @@ body {
         font-weight:bold
     }
 
-    .profile-dropdown {
+    .profile-dropdown, .profile-img {
         display: none;
-    }
-
-    a#user-profile img {
-        margin: 0 !important;
     }
 
     ul.auth-header li{
         float: none !important;
     }
     ul.auth-header li a{
-        width: 375px;
+        width: 300px;
     }
     .topnav {
         flex-direction: column;
         justify-content:center;
         display: none;
         position: fixed;
-        width: 375px;
+        width: 300px;
         padding-bottom: 10px;
-        height: 100% ;
-        background-color: rgb(233, 244, 255);
+        height: 500px !important;
+        background-color: white;
         z-index: 100;
+        border: 1px solid rgba(0, 0, 0, 0.432);
     }
     .topnav .hidden-header{
         display: block;
@@ -165,30 +162,24 @@ body {
         float: none;
     }
     form.search-item input[type=text]{
-        width: 100% !important;
+        width: 95% !important;
         max-width: 450px;
-        min-width: 350px;
+        min-width: 200px;
     }
     form.search-item .fa-search{
-        top: 30px !important;
+        top: 37px !important;
         left: 5px !important;
-    }
-    .topnav .user-profile{
-        width: 200px !important;
-        padding: 0 !important;
-        position: relative;
-        left: 30%;
     }
     .topnav a,
     .topnav .search-container,
     .topnav .center-nav{      
         display: flex !important;
         display:-webkit-flex !important;
-        justify-content:center !important;
+        font-size: 17px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
     .topnav a,
-    .topnav input[type=text],
-    .topnav .user-profile,
+    .topnav input[type=text]
     .topnav .search-container button {
         float: none;
         display: block;
@@ -199,6 +190,21 @@ body {
     }
     .topnav input[type=text] {
         border: 1px solid #ccc;
+    }
+    .header-content{
+        display: block !important;
+        font-size: 15px !important;
+        position: relative;
+        left: 100px;
+    }
+    .header-icon{
+        display: inline-block !important;
+        position: absolute !important;
+        left: 50px !important
+    }
+    .no-of-notification {
+        top: 0px;
+        left: 70px !important;
     }
 }
 
@@ -220,15 +226,36 @@ form.search-item input[type=text]{
     padding-left: 40px;
 }
 
-@media screen and (max-width: 1090px) {
-    .topnav{
-        height: auto;
+@media screen and (max-width: 1200px) {
+    .header-content{
+        font-size: 10px;
+        font-weight: bold;
+    }
+    .no-of-notification{
+        right: 37px;
     }
 }
 
+@media screen and (max-width: 975px) {
+    .topnav{
+        height: 48px
+    }
+    .profile-img {
+        top: -15px;
+    }
+    .header-content{
+        display: none;
+    }
+    .no-of-notification{
+        right: -5px;
+    }
+}
 /**
 Css styles for header when authenticated
 **/
+ul.auth-header.left{
+    float: left
+}
 ul.auth-header {
     list-style-type: none;
     margin: 0;
@@ -248,18 +275,6 @@ ul.auth-header li a{
 #user-notification{
     border-right: 2px solid black
 }
-#user-profile {
-    overflow: hidden;
-    text-align: justify;
-    padding: 0;
-}
-
-#user-profile img {
-    margin :5px;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
 
 /*CSS styles for user profile list*/
 .profile-dropdown{
@@ -268,6 +283,7 @@ ul.auth-header li a{
     height: 200px;
     width: 300px;
     position: fixed;
+    top: 54px;
     right: 10px;
     background-color: white;
     z-index: 110;
@@ -317,5 +333,14 @@ ul#profile-menu li img+a{
 }
 
 .hidden-header {
+    display: none;
+}
+.header-icon {
+    display: block;
+    position: relative;
+    color:#a80dc7a4;
+    left: 30%
+}
+.hidden-header.header-icon {
     display: none;
 }

@@ -54,9 +54,10 @@ class App extends Component {
 
 App.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired
-}
-const mapStateToProps = (state) => {
-  isAuthenticated: state.userAuthReducer.isAuthenticated
 };
 
-export connect(mapStateToProps)(App);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.userAuthReducer.isAuthenticated
+});
+
+export default connect(mapStateToProps)(App);

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faHome, faSearch, faBell, faCaretUp
+  faHome, faSearch, faBell, faCaretUp, faStar, faLayerGroup, faCirclePlus, faCircleInfo, faKey, faSignOut, faUser
 } from "@fortawesome/free-solid-svg-icons";
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import { logoutUser } from '../../actions/authUserActions';
 
 /**
@@ -74,29 +75,40 @@ class Header extends Component {
  * @return {JSX} JSX Elements
  */
   render() {
-    const { values, uri } = this.state;
+    const { values} = this.state;
     return (
         <div>
           <span id="toggle-nav" onClick= {() => this.toggleNav()}>
             <i className="fa fa-bars"/>
           </span>
           <div className="topnav" id="topnav">
-            <a className={`${uri === '/' ? 'active' : ''}`} onClick={() => {
-              this.navTo('/');
-              }}><FontAwesomeIcon icon={faHome}/></a>
-            <a className={`${uri === '/about-us' ? 'active' : ''}`} onClick={() => {
-              this.navTo('/about-us');
-              }}>About Us</a>
-            <div className="search-container">
-              <form className="search-item" onSubmit={this.submitSearchForm}>
-                <FontAwesomeIcon className="fa-search" icon={faSearch}/>
-                <input
-                  type="text"
-                  name="searchTerm"
-                  value={values.searchTerm}
-                  onChange={this.inputChangeHandler}/>
-              </form>
-            </div>
+            <ul className="auth-header left">
+              <li>
+                <a onClick={() => { this.navTo('/'); }}>
+                  <FontAwesomeIcon className="header-icon" icon={faHome}/>
+                  <span className="header-content">Home</span>
+                </a>
+              </li>
+              <li>
+                <a onClick={() => { this.navTo('/about-us'); }}>
+                  <FontAwesomeIcon className="header-icon" icon={faCircleInfo}/>
+                  <span className="header-content">About Us</span>
+                </a>
+              </li>
+              <hr className ="hidden-header"/>
+              <li>
+                <div className="search-container">
+                  <form className="search-item" onSubmit={this.submitSearchForm}>
+                    <FontAwesomeIcon className="fa-search" icon={faSearch}/>
+                    <input
+                      type="text"
+                      name="searchTerm"
+                      value={values.searchTerm}
+                      onChange={this.inputChangeHandler}/>
+                  </form>
+                </div>
+              </li>
+            </ul>
             {
               !this.props.isAuthenticated &&
               <div className="center-nav">
@@ -111,30 +123,56 @@ class Header extends Component {
             {
               this.props.isAuthenticated &&
               <ul className="auth-header">
-                <li><a>My Favorites</a></li>
-                <li><a>My Recipes</a></li>
                 <li>
-                  <a onClick={() => { this.navTo('/recipes'); }}>Create Recipe</a>
-                </li>
-                <li><a id="user-notification"><FontAwesomeIcon icon={faBell}/>
-                  <span className="no-of-notification"/></a>
+                  <a>
+                    <FontAwesomeIcon className="header-icon" icon={faStar}/>
+                    <span className="header-content">My Favorites</span>
+                  </a>
                 </li>
                 <li>
-                  <a className="user-image" id="user-profile">
+                  <a>
+                    <FontAwesomeIcon className="header-icon" icon={faLayerGroup}/>
+                    <span className="header-content">My Recipes</span>
+                  </a>
+                </li>
+                <li>
+                  <a onClick={() => { this.navTo('/recipes'); }}>
+                    <FontAwesomeIcon className="header-icon" icon={faCirclePlus}/>
+                    <span className="header-content">Create Recipe</span>
+                  </a>
+                </li>
+                <hr className ="hidden-header"/>
+                <li>
+                  <a id="user-notification">
+                    <FontAwesomeIcon className="header-icon" icon={faBell}/>
+                    <span className="header-content">Notifications</span>
+                  </a>
+                </li>
+                <li className="hidden-header">
+                  <a>
+                    <FontAwesomeIcon className="header-icon" icon={faKey}/>
+                    <span className="header-content">Change Password</span>
+                  </a>
+                </li>
+                <hr className ="hidden-header"/>
+                <li>
+                  <a>
                   <img
                     src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"
                     alt="Recipe"
-                    className="profile_img"
+                    className="profile-img"
                     onClick={() => this.toggleProfileList()}/>
-                  <span className="hidden-header"
-                    style={{ marginLeft: "20px", position: "relative", top: "10px" }}>Daramola Oluwatobi</span>
+                  <FontAwesomeIcon className={classnames("hidden-header header-icon")} icon={faUser}/>
+                  <span className="hidden-header header-content" >Daramola Oluwatobi</span>
                   </a>
                 </li>
-                <ul className="hidden-header">
-                  <li><a>Change Password</a></li>
-                  <hr/>
-                  <li><a onClick={this.logOut}>Logout</a></li>
-                </ul>
+                <hr className ="hidden-header"/>
+                <li className="hidden-header">
+                  <a onClick={this.logOut}>
+                    <FontAwesomeIcon className="header-icon" icon={faSignOut}/>
+                    <span className="header-content">Logout</span>
+                  </a>
+                </li>
               </ul>
             }
           </div>

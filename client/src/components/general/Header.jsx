@@ -83,6 +83,7 @@ class Header extends Component {
           </span>
           <div className="topnav" id="topnav">
             <ul className="auth-header left">
+              <hr className ="hidden-header"/>
               <li>
                 <a onClick={() => { this.navTo('/'); }}>
                   <FontAwesomeIcon className="header-icon" icon={faHome}/>

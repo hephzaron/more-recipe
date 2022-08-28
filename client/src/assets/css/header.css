@@ -137,6 +137,10 @@ body {
         display: none;
     }
 
+    ul.auth-header {
+        margin-top: 40px !important;
+    }
+
     ul.auth-header li{
         float: none !important;
     }
@@ -165,6 +169,10 @@ body {
         width: 95% !important;
         max-width: 450px;
         min-width: 200px;
+    }
+    form.search-item{
+        position: absolute;
+        top: 6.5em;
     }
     form.search-item .fa-search{
         top: 37px !important;
@@ -214,7 +222,11 @@ form.search-item .fa-search{
     top: 2px;
     left: 40px;
     border-right: 2px solid rgb(11, 69, 107);
-    padding-right: 5px
+    padding-right: 5px;
+}
+
+form.search-item{
+    height: 50px;
 }
 
 form.search-item input[type=text]{

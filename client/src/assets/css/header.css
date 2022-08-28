@@ -137,10 +137,6 @@ body {
         display: none;
     }
 
-    ul.auth-header {
-        margin-top: 40px !important;
-    }
-
     ul.auth-header li{
         float: none !important;
     }
@@ -153,8 +149,8 @@ body {
         display: none;
         position: fixed;
         width: 300px;
-        padding-bottom: 10px;
-        height: 500px !important;
+        padding-bottom: 20px;
+        height: auto !important;
         background-color: white;
         z-index: 100;
         border: 1px solid rgba(0, 0, 0, 0.432);
@@ -166,13 +162,13 @@ body {
         float: none;
     }
     form.search-item input[type=text]{
-        width: 95% !important;
+        width: 98% !important;
         max-width: 450px;
         min-width: 200px;
     }
     form.search-item{
         position: absolute;
-        top: 6.5em;
+        top: 4.5em;
     }
     form.search-item .fa-search{
         top: 37px !important;
@@ -183,6 +179,9 @@ body {
     .topnav .center-nav{      
         display: flex !important;
         display:-webkit-flex !important;
+        margin-top: 40px;
+        padding: 2px 10px;
+        width: 100%;
         font-size: 17px;
         font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }

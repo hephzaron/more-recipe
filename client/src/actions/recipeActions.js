@@ -67,15 +67,17 @@ export const fetchRecipes = (offset = 0) => (
     }
 );
 
+/**Make photo credentials available in outer scope*/
 let cloudinaryName;
 let photoDeleteToken;
+
 /**
- * uploadRecipePhoto
+ * uploadPhoto
  * @description uploads image file to cloudinary
  * @param {object} photoFile - Picture file to be uploaded
  * @returns { promise } -Axios http response from cloudinary
  */
-export const uploadRecipePhoto = ({ photoFile }) => {
+export const uploadPhoto = ({ photoFile }) => {
     const formData = new FormData();
 
     return axios.get(`${SERVER_URL}/upload/sign`)
@@ -109,13 +111,13 @@ export const uploadRecipePhoto = ({ photoFile }) => {
 };
 
 /**
- * deleteRecipePhoto
+ * deletePhoto
  * @description deletes a recipe photo on failure to create recipe
  * @param { string } cloudName - cloudinary cloud_name
  * @param { string } deleteToken - delete_token of saved photo in cloudinary
  * @returns { promise } -Axios http response from the server
  */
-export const deleteRecipePhoto = ({ cloudName, deleteToken }) => {
+export const deletePhoto = ({ cloudName, deleteToken }) => {
     const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/delete_by_token`;
     let Axios = axios.create();
     delete Axios.defaults.headers.common['authorization'];
@@ -133,7 +135,7 @@ export const deleteRecipePhoto = ({ cloudName, deleteToken }) => {
 export const addRecipe = (recipe) => (
     async dispatch => {
         try {
-            const data = await uploadRecipePhoto({
+            const data = await uploadPhoto({
                 photoFile: recipe.photoUrl
             });
             photoDeleteToken = data['delete_token'];
@@ -148,7 +150,7 @@ export const addRecipe = (recipe) => (
             dispatch(fetchRecipes());
             return response.data;
         } catch (error) {
-            deleteRecipePhoto({ cloudName: cloudinaryName, deleteToken: photoDeleteToken });
+            deletePhoto({ cloudName: cloudinaryName, deleteToken: photoDeleteToken });
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
                 /** Return error response on failed request to cloudinary*/

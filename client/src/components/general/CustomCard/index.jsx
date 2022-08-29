@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faMugHot, faClock, faThumbsUp, faStar, faPen, faTrashCan, faThumbsDown
+    faMugHot, faClock, faThumbsUp, faStar, faPen, faTrashCan, faThumbsDown, faCaretRight
 } from "@fortawesome/free-solid-svg-icons";
 
 const propTypes = {
@@ -35,19 +35,19 @@ const CustomCard = (props) => {
                 <img src={expUrl} alt={name} className="recipe-img"/>
                 <ul className="recipe-action-list">
                     <li>
-                        <a><FontAwesomeIcon className="fas" icon={faThumbsUp}/><span>{likes}</span></a>
+                        <a><FontAwesomeIcon className="fas likes" icon={faThumbsUp}/><span>{likes}</span></a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas" icon={faThumbsDown}/><span>{dislikes}</span></a>
+                        <a><FontAwesomeIcon className="fas dislikes" icon={faThumbsDown}/><span>{dislikes}</span></a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas" icon={faStar}/><span>{upVotes}</span></a>
+                        <a><FontAwesomeIcon className="fas upvotes" icon={faStar}/><span>{upVotes}</span></a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas" icon={faPen}/><span>edit</span></a>
+                        <a><FontAwesomeIcon className="fas edit" icon={faPen}/></a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas" icon={faTrashCan}/></a>
+                        <a><FontAwesomeIcon className="fas delete" icon={faTrashCan}/></a>
                     </li>
                 </ul>
             </div>
@@ -63,7 +63,7 @@ const CustomCard = (props) => {
                     <Moment className="duration" fromNow>
                         {createdAt}
                     </Moment>
-                    <button>Read More</button>
+                    <button>Read More <FontAwesomeIcon icon={faCaretRight}/></button>
                 </div>
             </div>
         </figure>

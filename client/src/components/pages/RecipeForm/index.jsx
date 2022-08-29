@@ -5,7 +5,7 @@ import FlashMessage from '../../general/FlashMessage';
 import { addRecipe } from '../../../actions/recipeActions';
 
 
-const RecipeForm = ({ closeRecipeModal }) => {
+const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
     const {
         recipe,
         formErrors,
@@ -15,7 +15,7 @@ const RecipeForm = ({ closeRecipeModal }) => {
     } = useRecipeForm(addRecipe);
 
     return (
-        <div className="user-recipe-form">
+        <div ref = {recipeFormRef} className="user-recipe-form">
             <form onSubmit={submitRecipeForm}>
                 { flashMessageType && <FlashMessage/> }
                 <h3>Create Recipe</h3>
@@ -57,7 +57,8 @@ const RecipeForm = ({ closeRecipeModal }) => {
 };
 
 RecipeForm.propTypes = {
-    closeRecipeModal: PropTypes.func.isRequired
+    closeRecipeModal: PropTypes.func.isRequired,
+    recipeFormRef: PropTypes.object.isRequired
 };
 
 export default RecipeForm;

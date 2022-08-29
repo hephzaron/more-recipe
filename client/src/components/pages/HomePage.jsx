@@ -28,6 +28,8 @@ class HomePage extends Component {
             currentRecipes: []
         };
         this.closeForm = this.closeForm.bind(this);
+        this.wrapperRef = React.createRef();
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     /**
@@ -39,6 +41,7 @@ class HomePage extends Component {
      */
     componentDidMount() {
         this.props.dispatch(fetchRecipes());
+        document.addEventListener("mousedown", this.handleClickOutside);
     }
 
     /**
@@ -59,6 +62,17 @@ class HomePage extends Component {
     }
 
     /**
+     * Lifecycle method when components update
+     * @method componentWillUnmount
+     * @memberof HomePage
+     * @param {null} void
+     * @returns {null} void
+     */
+    componentWillUnmount() {
+        document.removeEventListener("mousedown", this.handleClickOutside);
+    }
+
+    /**
       * @method closeForm
       * @description closes Recipe modal form
       * @param {object} event
@@ -66,6 +80,18 @@ class HomePage extends Component {
       */
     closeForm() {
       this.props.dispatch(hideModal());
+    }
+
+    /**
+      * @method handleClickOutside
+      * @description closes Recipe modal form when clicked outside the form
+      * @param {object} event
+      * @returns { null } void
+      */
+    handleClickOutside(event) {
+        if (this.wrapperRef && !this.wrapperRef.current.contains(event.target)) {
+            this.props.dispatch(hideModal());
+        }
     }
 
     /**
@@ -99,7 +125,9 @@ class HomePage extends Component {
             <div>
                 {(showRecipeModal && isAuthenticated) &&
                     <ModalForm>
-                        <RecipeForm closeRecipeModal={() => this.closeForm()}/>
+                        <RecipeForm
+                            recipeFormRef={this.wrapperRef}
+                            closeRecipeModal={() => this.closeForm()}/>
                     </ModalForm>}
                 <div className="recipe-list">
                 {activeRecipes && activeRecipes.map(recipe => (

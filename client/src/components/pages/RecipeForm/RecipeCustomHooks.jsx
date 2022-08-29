@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { validateRecipeForm } from '../../../utils/validators/recipe';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
+import { hideModal } from '../../../actions/modalActions';
+import { fetchRecipes } from '../../../actions/recipeActions';
 
 /**
  * @function useRecipeForm
@@ -49,10 +51,14 @@ const useRecipeForm = (callback) => {
                 description,
                 photoUrl
             }))
-            .then((response) => dispatch(addFlashMessage({
-                message: response.message,
-                type: 'success'
-            })))
+            .then((response) => {
+                dispatch(addFlashMessage({
+                    message: response.message,
+                    type: 'success'
+                }));
+                dispatch(hideModal());
+                return dispatch(fetchRecipes());
+            })
             .catch((error) => dispatch(addFlashMessage({
                 message: error.message,
                 type: 'failure'

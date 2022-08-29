@@ -8,7 +8,7 @@ const ModalForm = ({ children }) => (
 );
 
 ModalForm.propTypes = {
-    children: PropTypes.object
+    children: PropTypes.object.isRequired
 };
 
 

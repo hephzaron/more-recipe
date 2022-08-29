@@ -78,8 +78,8 @@ class Header extends Component {
    * @returns {null} void
    */
    showModal() {
-    console.log('here');
     this.props.dispatch(showModal());
+    this.toggleNav();
   }
 
   /**

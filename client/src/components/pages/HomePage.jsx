@@ -6,6 +6,7 @@ import CardComponent from '../general/Card';
 import RecipeForm from './RecipeForm';
 import ModalForm from '../general/Modal';
 import Pagination from '../general/Pagination';
+import CustomCard from '../general/CustomCard';
 import { fetchRecipes } from '../../actions/recipeActions';
 import { hideModal } from '../../actions/modalActions';
 /**
@@ -131,7 +132,7 @@ class HomePage extends Component {
                     </ModalForm>}
                 <div className="recipe-list">
                 {activeRecipes && activeRecipes.map(recipe => (
-                    <CardComponent
+                    <CustomCard
                         key = {recipe.id}
                         recipe = {recipe}/>))}
                 </div>

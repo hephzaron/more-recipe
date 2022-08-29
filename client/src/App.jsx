@@ -2,15 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
-import { hideModal } from './actions/modalActions';
-import './assets/css/card.css';
 import './assets/css/header.css';
 import './assets/css/homepage.css';
 import './assets/css/user-form.css';
-import './assets/css/custom-header.css';
 import './assets/css/flash-message.css';
 import './assets/css/recipe-form.css';
 import './assets/css/modal.css';
+import './assets/css/custom-card.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/UserForm/SignupForm';
 import LoginForm from './components/pages/UserForm/LoginForm';
@@ -42,9 +40,9 @@ class App extends Component {
               <Route path="login" element={<LoginForm/>}/>
               <Route path="*"
                     element={
-                    <main style={{ padding: "1rem" }}>
+                    <div style={{ padding: "20rem" }}>
                       <p>There's nothing here!</p>
-                    </main>}/>
+                    </div>}/>
             </Route>
           </Routes>
         </div>

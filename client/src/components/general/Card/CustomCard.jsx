@@ -26,7 +26,7 @@ const CustomCard = (props) => {
 
     const shortDescription = description.slice(0, 40).concat('...');
 
-    const photoUrl = "https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"
+    const photoUrl = "https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all";
     return (
         <figure className="recipe">
             <div className="recipe_img_container">

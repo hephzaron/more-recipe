@@ -43,7 +43,12 @@ const useRecipeForm = (callback) => {
         setFormErrors({ ...formErrors, ...validationErrors });
 
         if (isValid) {
-            dispatch(callback({ userId, name, description, photoUrl }))
+            dispatch(callback({
+                userId,
+                name,
+                description,
+                photoUrl
+            }))
             .then((response) => dispatch(addFlashMessage({
                 message: response.message,
                 type: 'success'

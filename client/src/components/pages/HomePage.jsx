@@ -3,8 +3,11 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import CardComponent from '../general/Card';
+import RecipeForm from './RecipeForm';
+import ModalForm from '../general/Modal';
 import Pagination from '../general/Pagination';
 import { fetchRecipes } from '../../actions/recipeActions';
+import { hideModal } from '../../actions/modalActions';
 /**
  * Class component for homepage
  * @class HomePage
@@ -24,6 +27,7 @@ class HomePage extends Component {
             currentPage: 1,
             currentRecipes: []
         };
+        this.closeForm = this.closeForm.bind(this);
     }
 
     /**
@@ -55,6 +59,16 @@ class HomePage extends Component {
     }
 
     /**
+      * @method closeForm
+      * @description closes Recipe modal form
+      * @param {object} event
+      * @returns { null } void
+      */
+    closeForm() {
+      this.props.dispatch(hideModal());
+    }
+
+    /**
      * Renders HomePage Component
      * @method render
      * @memberof HomePage
@@ -63,7 +77,13 @@ class HomePage extends Component {
      */
     render() {
         const { currentRecipes } = this.state;
-        const { error, loading, recipes } = this.props;
+        const {
+            error,
+            loading,
+            recipes,
+            showRecipeModal,
+            isAuthenticated
+        } = this.props;
 
         const activeRecipes = currentRecipes.length === 0 ? recipes.slice(0, 8) : currentRecipes;
 
@@ -77,6 +97,10 @@ class HomePage extends Component {
 
         return (
             <div>
+                {(showRecipeModal && isAuthenticated) &&
+                    <ModalForm>
+                        <RecipeForm closeRecipeModal={() => this.closeForm()}/>
+                    </ModalForm>}
                 <div className="recipe-list">
                 {activeRecipes && activeRecipes.map(recipe => (
                     <CardComponent
@@ -94,14 +118,18 @@ HomePage.propTypes = {
     loading: PropTypes.bool,
     error: PropTypes.object,
     currentPage: PropTypes.number,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    showRecipeModal: PropTypes.bool.isRequired,
+    isAuthenticated: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = (state) => ({
     recipes: state.recipeReducer.recipes || [],
     loading: state.recipeReducer.loading,
     error: state.recipeReducer.error,
-    currentPage: state.paginationReducer.currentPage
+    currentPage: state.paginationReducer.currentPage,
+    showRecipeModal: state.modalReducer.show,
+    isAuthenticated: state.userAuthReducer.isAuthenticated
   });
 
 export default connect(mapStateToProps)(HomePage);

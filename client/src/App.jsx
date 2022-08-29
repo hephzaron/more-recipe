@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
+import { hideModal } from './actions/modalActions';
 import './assets/css/card.css';
 import './assets/css/header.css';
 import './assets/css/homepage.css';
@@ -9,11 +10,11 @@ import './assets/css/user-form.css';
 import './assets/css/custom-header.css';
 import './assets/css/flash-message.css';
 import './assets/css/recipe-form.css';
+import './assets/css/modal.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/UserForm/SignupForm';
 import LoginForm from './components/pages/UserForm/LoginForm';
 import Header from './components/general/Header';
-import RecipeForm from './components/pages/RecipeForm';
 //import CustomHeader from './components/general/CustomHeader';
 
 /**
@@ -22,7 +23,7 @@ import RecipeForm from './components/pages/RecipeForm';
  * @param {null} void
  */
 class App extends Component {
-  /**
+ /**
    * Renders HomePage Component
    * @method render
    * @memberof App
@@ -39,7 +40,6 @@ class App extends Component {
               <Route path="" element={<HomePage/>}/>
               <Route path="register" element={<SignupForm/>}/>
               <Route path="login" element={<LoginForm/>}/>
-              {this.props.isAuthenticated && <Route path="recipes" element={<RecipeForm/>}/>}
               <Route path="*"
                     element={
                     <main style={{ padding: "1rem" }}>
@@ -53,7 +53,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  isAuthenticated: PropTypes.bool.isRequired
+  isAuthenticated: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({

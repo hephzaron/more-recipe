@@ -19,3 +19,7 @@ export const initialFlashMessageState = {
     message: '',
     type: ''
 };
+
+export const initialModalState = {
+    show: false
+};

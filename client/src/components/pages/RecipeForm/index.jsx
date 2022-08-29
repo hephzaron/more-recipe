@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import useRecipeForm from './RecipeCustomHooks';
 import FlashMessage from '../../general/FlashMessage';
 import { addRecipe } from '../../../actions/recipeActions';
 
 
-const RecipeForm = () => {
+const RecipeForm = ({ closeRecipeModal }) => {
     const {
         recipe,
         formErrors,
@@ -18,6 +19,7 @@ const RecipeForm = () => {
             <form onSubmit={submitRecipeForm}>
                 { flashMessageType && <FlashMessage/> }
                 <h3>Create Recipe</h3>
+                <span onClick = {closeRecipeModal} className="close-btn">Close</span>
                 <hr/>
                 <label htmlFor="name">Recipe Name:</label>
                 {
@@ -52,6 +54,10 @@ const RecipeForm = () => {
             </form>
         </div>
     );
+};
+
+RecipeForm.propTypes = {
+    closeRecipeModal: PropTypes.func.isRequired
 };
 
 export default RecipeForm;

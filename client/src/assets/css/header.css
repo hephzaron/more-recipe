@@ -130,7 +130,8 @@ body {
         cursor: pointer;
         background-color: #08262e;
         color:white;
-        font-weight:bold
+        font-weight:bold;
+        z-index: 112;
     }
 
     .profile-dropdown, .profile-img {
@@ -152,7 +153,7 @@ body {
         padding-bottom: 20px;
         height: auto !important;
         background-color: white;
-        z-index: 100;
+        z-index: 111;
         border: 1px solid rgba(0, 0, 0, 0.432);
     }
     .topnav .hidden-header{

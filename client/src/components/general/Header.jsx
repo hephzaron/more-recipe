@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import { logoutUser } from '../../actions/authUserActions';
+import { showModal } from '../../actions/modalActions';
 
 /**
  * @class Header
@@ -29,6 +30,7 @@ class Header extends Component {
       showProfile: false
     };
     this.logOut = this.logOut.bind(this);
+    this.showModal = this.showModal.bind(this);
   }
 
 /**
@@ -70,12 +72,23 @@ class Header extends Component {
   }
 
   /**
+   * @memberof Header
+   * @method showModal
+   * @param {null}-void
+   * @returns {null} void
+   */
+   showModal() {
+    console.log('here');
+    this.props.dispatch(showModal());
+  }
+
+  /**
  * @description Creates an instance of Header class
  * @param { void } null
  * @return {JSX} JSX Elements
  */
   render() {
-    const { values} = this.state;
+    const { values } = this.state;
     return (
         <div>
           <span id="toggle-nav" onClick= {() => this.toggleNav()}>
@@ -137,7 +150,7 @@ class Header extends Component {
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => { this.navTo('/recipes'); }}>
+                  <a onClick={() => this.showModal()}>
                     <FontAwesomeIcon className="header-icon" icon={faCirclePlus}/>
                     <span className="header-content">Create Recipe</span>
                   </a>

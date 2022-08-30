@@ -1,5 +1,6 @@
 export const initialRecipeState = {
     recipes: [],
+    recipe: {},
     loading: false,
     error: null
 };

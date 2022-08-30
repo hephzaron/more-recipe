@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faMugHot, faClock, faThumbsUp, faStar, faPen, faTrashCan, faThumbsDown, faCaretRight
+    faMugHot, faClock, faThumbsUp, faStar, faPen, faTrashCan, faThumbsDown, faCaretRight, faReply
 } from "@fortawesome/free-solid-svg-icons";
 
 const propTypes = {
@@ -41,17 +41,19 @@ const CustomCard = (props) => {
                         <a><FontAwesomeIcon className="fas dislikes" icon={faThumbsDown}/><span>{dislikes}</span></a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas upvotes" icon={faStar}/><span>{upVotes}</span></a>
-                    </li>
-                    <li>
-                        <a><FontAwesomeIcon className="fas edit" icon={faPen}/></a>
+                        <a><FontAwesomeIcon className="fas upvotes" icon={faStar}/>
+                        <FontAwesomeIcon className="fas upvotes-2" icon={faStar}/>
+                        <span>{upVotes}</span></a>
                     </li>
                     <li>
                         <a><FontAwesomeIcon className="fas delete" icon={faTrashCan}/></a>
                     </li>
                 </ul>
             </div>
-            <h4>{name} <span><FontAwesomeIcon className="fas" icon={faMugHot}/></span></h4>
+            <h4>
+                {name}
+                <span><FontAwesomeIcon className="fas" icon={faMugHot}/></span>
+            </h4>
             <p>{description.slice(0, 50).concat('...')}</p>
             <div className="user-details">
                 <div className="image-overlay"/>

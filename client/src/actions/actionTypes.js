@@ -12,7 +12,9 @@ const actions = [
     'SET_FLASH_MESSAGE',
     'UNSET_FLASH_MESSAGE',
     'SHOW_MODAL',
-    'HIDE_MODAL'
+    'HIDE_MODAL',
+    'EDIT_RECIPE_SUCCESS',
+    'EDIT_RECIPE_FAILURE'
 ];
 
 /**

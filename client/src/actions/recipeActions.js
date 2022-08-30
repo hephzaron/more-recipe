@@ -12,7 +12,9 @@ const {
     FETCH_RECIPES_SUCCESS,
     FETCH_RECIPES_FAILURE,
     CREATE_RECIPE_SUCCESS,
-    CREATE_RECIPE_FAILURE
+    CREATE_RECIPE_FAILURE,
+    EDIT_RECIPE_SUCCESS,
+    EDIT_RECIPE_FAILURE
 } = types;
 
 /**
@@ -34,7 +36,12 @@ export const fetchRecipesFailure = (error) => ({
     type: FETCH_RECIPES_FAILURE,
     payload: { error }
 });
-
+/**
+ * Create recipe
+ * @description Persist created recipe to the database
+ * @param { object } recipe - Payload of recipe to be created
+ * @returns { object } Set recipe action creator
+ */
 export const createRecipeSuccess = (recipe) => ({
     type: CREATE_RECIPE_SUCCESS,
     payload: { recipe }
@@ -42,6 +49,22 @@ export const createRecipeSuccess = (recipe) => ({
 
 export const createRecipeFailure = (error) => ({
     type: CREATE_RECIPE_FAILURE,
+    payload: { error }
+});
+
+/**
+ * Edit Recipe
+ * @description Edits a recipe
+ * @param { object } recipe - Payload of recipe to be edited
+ * @returns { object } Set recipe action creator
+ */
+ export const editRecipeSuccess = (recipe) => ({
+    type: EDIT_RECIPE_SUCCESS,
+    payload: { recipe }
+});
+
+export const editRecipeFailure = (error) => ({
+    type: EDIT_RECIPE_FAILURE,
     payload: { error }
 });
 
@@ -166,4 +189,26 @@ export const addRecipe = (recipe) => (
             dispatch(createRecipeFailure(error.response.data['message']));
             return Promise.reject(error);
         }
-    });
+    }
+);
+
+/**
+ * @function updateRecipe
+ * @description updates a recipe
+ * @param {object} recipe - recipe payload to be updated
+ * @returns { promise } -Axios http response from the server
+ */
+export const updateRecipe = (recipe) => (
+    dispatch => (
+        axios.patch(`${SERVER_URL}/recipes/${recipe.userId}/${recipe.id}`, { ...recipe })
+        .then((response) => {
+            dispatch(editRecipeSuccess(response.data.recipe));
+            dispatch(fetchRecipes());
+            return response.data;
+        })
+        .catch((error) => {
+            dispatch(editRecipeFailure(error.response.data['message']));
+            return Promise.reject(error.response.data);
+        })
+    )
+);

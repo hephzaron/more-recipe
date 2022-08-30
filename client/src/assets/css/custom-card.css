@@ -13,7 +13,7 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
 /*Recipe card image styles*/
 .recipe {
     width: 300px;
-    border-radius: 5px 65px 5px 65px;
+    border-radius: 5px 65px;
     box-shadow: 0 5px 20px 10px rgba(0, 0, 0, .2);
     overflow: hidden;
     padding: 5px;
@@ -125,7 +125,7 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
     background-color: white;
     color: red;
     border: 2px solid red;
-    border-radius: 5px;
+    border-radius: 0px 10px;
     font-weight: bold;
     padding: 5px;
     position: relative;
@@ -162,12 +162,19 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
     color: red;
 }
 
+.recipe-action-list .upvotes-2{
+    color: blue;
+    font-size: 10px;
+    position: absolute;
+    right: 33%;
+    bottom: 15px;
+    opacity: 0.7;
+
+}
+
 .recipe-action-list .likes,
 .recipe-action-list .likes+span{
     color: blue;
-}
-.recipe-action-list .edit{
-    color: greenyellow
 }
 .recipe-action-list .dislikes,
 .recipe-action-list .dislikes+span{

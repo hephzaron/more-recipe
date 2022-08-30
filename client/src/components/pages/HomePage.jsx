@@ -2,7 +2,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import CardComponent from '../general/Card';
 import RecipeForm from './RecipeForm';
 import ModalForm from '../general/Modal';
 import Pagination from '../general/Pagination';

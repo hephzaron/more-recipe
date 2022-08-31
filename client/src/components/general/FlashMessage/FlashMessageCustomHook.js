@@ -4,7 +4,7 @@ const useFlashMessage = (callback) => {
     const dispatch = useDispatch();
     const message = useSelector((state) => state.flashMessageReducer.message);
     const type = useSelector((state) => state.flashMessageReducer.type);
-    const hideFlashMessage = () => dispatch(callback);
+    const hideFlashMessage = () => dispatch(callback());
     return {
         message, type, hideFlashMessage
     };

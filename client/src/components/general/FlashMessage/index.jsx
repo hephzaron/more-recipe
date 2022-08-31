@@ -11,7 +11,7 @@ const FlashMessage = () => {
         <div id ="flash-message" className={`${type}`}>
             <FontAwesomeIcon
                 className="flash-icon" icon={faWindowClose}
-                onClick={hideFlashMessage()}/>
+                onClick={() => hideFlashMessage()}/>
             <p> {message} </p>
         </div>);
 };

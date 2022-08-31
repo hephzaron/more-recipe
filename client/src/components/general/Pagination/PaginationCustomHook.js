@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 /**
@@ -14,6 +14,7 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
     const [activePages, setActivePages] = useState({
         activePages: []
     });
+    const previousActivePages = useRef({ activePages: [] });
 
     const recipes = useSelector((state) => state.recipeReducer.recipes);
     const recipePages = useSelector((state) => state.paginationReducer.recipePages);
@@ -21,14 +22,21 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
 
     const dispatch = useDispatch();
 
+    /**
+     * useEffect hook to run on initial render
+     */
     useEffect(() => {
         dispatch(setFetchedPages(recipes, recipePages['0'], 8));
         setActivePages({ activePages: recipePages });
     }, []);
 
+    /**
+     * useEffect hook to run the activePages change
+     */
     useEffect(() => {
-        if ((currentPage === activePages['4'] + 1) ||
-            (currentPage === activePages['0'] - 1 && currentPage > 0)) {
+        previousActivePages.current = activePages;
+        if ((currentPage === previousActivePages['4'] + 1) ||
+            (currentPage === previousActivePages['0'] - 1 && currentPage > 0)) {
                 dispatch(setFetchedPages(recipes, currentPage, 8));
                 setActivePages({ activePages: recipePages });
             }

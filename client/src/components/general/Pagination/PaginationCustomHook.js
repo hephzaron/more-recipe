@@ -22,12 +22,17 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
+        dispatch(setFetchedPages(recipes, recipePages['0'], 8));
         setActivePages({ activePages: recipePages });
+    }, []);
+
+    useEffect(() => {
         if ((currentPage === activePages['4'] + 1) ||
             (currentPage === activePages['0'] - 1 && currentPage > 0)) {
                 dispatch(setFetchedPages(recipes, currentPage, 8));
+                setActivePages({ activePages: recipePages });
             }
-    });
+    }, [activePages]);
 
     /**
      * Brings up the selected page to the view of the user

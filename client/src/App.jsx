@@ -11,7 +11,7 @@ import './assets/css/modal.css';
 import './assets/css/custom-card.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/UserForm/SignupForm';
-import LoginForm from './components/pages/UserForm/LoginForm';
+import LoginForm from './components/pages/LoginForm';
 import Header from './components/general/Header';
 //import CustomHeader from './components/general/CustomHeader';
 

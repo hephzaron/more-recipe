@@ -19,7 +19,6 @@ const useLoginForm = ({ loginUser, addFlashMessage }) => {
 
     /**
      * Submit completed UserForm
-     * @method submitAuthForm
      * @memberof LoginForm
      * @param {object} event
      * @returns {null} void

@@ -10,10 +10,9 @@ import './assets/css/recipe-form.css';
 import './assets/css/modal.css';
 import './assets/css/custom-card.css';
 import HomePage from './components/pages/HomePage';
-import SignupForm from './components/pages/UserForm/SignupForm';
+import SignupForm from './components/pages/SignupForm';
 import LoginForm from './components/pages/LoginForm';
 import Header from './components/general/Header';
-//import CustomHeader from './components/general/CustomHeader';
 
 /**
  * React App

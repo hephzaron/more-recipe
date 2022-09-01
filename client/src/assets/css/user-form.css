@@ -21,7 +21,7 @@
     background-size: cover;                      /* <------ */
     background-repeat:  no-repeat;
     background-position: center center;
-    height: 700px;
+    height: 120vh;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -36,7 +36,7 @@
     position: relative;
     top: 20px;
     width: 500px;
-    height: 600px;
+    height: 650px;
     background-color: none;
     border: 2px solid rgba(170, 209, 235, 0.486);
     border-radius:10px;

@@ -34,12 +34,12 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
      * useEffect hook to run the activePages change
      */
     useEffect(() => {
-        previousActivePages.current = activePages;
         if ((currentPage === previousActivePages['4'] + 1) ||
             (currentPage === previousActivePages['0'] - 1 && currentPage > 0)) {
                 dispatch(setFetchedPages(recipes, currentPage, 8));
                 setActivePages({ activePages: recipePages });
             }
+        previousActivePages.current = activePages;
     }, [activePages]);
 
     /**

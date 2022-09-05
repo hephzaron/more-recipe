@@ -50,7 +50,7 @@ const HomePage = () => {
                         key = {recipe.id}
                         recipe = {recipe}/>))}
                 </div>
-                <Pagination/>
+                {!loading && <Pagination/>}
             </div>
         );
 };

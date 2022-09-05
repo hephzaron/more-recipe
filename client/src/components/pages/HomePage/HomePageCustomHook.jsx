@@ -8,7 +8,12 @@ import { useDispatch, useSelector } from 'react-redux';
  * @param { function } hideModal - dispatches action creators that hides the Modal component
  * @returns { object } [activeRecipes, showRecipeModal, isAuthenticated, loading, error, wrapperRef, closeForm]
  */
-const useHomePage = ({ fetchRecipes, hideModal }) => {
+const useHomePage = ({
+    fetchRecipes,
+    hideModal,
+    setFetchedPages,
+    addFlashMessage
+}) => {
     const [currentRecipes, setCurrentRecipes] = useState([]);
     const dispatch = useDispatch();
 
@@ -18,6 +23,7 @@ const useHomePage = ({ fetchRecipes, hideModal }) => {
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
     const showRecipeModal = useSelector((state) => state.modalReducer.show);
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
+    const recipePages = useSelector((state) => state.paginationReducer.recipePages);
 
     const wrapperRef = useRef();
     const previousPage = useRef({ currentPage: [] });
@@ -49,7 +55,14 @@ const useHomePage = ({ fetchRecipes, hideModal }) => {
 
     /** React hook runs once when component mounts */
     useEffect(() => {
-        dispatch(fetchRecipes());
+        dispatch(fetchRecipes())
+        .then((response) => {
+            dispatch(setFetchedPages(response.recipes, recipePages['0'], 8));
+        })
+        .catch((fetchError) => dispatch(addFlashMessage({
+            message: fetchError.message,
+            type: 'failure'
+        })));
         document.addEventListener("mousedown", handleClickOutside);
         return (() => document.removeEventListener("mousedown", handleClickOutside));
     }, []);
@@ -57,7 +70,10 @@ const useHomePage = ({ fetchRecipes, hideModal }) => {
     /** React hook runs when the current page gets updated*/
     useEffect(() => {
         if (currentPage !== previousPage) {
-            const end = (currentPage * 8);
+            // Slice array of recipes fetched based on selected page
+            const pageIndex = (currentPage > 0 && currentPage % 5 === 0) ? 5 : currentPage % 5;
+            const page = currentPage > 5 ? pageIndex : currentPage;
+            const end = (page * 8);
             const start = end - 8;
             setCurrentRecipes(recipes.slice(start, end));
         }

@@ -17,7 +17,9 @@ import { useSelector, useDispatch } from 'react-redux';
 const useHeader = ({ logoutUser, showModal }) => {
     const [values, setValues] = useState({ });
     const dispatch = useDispatch();
+
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
+    const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
 
     const toggleProfileList = () => {
         const profileDropdown = document.getElementById('profile-dropdown');
@@ -59,6 +61,7 @@ const useHeader = ({ logoutUser, showModal }) => {
     return {
         values,
         isAuthenticated,
+        flashMessageType,
         navTo,
         logOut,
         toggleNav,

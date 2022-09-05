@@ -24,7 +24,6 @@ const useRecipeForm = (callback) => {
         photoUrl: ''
     });
 
-    const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
     const userId = useSelector((state) => state.userAuthReducer.user.id);
 
     const dispatch = useDispatch();
@@ -89,7 +88,6 @@ const useRecipeForm = (callback) => {
     return {
         recipe,
         formErrors,
-        flashMessageType,
         submitRecipeForm,
         handleInputChange
     };

@@ -1,5 +1,4 @@
 import React from 'react';
-import FlashMessage from '../../general/FlashMessage';
 import useLoginForm from './LoginFormCustomHook';
 import { loginUser } from '../../../actions/authUserActions';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
@@ -8,14 +7,12 @@ const LoginForm = () => {
     const {
         userInput,
         formErrors,
-        flashMessageType,
         inputChangeHandler,
         submitAuthForm
     } = useLoginForm({ loginUser, addFlashMessage });
     return (
         <div className="user-page login">
             <form onSubmit={submitAuthForm}>
-                { flashMessageType && <FlashMessage/> }
                 <h3>Login</h3>
                 <hr/>
                 <label htmlFor="email">Email *</label>

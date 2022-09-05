@@ -27,6 +27,14 @@ export const setRecipesPages = (recipePages) => ({
     payload: { recipePages }
 });
 
+/**
+ * Set fetched pages
+ * @description Sets pages of fetched recipes
+ * @param { array } recipes - Recipes fetched
+ * @param { integer } beginAt - Number to start recipe numbering from
+ * @param { ineteger }  recipesPerPage - Number of recipes per page
+ * @returns { object } fetchedPages - Key-Value pairs of pages
+ */
 export const setFetchedPages = (recipes, beginAt = 1, recipesPerPage = 8) => (
     dispatch => {
         const numberOfFetchedPages = Math.ceil(recipes.length / recipesPerPage);
@@ -38,6 +46,8 @@ export const setFetchedPages = (recipes, beginAt = 1, recipesPerPage = 8) => (
 
 export const setPage = (pageNumber) => (
     dispatch => {
-        dispatch(setCurrentPage(pageNumber));
+        if (pageNumber > 0) {
+            return dispatch(setCurrentPage(pageNumber));
+        }
     }
 );

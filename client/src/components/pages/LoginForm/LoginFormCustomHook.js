@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { validateUserForm } from "../../../utils/validators/user";
 
 /**
@@ -12,8 +12,6 @@ import { validateUserForm } from "../../../utils/validators/user";
 const useLoginForm = ({ loginUser, addFlashMessage }) => {
     const [userInput, setUserInput] = useState({ email: '', password: '' });
     const [formErrors, setFormErrors] = useState({ email: '', password: '' });
-
-    const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
 
     const dispatch = useDispatch();
 
@@ -59,7 +57,6 @@ const useLoginForm = ({ loginUser, addFlashMessage }) => {
     return {
         userInput,
         formErrors,
-        flashMessageType,
         inputChangeHandler,
         submitAuthForm
     };

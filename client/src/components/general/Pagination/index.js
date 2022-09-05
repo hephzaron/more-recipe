@@ -14,6 +14,7 @@ import { setPage, setFetchedPages } from '../../../actions/paginationActions';
  */
 const Pagination = () => {
     const { recipePages, currentPage, setSelectedPage } = usePagination({ fetchRecipes, setPage, setFetchedPages });
+    const pageIndex = (currentPage > 0 && currentPage % 5 === 0) ? 5 : currentPage % 5;
     return (
         <div className="pagination">
             <ul>
@@ -21,10 +22,10 @@ const Pagination = () => {
                     <FontAwesomeIcon icon={faAngleDoubleLeft}/></a>
                 </li>
                 {
-                    recipePages && Object.entries(recipePages).map(([recipeIndex, pageNumber]) => (
+                    recipePages && Object.entries(recipePages).map(([_, pageNumber]) => (
                         <li key={`${pageNumber}`}
-                            className={`${pageNumber === recipePages[`${currentPage - 1}`] ? 'active' : ''}`}>
-                        <a onClick={() => setSelectedPage(parseInt(recipeIndex, 10) + 1)}>{ pageNumber }</a>
+                            className={`${pageNumber === recipePages[`${pageIndex - 1}`] ? 'active' : ''}`}>
+                        <a onClick={() => setSelectedPage(pageNumber)}>{ pageNumber }</a>
                         </li>
                     ))
                 }

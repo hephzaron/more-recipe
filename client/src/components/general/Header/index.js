@@ -4,6 +4,7 @@ import {
   faHome, faSearch, faBell, faCaretUp, faStar, faLayerGroup, faCirclePlus, faCircleInfo, faKey, faSignOut, faUser
 } from "@fortawesome/free-solid-svg-icons";
 import classnames from 'classnames';
+import FlashMessage from '../FlashMessage';
 import useHeader from './HeaderCustomHook';
 import { logoutUser } from '../../../actions/authUserActions';
 import { showModal } from '../../../actions/modalActions';
@@ -12,6 +13,7 @@ const Header = () => {
     const {
         values,
         isAuthenticated,
+        flashMessageType,
         navTo,
         logOut,
         toggleNav,
@@ -22,6 +24,7 @@ const Header = () => {
     } = useHeader({ logoutUser, showModal });
     return (
         <div>
+          { flashMessageType && <FlashMessage/>}
           <span id="toggle-nav" onClick= {() => toggleNav()}>
             <i className="fa fa-bars"/>
           </span>

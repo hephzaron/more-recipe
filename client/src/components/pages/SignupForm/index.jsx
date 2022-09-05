@@ -1,6 +1,5 @@
 import React from 'react';
 import useSignupForm from './SignupFormCustomHook';
-import FlashMessage from '../../general/FlashMessage';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { registerUser } from '../../../actions/signupActions';
 
@@ -8,14 +7,12 @@ const SignupForm = () => {
     const {
         userInput,
         formErrors,
-        flashMessageType,
         inputChangeHandler,
         submitUserForm
     } = useSignupForm({ addFlashMessage, registerUser });
     return (
         <div className="user-page signup">
             <form onSubmit={submitUserForm}>
-                { flashMessageType && <FlashMessage/> }
                 <h3>Sign Up</h3>
                 <hr/>
                 <label htmlFor="username">Username *</label>

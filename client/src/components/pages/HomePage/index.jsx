@@ -6,6 +6,8 @@ import CustomCard from '../../general/CustomCard';
 import useHomePage from './HomePageCustomHook';
 import { fetchRecipes } from '../../../actions/recipeActions';
 import { hideModal } from '../../../actions/modalActions';
+import { setFetchedPages } from '../../../actions/paginationActions';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
 
 const HomePage = () => {
     const {
@@ -16,7 +18,12 @@ const HomePage = () => {
         error,
         wrapperRef,
         closeForm
-    } = useHomePage({ fetchRecipes, hideModal });
+    } = useHomePage({
+        fetchRecipes,
+        hideModal,
+        setFetchedPages,
+        addFlashMessage
+    });
 
 
     if (error) {

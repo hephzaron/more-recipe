@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useRecipeForm from './RecipeCustomHooks';
-import FlashMessage from '../../general/FlashMessage';
 import { addRecipe } from '../../../actions/recipeActions';
 
 
@@ -9,7 +8,6 @@ const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
     const {
         recipe,
         formErrors,
-        flashMessageType,
         submitRecipeForm,
         handleInputChange
     } = useRecipeForm(addRecipe);
@@ -17,7 +15,6 @@ const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
     return (
         <div ref = {recipeFormRef} className="user-recipe-form">
             <form onSubmit={submitRecipeForm}>
-                { flashMessageType && <FlashMessage/> }
                 <h3>Create Recipe</h3>
                 <span onClick = {closeRecipeModal} className="close-btn">Close</span>
                 <hr/>

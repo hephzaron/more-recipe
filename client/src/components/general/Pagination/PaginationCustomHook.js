@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
 
 /**
  * @function usePagination
@@ -26,7 +27,6 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
      * useEffect hook to run on initial render
      */
     useEffect(() => {
-        dispatch(setFetchedPages(recipes, recipePages['0'], 8));
         setActivePages({ activePages: recipePages });
     }, []);
 
@@ -50,12 +50,32 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
      * @returns { null }  void
      */
     const setSelectedPage = (pageNumber) => {
-        if (Object.keys(recipePages).length === 5 &&
-            recipePages['4'] === currentPage &&
-            pageNumber > recipePages['4']) {
-            dispatch(fetchRecipes(Object.keys(recipePages).length * 8));
+        if (pageNumber && !Object.values(recipePages).includes(pageNumber)) {
+            if (Object.keys(recipePages).length === 5 && pageNumber > recipePages['4']) {
+	            return dispatch(fetchRecipes((recipePages['4'] * 8) + 1))
+	            .then((next) => {
+	                dispatch(setFetchedPages(next.recipes, recipePages['4'] + 1, 8));
+	                dispatch(setPage(pageNumber));
+	                return next.recipes;
+	            })
+	            .catch((nextError) => dispatch(addFlashMessage({
+	                message: nextError.message,
+	                type: 'failure'
+	            })));
+	        } else if (pageNumber < recipePages['0'] && recipePages['0'] >= 6) {
+	            return dispatch(fetchRecipes((recipePages['0'] - 6) * 8))
+	            .then((prev) => {
+	                dispatch(setFetchedPages(prev.recipes, recipePages['0'] - 5, 8));
+	                dispatch(setPage(pageNumber));
+	                return prev.recipes;
+	            })
+	            .catch((prevError) => dispatch(addFlashMessage({
+	                message: prevError.message,
+	                type: 'failure'
+	            })));
+	        }
         }
-        dispatch(setPage(pageNumber));
+        return dispatch(setPage(pageNumber));
     };
 
     return {

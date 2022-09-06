@@ -20,9 +20,9 @@ export const fetchRecipes = createAsyncThunk(
         try {
             const limit = 40;
             const sort = 'createdAt';
-            const order = 'desc';
+            const order = 'DESC';
             const response = await axios.get(
-                `${SERVER_URL}/recipes?offset=${offset}&limit=${limit}&sort=${sort}&order=${order}`
+                `${SERVER_URL}/recipes?sort=${sort}&order=${order}&offset=${offset}&limit=${limit}`
                 );
             return response.data;
         } catch (error) {

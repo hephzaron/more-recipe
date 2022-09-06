@@ -218,6 +218,7 @@ class RecipeController {
         where,
         limit: limit || 8,
         offset: offset || 0,
+        order: [[sort, order]],
         include: [{
           model: RecipeVote,
           attributes: [],
@@ -250,15 +251,7 @@ class RecipeController {
             recipe: recipes[0]
           });
         }
-        const sortBy = sort || 'id';
-        const sorted = recipes
-          .sort((prev, next) => {
-            if ((/desc/i).test(order)) {
-              return parseInt(next.dataValues[sortBy], 10) - parseInt(prev.dataValues[sortBy], 10);
-            }
-            return parseInt(prev.dataValues[sortBy], 10) - parseInt(next.dataValues[sortBy], 10);
-          });
-        return res.status(200).send({ recipes: sorted });
+        return res.status(200).send({ recipes });
       }).catch((error) => {
         const e = handleErrors(error);
         return res.status(e.statusCode).send({

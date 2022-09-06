@@ -1,25 +1,10 @@
-import types from '../actions/actionTypes';
+import { createReducer } from '@reduxjs/toolkit';
+import { set, unset } from '../actions/flashMessageActions';
 import { initialFlashMessageState } from './initialState';
 
-const { SET_FLASH_MESSAGE, UNSET_FLASH_MESSAGE } = types;
-
-const flashMessageReducer = (state = initialFlashMessageState, action = {}) => {
-    switch (action.type) {
-        case SET_FLASH_MESSAGE:
-            return {
-                ...state,
-                message: action.payload.message,
-                type: action.payload.type
-            };
-        case UNSET_FLASH_MESSAGE:
-            return {
-                ...state,
-                message: '',
-                type: ''
-            };
-        default:
-            return state;
-    }
-};
+const flashMessageReducer = createReducer(initialFlashMessageState, (builder) => {
+    builder.addCase(set, (_, action) => ({ ...action.payload }));
+    builder.addCase(unset, () => ({ message: '', type: '' }));
+});
 
 export default flashMessageReducer;

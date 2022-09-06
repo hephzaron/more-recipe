@@ -1,16 +1,7 @@
-import types from './actionTypes';
+import { createAction } from "@reduxjs/toolkit";
 
-const { SET_FLASH_MESSAGE, UNSET_FLASH_MESSAGE } = types;
-
-export const setFlashMessage = ({ message, type }) => ({
-    type: SET_FLASH_MESSAGE,
-    payload: { message, type }
-});
-
-export const unsetFlashMessage = () => ({
-    type: UNSET_FLASH_MESSAGE,
-    payload: { message: '', type: '' }
-});
+export const set = createAction('flashMesssage/set');
+export const unset = createAction('flashMessage/unset');
 
 /**
  * @description Action creator to add flash messages
@@ -20,7 +11,7 @@ export const unsetFlashMessage = () => ({
  */
 export const addFlashMessage = ({ message, type }) => (
     dispatch => {
-        dispatch(setFlashMessage({ message, type }));
+        dispatch(set({ message, type }));
     }
 );
 
@@ -31,6 +22,6 @@ export const addFlashMessage = ({ message, type }) => (
  */
 export const removeFlashMessage = () => (
     dispatch => {
-        dispatch(unsetFlashMessage());
+        dispatch(unset());
     }
 );

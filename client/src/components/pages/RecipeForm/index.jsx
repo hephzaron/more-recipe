@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import useRecipeForm from './RecipeCustomHooks';
-import { addRecipe } from '../../../actions/recipeActions';
+import { createRecipe } from '../../../actions/recipeActions';
 
 
 const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
@@ -10,7 +10,7 @@ const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
         formErrors,
         submitRecipeForm,
         handleInputChange
-    } = useRecipeForm(addRecipe);
+    } = useRecipeForm(createRecipe);
 
     return (
         <div ref = {recipeFormRef} className="user-recipe-form">

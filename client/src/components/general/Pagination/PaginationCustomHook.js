@@ -17,7 +17,7 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
     });
     const previousActivePages = useRef({ activePages: [] });
 
-    const recipes = useSelector((state) => state.recipeReducer.recipes);
+    const recipes = useSelector((state) => state.fetchRecipesReducer.recipes);
     const recipePages = useSelector((state) => state.paginationReducer.recipePages);
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
 

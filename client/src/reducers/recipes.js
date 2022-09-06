@@ -1,69 +1,63 @@
-import types from '../actions/actionTypes';
+import { createReducer } from '@reduxjs/toolkit';
+import { createRecipe, updateRecipe, fetchRecipes } from '../actions/recipeActions';
 import { initialRecipeState } from './initialState';
 
-const {
-    FETCH_RECIPES_BEGIN,
-    FETCH_RECIPES_SUCCESS,
-    FETCH_RECIPES_FAILURE,
-    CREATE_RECIPE_SUCCESS,
-    CREATE_RECIPE_FAILURE,
-    EDIT_RECIPE_SUCCESS,
-    EDIT_RECIPE_FAILURE
-} = types;
+export const createRecipeReducer = createReducer(initialRecipeState, (builder) => {
+    builder.addCase(createRecipe.pending, (state) => ({
+        ...state,
+        recipe: {},
+        loading: 'pending'
+    }));
+    builder.addCase(createRecipe.fulfilled, (state, action) => ({
+        ...state,
+        recipe: action.payload.recipe,
+        error: '',
+        loading: 'fulfilled'
+    }));
+    builder.addCase(createRecipe.rejected, (state, action) => ({
+        ...state,
+        recipe: {},
+        error: action.payload['message'],
+        loading: 'failed'
+    }));
+});
 
-const recipeReducer = (state = initialRecipeState, action = {}) => {
-    switch (action.type) {
-        case FETCH_RECIPES_BEGIN:
-            return {
-                ...state,
-                loading: true,
-                error: null
-            };
-        case FETCH_RECIPES_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                recipes: action.payload.recipes,
-                error: null
-            };
-        case FETCH_RECIPES_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                recipes: [],
-                error: action.payload.error
-            };
-        case CREATE_RECIPE_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                recipe: action.payload.recipe,
-                error: null
-            };
-        case CREATE_RECIPE_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                recipe: {},
-                error: action.payload.error
-            };
-        case EDIT_RECIPE_SUCCESS:
-            return {
-                ...state,
-                loading: false,
-                recipe: action.payload.recipe,
-                error: null
-            };
-        case EDIT_RECIPE_FAILURE:
-            return {
-                ...state,
-                loading: false,
-                recipe: {},
-                error: action.payload.error
-            };
-        default:
-            return state;
-    }
-};
+export const updateRecipeReducer = createReducer(initialRecipeState, (builder) => {
+    builder.addCase(updateRecipe.pending, (state) => ({
+        ...state,
+        recipe: {},
+        loading: 'pending'
+    }));
+    builder.addCase(updateRecipe.fulfilled, (state, action) => ({
+        ...state,
+        recipe: action.payload.recipe,
+        error: '',
+        loading: 'fulfilled'
+    }));
+    builder.addCase(updateRecipe.rejected, (state, action) => ({
+        ...state,
+        recipe: {},
+        error: action.payload['message'],
+        loading: 'failed'
+    }));
+});
 
-export default recipeReducer;
+export const fetchRecipesReducer = createReducer(initialRecipeState, (builder) => {
+    builder.addCase(fetchRecipes.pending, (state) => ({
+        ...state,
+        recipes: [],
+        loading: 'pending'
+    }));
+    builder.addCase(fetchRecipes.fulfilled, (state, action) => ({
+        ...state,
+        recipes: action.payload.recipes,
+        error: '',
+        loading: 'fulfilled'
+    }));
+    builder.addCase(fetchRecipes.rejected, (state, action) => ({
+        ...state,
+        recipes: [],
+        error: action.payload['message'],
+        loading: 'failed'
+    }));
+});

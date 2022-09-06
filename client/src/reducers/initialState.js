@@ -1,7 +1,7 @@
 export const initialRecipeState = {
     recipes: [],
     recipe: {},
-    loading: false,
+    loading: 'idle',
     error: null
 };
 
@@ -23,4 +23,11 @@ export const initialFlashMessageState = {
 
 export const initialModalState = {
     show: false
+};
+
+export const initialPhotoState = {
+    secureUrl: '',
+    deleteToken: '',
+    error: null,
+    loading: 'idle' | 'pending' | 'succeeded' | 'failed'
 };

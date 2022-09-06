@@ -4,6 +4,7 @@ import { validateRecipeForm } from '../../../utils/validators/recipe';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { hideModal } from '../../../actions/modalActions';
 import { fetchRecipes } from '../../../actions/recipeActions';
+import { uploadPhoto } from '../../../actions/uploadActions';
 
 /**
  * @function useRecipeForm
@@ -40,6 +41,9 @@ const useRecipeForm = (callback) => {
         }
         const { name, description } = recipe;
         const { photoUrl } = imageFile;
+        dispatch(uploadPhoto({ photoFile: photoUrl }))
+        .then((res) => console.log(res))
+        .catch((error) => console.log(error));
         const { validationErrors, isValid } = validateRecipeForm({ name, description, photoUrl });
         setFormErrors({ ...formErrors, ...validationErrors });
 

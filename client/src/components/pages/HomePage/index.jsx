@@ -30,10 +30,10 @@ const HomePage = () => {
         return <div> Error: {error.message}</div>;
     }
 
-    if (loading) {
-        document.getElementById('loader').style = "display: block;";
-    } else {
+    if (loading === 'fulfilled') {
         document.getElementById('loader').style = "display: none;";
+    } else {
+        document.getElementById('loader').style = "display: block;";
     }
 
     return (
@@ -50,7 +50,7 @@ const HomePage = () => {
                         key = {recipe.id}
                         recipe = {recipe}/>))}
                 </div>
-                {!loading && <Pagination/>}
+                {(loading === 'fulfilled') && <Pagination/>}
             </div>
         );
 };

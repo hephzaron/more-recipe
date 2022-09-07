@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { createRecipe, updateRecipe, fetchRecipes } from '../actions/recipeActions';
 import { initialRecipeState } from './initialState';
 
-export const createRecipeReducer = createReducer(initialRecipeState, (builder) => {
+const recipeReducer = createReducer(initialRecipeState, (builder) => {
     builder.addCase(createRecipe.pending, (state) => ({
         ...state,
         recipe: {},
@@ -20,9 +20,7 @@ export const createRecipeReducer = createReducer(initialRecipeState, (builder) =
         error: action.payload['message'],
         loading: 'failed'
     }));
-});
 
-export const updateRecipeReducer = createReducer(initialRecipeState, (builder) => {
     builder.addCase(updateRecipe.pending, (state) => ({
         ...state,
         recipe: {},
@@ -40,9 +38,7 @@ export const updateRecipeReducer = createReducer(initialRecipeState, (builder) =
         error: action.payload['message'],
         loading: 'failed'
     }));
-});
-
-export const fetchRecipesReducer = createReducer(initialRecipeState, (builder) => {
+    
     builder.addCase(fetchRecipes.pending, (state) => ({
         ...state,
         recipes: [],
@@ -61,3 +57,5 @@ export const fetchRecipesReducer = createReducer(initialRecipeState, (builder) =
         loading: 'failed'
     }));
 });
+
+export default recipeReducer;

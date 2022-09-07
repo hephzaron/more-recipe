@@ -2,6 +2,7 @@ import React from 'react';
 import useSignupForm from './SignupFormCustomHook';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { registerUser } from '../../../actions/signupActions';
+import { loginUser, set } from '../../../actions/authUserActions';
 
 const SignupForm = () => {
     const {
@@ -9,7 +10,7 @@ const SignupForm = () => {
         formErrors,
         inputChangeHandler,
         submitUserForm
-    } = useSignupForm({ addFlashMessage, registerUser });
+    } = useSignupForm({ addFlashMessage, registerUser, loginUser, set });
     return (
         <div className="user-page signup">
             <form onSubmit={submitUserForm}>

@@ -1,6 +1,6 @@
+import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import dotEnv from 'dotenv';
-import { loginUser, setCurrentUserFailure } from './authUserActions';
 
 dotEnv.config();
 
@@ -11,22 +11,17 @@ const { SERVER_URL } = process.env;
  * @param {object} userPayload - user payload for creating a new user
  * @returns { promise } Axios http response
  */
-export const registerUser = (userPayload) => (
-    dispatch => {
-        const { email, password } = userPayload;
-        return axios.post(`${SERVER_URL}/signup`, userPayload)
-        .then((response) => {
-            dispatch(loginUser({ email, password }));
+
+export const registerUser = createAsyncThunk(
+    'user/signupStatus',
+    async (userPayload) => {
+        try {
+            const response = await axios.post(`${SERVER_URL}/signup`, userPayload);
             return response.data;
-        })
-        .catch((error) => {
-            dispatch(setCurrentUserFailure(error.response.data['message']));
-            if (error.response.status > 201) {
-                return Promise.reject(error.response.data);
-            }
-            return error.response.data;
-        });
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
     }
 );
 
-export default {};
+export default registerUser;

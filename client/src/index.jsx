@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { setCurrentUser } from './actions/authUserActions';
+import { set } from './actions/authUserActions';
 import setAccessToken from './utils/setAccessToken';
 import store from './store';
 import App from './App';
@@ -11,7 +11,7 @@ if (localStorage['x-access-token']) {
     const accessToken = localStorage.getItem('x-access-token');
     const userPayload = localStorage.getItem('userPayload');
     setAccessToken(accessToken);
-    store.dispatch(setCurrentUser(JSON.parse(userPayload)));
+    store.dispatch(set({user: JSON.parse(userPayload)}));
 }
 /**
  * @description The entry point - this will render the application with it's

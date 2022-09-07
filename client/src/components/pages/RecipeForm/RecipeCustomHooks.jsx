@@ -4,7 +4,7 @@ import { validateRecipeForm } from '../../../utils/validators/recipe';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { hideModal } from '../../../actions/modalActions';
 import { fetchRecipes } from '../../../actions/recipeActions';
-import { uploadPhoto } from '../../../actions/uploadActions';
+import { uploadPhoto, deletePhotoByToken } from '../../../actions/uploadActions';
 
 /**
  * @function useRecipeForm
@@ -26,6 +26,7 @@ const useRecipeForm = (callback) => {
     });
 
     const userId = useSelector((state) => state.userAuthReducer.user.id);
+    const deleteToken = useSelector((state) => state.photoReducer.deleteToken);
 
     const dispatch = useDispatch();
 
@@ -41,31 +42,34 @@ const useRecipeForm = (callback) => {
         }
         const { name, description } = recipe;
         const { photoUrl } = imageFile;
-        dispatch(uploadPhoto({ photoFile: photoUrl }))
-        .then((res) => console.log(res))
-        .catch((error) => console.log(error));
         const { validationErrors, isValid } = validateRecipeForm({ name, description, photoUrl });
         setFormErrors({ ...formErrors, ...validationErrors });
 
         if (isValid) {
-            dispatch(callback({
-                userId,
-                name,
-                description,
-                photoUrl
-            }))
-            .then((response) => {
-                dispatch(addFlashMessage({
-                    message: response.message,
-                    type: 'success'
-                }));
-                dispatch(hideModal());
-                return dispatch(fetchRecipes());
+            dispatch(uploadPhoto({ photoFile: photoUrl })).unwrap()
+            .then((data) => {
+                dispatch(callback({
+                    userId, name, description, photoUrl: data['secured_url']
+                })).unwrap()
+                .then((response) => {
+                    dispatch(addFlashMessage({
+                        message: response.message,
+                        type: 'success'
+                    }));
+                    dispatch(hideModal());
+                    return dispatch(fetchRecipes());
+                });
             })
-            .catch((error) => dispatch(addFlashMessage({
-                message: error.message,
-                type: 'failure'
-            })));
+            .catch((error) => {
+                if (deleteToken) {
+                    dispatch(deletePhotoByToken({ deleteToken }));
+                }
+                dispatch(hideModal());
+                dispatch(addFlashMessage({
+                    message: error.message,
+                    type: 'failure'
+                }));
+            })
             setFormErrors({});
         }
     };

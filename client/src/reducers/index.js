@@ -3,19 +3,16 @@ import paginationReducer from './pagination';
 import userAuthReducer from './userAuth';
 import flashMessageReducer from './flashMessage';
 import modalReducer from './modal';
-import { uploadPhotoReducer, deletePhotoReducer } from './photo';
-import { createRecipeReducer, updateRecipeReducer, fetchRecipesReducer } from './recipes';
+import photoReducer from './photo';
+import recipeReducer from './recipes';
 
 const reducer = combineReducers({
-    createRecipeReducer,
-    updateRecipeReducer,
-    fetchRecipesReducer,
+    recipeReducer,
     paginationReducer,
     userAuthReducer,
     flashMessageReducer,
     modalReducer,
-    uploadPhotoReducer,
-    deletePhotoReducer
+    photoReducer
 });
 
 export default reducer;

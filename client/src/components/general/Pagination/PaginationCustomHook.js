@@ -17,7 +17,7 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
     });
     const previousActivePages = useRef({ activePages: [] });
 
-    const recipes = useSelector((state) => state.fetchRecipesReducer.recipes);
+    const recipes = useSelector((state) => state.recipeReducer.recipes);
     const recipePages = useSelector((state) => state.paginationReducer.recipePages);
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
 
@@ -52,7 +52,7 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
     const setSelectedPage = (pageNumber) => {
         if (pageNumber && !Object.values(recipePages).includes(pageNumber)) {
             if (Object.keys(recipePages).length === 5 && pageNumber > recipePages['4']) {
-	            return dispatch(fetchRecipes((recipePages['4'] * 8) + 1))
+	            return dispatch(fetchRecipes((recipePages['4'] * 8) + 1)).unwrap()
 	            .then((next) => {
 	                dispatch(setFetchedPages(next.recipes, recipePages['4'] + 1, 8));
 	                dispatch(setPage(pageNumber));
@@ -63,7 +63,7 @@ const usePagination = ({ fetchRecipes, setPage, setFetchedPages }) => {
 	                type: 'failure'
 	            })));
 	        } else if (pageNumber < recipePages['0'] && recipePages['0'] >= 6) {
-	            return dispatch(fetchRecipes((recipePages['0'] - 6) * 8))
+	            return dispatch(fetchRecipes((recipePages['0'] - 6) * 8)).unwrap()
 	            .then((prev) => {
 	                dispatch(setFetchedPages(prev.recipes, recipePages['0'] - 5, 8));
 	                dispatch(setPage(pageNumber));

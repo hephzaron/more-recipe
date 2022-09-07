@@ -9,7 +9,7 @@ import { validateUserForm } from "../../../utils/validators/user";
  * @param {function} addFlashMessage - dispatch action creators to add flash message page
  * @returns  { object } { userInput, formErrors, flashMesageType, inputChangeHandler, submitAuthForm }
  */
-const useLoginForm = ({ loginUser, addFlashMessage }) => {
+const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
     const [userInput, setUserInput] = useState({ email: '', password: '' });
     const [formErrors, setFormErrors] = useState({ email: '', password: '' });
 
@@ -31,11 +31,15 @@ const useLoginForm = ({ loginUser, addFlashMessage }) => {
         setFormErrors({ ...formErrors, email, password });
 
         if (isValid) {
-            dispatch(loginUser(userInput))
-            .then((response) => dispatch(addFlashMessage({
-                message: response.message,
-                type: 'success'
-            })))
+            dispatch(loginUser(userInput)).unwrap()
+            .then((response) => {
+                const { user } = response
+                dispatch(addFlashMessage({
+                    message: response.message,
+                    type: 'success'
+                }));
+                dispatch(set({ user }));
+            })
             .catch((error) => dispatch(addFlashMessage({
                 message: error.message,
                 type: 'failure'

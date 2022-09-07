@@ -2,7 +2,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import { initialPhotoState } from './initialState';
 import { uploadPhoto, deletePhotoByToken } from '../actions/uploadActions';
 
-export const uploadPhotoReducer = createReducer(initialPhotoState, (builder) => {
+const photoReducer = createReducer(initialPhotoState, (builder) => {
     builder.addCase(uploadPhoto.fulfilled, (state, action) => ({
         ...state,
         secureUrl: action.payload['secure_url'],
@@ -21,9 +21,6 @@ export const uploadPhotoReducer = createReducer(initialPhotoState, (builder) => 
         deleteToken: '',
         loading: 'failed'
     }));
-});
-
-export const deletePhotoReducer = createReducer(initialPhotoState, (builder) => {
     builder.addCase(deletePhotoByToken.fulfilled, (state, action) => ({
         ...state,
         data: action.payload['data'],
@@ -39,3 +36,5 @@ export const deletePhotoReducer = createReducer(initialPhotoState, (builder) => 
         loading: 'failed'
     }));
 });
+
+export default photoReducer;

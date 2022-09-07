@@ -9,7 +9,7 @@ const useFlashMessage = (callback) => {
     const hideFlashMessage = () => dispatch(callback());
 
     useEffect(() => {
-        const timer = setTimeout(() => hideFlashMessage(), 7000);
+        const timer = setTimeout(() => hideFlashMessage(), 5000);
         return () => clearTimeout(timer);
     }, []);
 

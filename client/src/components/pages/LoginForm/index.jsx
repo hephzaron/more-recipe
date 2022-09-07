@@ -1,6 +1,6 @@
 import React from 'react';
 import useLoginForm from './LoginFormCustomHook';
-import { loginUser } from '../../../actions/authUserActions';
+import { loginUser, set } from '../../../actions/authUserActions';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 
 const LoginForm = () => {
@@ -9,7 +9,7 @@ const LoginForm = () => {
         formErrors,
         inputChangeHandler,
         submitAuthForm
-    } = useLoginForm({ loginUser, addFlashMessage });
+    } = useLoginForm({ loginUser, addFlashMessage, set });
     return (
         <div className="user-page login">
             <form onSubmit={submitAuthForm}>

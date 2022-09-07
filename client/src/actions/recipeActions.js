@@ -2,7 +2,6 @@
 import axios from 'axios';
 import dotEnv from 'dotenv';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { uploadPhoto, deletePhotoByToken } from './uploadActions';
 
 dotEnv.config();
 
@@ -26,14 +25,10 @@ export const fetchRecipes = createAsyncThunk(
                 );
             return response.data;
         } catch (error) {
-            Promise.reject(error.response.data);
+            return Promise.reject(error.response.data);
         }
     }
 );
-
-/**Make photo credentials available in outer scope*/
-
-let photoDeleteToken;
 
 /**
  * createRecipe
@@ -45,21 +40,17 @@ export const createRecipe = createAsyncThunk(
     'recipes/createRecipeStatus',
     async (recipe) => {
         try {
-            const data = await uploadPhoto({
-                photoFile: recipe.photoUrl
-            });
-            photoDeleteToken = data['delete_token'];
-            const { userId, name, description } = recipe;
+            const {
+                userId, name, description, photoUrl
+            } = recipe;
             const response = await axios.post(`${SERVER_URL}/recipes`, {
                 userId,
                 name: name[0],
                 description: description[0],
-                photoUrl: data['secure_url']
+                photoUrl
             });
-
             return response.data;
         } catch (error) {
-            deletePhotoByToken({ deleteToken: photoDeleteToken });
             /** handle error response sent from App server and cloudinary */
             if (error.response && error.response.status > 201) {
                 /** Return error response on failed request to cloudinary*/

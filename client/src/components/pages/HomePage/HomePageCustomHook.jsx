@@ -17,9 +17,9 @@ const useHomePage = ({
     const [currentRecipes, setCurrentRecipes] = useState([]);
     const dispatch = useDispatch();
 
-    const recipes = useSelector((state) => state.fetchRecipesReducer.recipes || []);
-    const loading = useSelector((state) => state.fetchRecipesReducer.loading);
-    const error = useSelector((state) => state.fetchRecipesReducer.error);
+    const recipes = useSelector((state) => state.recipeReducer.recipes || []);
+    const loading = useSelector((state) => state.recipeReducer.loading);
+    const error = useSelector((state) => state.recipeReducer.error);
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
     const showRecipeModal = useSelector((state) => state.modalReducer.show);
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);

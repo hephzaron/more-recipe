@@ -1,13 +1,4 @@
-import types from './actionTypes';
+import { createAction } from '@reduxjs/toolkit';
 
-const { SHOW_MODAL, HIDE_MODAL } = types;
-
-export const showModal = (show) => ({
-    type: SHOW_MODAL,
-    payload: { show }
-});
-
-export const hideModal = (show) => ({
-    type: HIDE_MODAL,
-    payload: { show }
-});
+export const showModal = createAction('modal/show', (show) => ({ payload: { show } }));
+export const hideModal = createAction('modal/hide', (show) => ({ payload: { show } }));

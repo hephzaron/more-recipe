@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * @function useHeader
@@ -7,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux';
  * @param { function } logoutUser - dipatches action creators that logs out a user
  * @param { function } showModal - dispatches action creators that displays the modal component
  * @returns { object } values - values from input change event handler
- * @returns { function } navTo
  * @returns { function } logOut
  * @returns { function } toggleNav
  * @returns { function } displayModal
@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const useHeader = ({ logoutUser, showModal }) => {
     const [values, setValues] = useState({ });
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
@@ -39,18 +40,9 @@ const useHeader = ({ logoutUser, showModal }) => {
         return {};
     };
 
-    /**
-     * @description Navigates to the required page
-     * @param { string } uri
-     * @return {void}
-     */
-    const navTo = (uri) => {
-        window.location.href = window.location.origin + uri;
-    };
-
     const logOut = () => {
         dispatch(logoutUser());
-        navTo('/');
+        navigate('/');
     };
 
     const displayModal = () => {
@@ -62,7 +54,6 @@ const useHeader = ({ logoutUser, showModal }) => {
         values,
         isAuthenticated,
         flashMessageType,
-        navTo,
         logOut,
         toggleNav,
         displayModal,

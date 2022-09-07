@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 
 /**
@@ -10,7 +11,7 @@ import { validateUserForm } from "../../../utils/validators/user";
  * @returns  { object } { userInput, formErrors, flashMesageType, inputChangeHandler, submitUserForm }
  */
 const useSignupForm = ({
-    addFlashMessage, registerUser, loginUser, set 
+    addFlashMessage, registerUser, loginUser, set
 }) => {
     const [userInput, setUserInput] = useState({
         username: '',
@@ -23,6 +24,7 @@ const useSignupForm = ({
     });
     const [formErrors, setFormErrors] = useState({});
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     /**
      * Handles input changes in field entries
@@ -62,6 +64,7 @@ const useSignupForm = ({
                     }));
                     dispatch(loginUser({ email, password }));
                     dispatch(set({ user }));
+                    navigate('/');
                 })
                 .catch((error) => dispatch(addFlashMessage({
                     message: error.message,

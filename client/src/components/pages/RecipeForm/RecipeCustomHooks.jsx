@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { validateRecipeForm } from '../../../utils/validators/recipe';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { hideModal } from '../../../actions/modalActions';
@@ -29,6 +30,7 @@ const useRecipeForm = (callback) => {
     const deleteToken = useSelector((state) => state.photoReducer.deleteToken);
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     /**
      * @function submitRecipeForm
@@ -57,7 +59,8 @@ const useRecipeForm = (callback) => {
                         type: 'success'
                     }));
                     dispatch(hideModal());
-                    return dispatch(fetchRecipes());
+                    dispatch(fetchRecipes());
+                    navigate('/');
                 });
             })
             .catch((error) => {
@@ -69,7 +72,7 @@ const useRecipeForm = (callback) => {
                     message: error.message,
                     type: 'failure'
                 }));
-            })
+            });
             setFormErrors({});
         }
     };

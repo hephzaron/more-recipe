@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 
 /**
@@ -14,6 +15,7 @@ const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
     const [formErrors, setFormErrors] = useState({ email: '', password: '' });
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     /**
      * Submit completed UserForm
@@ -33,12 +35,13 @@ const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
         if (isValid) {
             dispatch(loginUser(userInput)).unwrap()
             .then((response) => {
-                const { user } = response
+                const { user } = response;
                 dispatch(addFlashMessage({
                     message: response.message,
                     type: 'success'
                 }));
                 dispatch(set({ user }));
+                navigate('/');
             })
             .catch((error) => dispatch(addFlashMessage({
                 message: error.message,

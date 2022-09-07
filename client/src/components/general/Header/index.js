@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHome, faSearch, faBell, faCaretUp, faStar, faLayerGroup, faCirclePlus, faCircleInfo, faKey, faSignOut, faUser
@@ -10,11 +11,11 @@ import { logoutUser } from '../../../actions/authUserActions';
 import { showModal } from '../../../actions/modalActions';
 
 const Header = () => {
+    const navigate = useNavigate();
     const {
         values,
         isAuthenticated,
         flashMessageType,
-        navTo,
         logOut,
         toggleNav,
         displayModal,
@@ -32,13 +33,13 @@ const Header = () => {
             <ul className="auth-header left">
               <hr className ="hidden-header"/>
               <li>
-                <a onClick={() => { navTo('/'); }}>
+                <a onClick={() => { navigate('/'); }}>
                   <FontAwesomeIcon className="header-icon" icon={faHome}/>
                   <span className="header-content">Home</span>
                 </a>
               </li>
               <li>
-                <a onClick={() => { navTo('/about-us'); }}>
+                <a onClick={() => { navigate('/about-us'); }}>
                   <FontAwesomeIcon className="header-icon" icon={faCircleInfo}/>
                   <span className="header-content">About Us</span>
                 </a>
@@ -61,10 +62,10 @@ const Header = () => {
               !isAuthenticated &&
               <div className="center-nav">
                 <button onClick={() => {
-                  navTo('/register');
+                  navigate('/register');
                   }} className="user-auth-join-us">JOIN US </button>
                 <button onClick={() => {
-                  navTo('/login');
+                  navigate('/login');
                   }} className="user-auth-login">LOGIN </button>
               </div>
             }

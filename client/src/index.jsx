@@ -11,7 +11,7 @@ if (localStorage['x-access-token']) {
     const accessToken = localStorage.getItem('x-access-token');
     const userPayload = localStorage.getItem('userPayload');
     setAccessToken(accessToken);
-    store.dispatch(set({user: JSON.parse(userPayload)}));
+    store.dispatch(set({ user: JSON.parse(userPayload) }));
 }
 /**
  * @description The entry point - this will render the application with it's

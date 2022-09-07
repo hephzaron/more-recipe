@@ -1,9 +1,4 @@
-import types from './actionTypes';
-
-const {
-    SET_CURRENT_PAGE,
-    SET_RECIPES_PAGES
-} = types;
+import { createAction } from '@reduxjs/toolkit';
 
 /**
  * Set current page
@@ -11,10 +6,10 @@ const {
  * @param { string } currentPage - Payload of fetched recipes
  * @returns { object } Set pager action creator
  */
-export const setCurrentPage = (currentPage) => ({
-    type: SET_CURRENT_PAGE,
-    payload: { currentPage }
-});
+export const setCurrentPage = createAction(
+    'page/setCurrentPage', (currentPage) => ({ payload: { currentPage } })
+    );
+
 
 /**
  * Set recipe pages
@@ -22,10 +17,9 @@ export const setCurrentPage = (currentPage) => ({
  * @param { string } recipePages - Payload of fetched recipes
  * @returns { object } Set pager action creator
  */
-export const setRecipesPages = (recipePages) => ({
-    type: SET_RECIPES_PAGES,
-    payload: { recipePages }
-});
+export const setRecipesPages = createAction(
+    'page/setRecipesPages', (recipePages) => ({ payload: { recipePages } })
+    );
 
 /**
  * Set fetched pages

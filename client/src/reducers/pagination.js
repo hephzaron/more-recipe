@@ -1,23 +1,16 @@
-import types from '../actions/actionTypes';
+import { createReducer } from '@reduxjs/toolkit';
+import { setCurrentPage, setRecipesPages } from '../actions/paginationActions';
 import { initialPagerState } from './initialState';
 
-const { SET_CURRENT_PAGE, SET_RECIPES_PAGES } = types;
-
-const paginationReducer = (state = initialPagerState, action = {}) => {
-    switch (action.type) {
-        case SET_CURRENT_PAGE:
-            return {
-                ...state,
-                currentPage: action.payload.currentPage
-            };
-        case SET_RECIPES_PAGES:
-            return {
-                ...state,
-                recipePages: action.payload.recipePages
-            };
-        default:
-            return state;
-    }
-};
+const paginationReducer = createReducer(initialPagerState, (builder) => {
+    builder.addCase(setCurrentPage, (state, action) => ({
+        ...state,
+        currentPage: action.payload.currentPage
+    }));
+    builder.addCase(setRecipesPages, (state, action) => ({
+        ...state,
+        recipePages: action.payload.recipePages
+    }));
+});
 
 export default paginationReducer;

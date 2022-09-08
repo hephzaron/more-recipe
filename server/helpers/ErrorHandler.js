@@ -28,6 +28,10 @@ class ErrorHandler extends Error {
           error.statusCode = 401;
           error.name = 'Not Found';
           error.message = 'Referenced item does not exist';
+        } else if (/^(SequelizeUniqueConstraintError)/i.test(name)) {
+          error.statusCode = 409;
+          error.name = 'Conflict';
+          error.message = 'Duplicate entry not allowed';
         } else {
           error.statusCode = 500;
           error.message = 'Internal Server Error';

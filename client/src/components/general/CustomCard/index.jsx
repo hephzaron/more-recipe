@@ -32,7 +32,7 @@ const CustomCard = (props) => {
         createdAt
     } = props.recipe;
 
-    const { reactToPost, toggleSave } = useCard(props.recipe);
+    const { reactToPost, savePost } = useCard(props.recipe);
 
     return (
         <figure className="recipe">
@@ -50,7 +50,7 @@ const CustomCard = (props) => {
                         </a>
                     </li>
                     <li>
-                        <a onClick = {() => toggleSave()}>
+                        <a onClick = {() => savePost()}>
                             <FontAwesomeIcon className="fas upvotes" icon={faStar}/>
                             <FontAwesomeIcon className="fas upvotes-2" icon={faStar}/>
                             <span>{upVotes}</span>

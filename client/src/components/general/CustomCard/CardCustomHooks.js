@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import {
@@ -7,7 +7,6 @@ import {
 
 const useCard = (recipe) => {
     const dispatch = useDispatch();
-    const [save, setSave] = useState(false);
     const userId = useSelector((state) => state.userAuthReducer.user.id);
     const { id } = recipe;
 
@@ -21,35 +20,12 @@ const useCard = (recipe) => {
             }))
         )));
 
-    const savePost = () => {
-        dispatch(saveRecipe({ userId, id }));
-        return dispatch(updateRecipe({ userId, id, upVotes: 1 })).unwrap()
-        .then((response) => {
-            setSave(true);
+    const unsavePost = () => (
+        dispatch(unsaveRecipe({ userId, id })).unwrap()
+        .then(() => {
+            dispatch(updateRecipe({ userId, recipe: { id, downVotes: 1 } }));
             return dispatch(addFlashMessage({
-                message: response.message,
-                type: 'success'
-            }));
-        })
-        .catch((error) => {
-            let { message } = error;
-            if (error.message === 'You are not allowed to vote your own recipe') {
-                message = 'You are not allowed to save your own recipe';
-            }
-            return dispatch(addFlashMessage({
-                message,
-                type: 'failure'
-            }));
-        });
-    };
-
-    const unsavePost = () => {
-        dispatch(unsaveRecipe({ userId, id }));
-        return dispatch(updateRecipe({ userId, id, downVotes: 1 })).unwrap()
-        .then((response) => {
-            setSave(false);
-            return dispatch(addFlashMessage({
-                message: response.message,
+                message: 'Recipe has been successfully removed from your saved list',
                 type: 'success'
             }));
         })
@@ -58,19 +34,34 @@ const useCard = (recipe) => {
                 message: error.message,
                 type: 'failure'
             }))
-        ));
-    };
+        )));
 
-    const toggleSave = () => {
-        if (save) {
-            unsavePost();
-        }
-        savePost();
-    };
+    const savePost = () => (
+        dispatch(saveRecipe({ userId, id })).unwrap()
+        .then(() => {
+            dispatch(updateRecipe({ userId, recipe: { id, upVotes: 1 } }));
+            return dispatch(addFlashMessage({
+                message: 'Recipe saved successfully',
+                type: 'success'
+            }));
+        })
+        .catch((error) => {
+            let { message } = error;
+            if (message === 'Duplicate entry not allowed') {
+                return unsavePost();
+            }
+            if (error.message === 'You are not allowed to vote your own recipe') {
+                message = 'You are not allowed to save your own recipe';
+            }
+            return dispatch(addFlashMessage({
+                message,
+                type: 'failure'
+            }));
+        }));
 
     return {
         reactToPost,
-        toggleSave
+        savePost
     };
 };
 

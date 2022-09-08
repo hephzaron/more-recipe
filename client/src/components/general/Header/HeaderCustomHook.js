@@ -37,9 +37,7 @@ const useHeader = ({ logoutUser, showModal }) => {
         setValues({ [event.target.name]: event.target.value });
     };
 
-    const submitSearchForm = (event) => {
-        return {};
-    };
+    const submitSearchForm = (event) => ({});
 
     const logOut = () => {
         dispatch(logoutUser());

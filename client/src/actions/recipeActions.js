@@ -31,6 +31,24 @@ export const fetchRecipes = createAsyncThunk(
 );
 
 /**
+ * Get one recipe
+ * @description Get a recipe from server
+ * @param {String} offset - offset query to fetch paginated items
+ * @returns { promise } -Axios http response
+ */
+ export const fetchOneRecipe = createAsyncThunk(
+    'recipes/fetchOneRecipeStatus',
+    async ({ id }) => {
+        try {
+            const response = await axios.get(`${SERVER_URL}/recipes/${id}`);
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
  * Get user saved recipes
  * @description Get saved recipes from server
  * @param {String} offset - offset query to fetch paginated items

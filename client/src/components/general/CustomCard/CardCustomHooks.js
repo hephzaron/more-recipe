@@ -39,8 +39,7 @@ const useCard = (recipe) => {
 
     const savePost = () => (
         dispatch(saveRecipe({ userId, id, creatorId: recipe.userId })).unwrap()
-        .then((response) => {
-            console.log(response);
+        .then(() => {
             dispatch(updateRecipe({ userId, recipe: { id, upVotes: 1 } }))
             .then(() => dispatch(fetchRecipes()));
             return dispatch(addFlashMessage({
@@ -49,7 +48,6 @@ const useCard = (recipe) => {
             }));
         })
         .catch((error) => {
-            console.log(error);
             let { message } = error;
             if (message === 'Duplicate entry not allowed') {
                 return unsavePost();
@@ -65,10 +63,13 @@ const useCard = (recipe) => {
 
     const deletePost = () => (
         dispatch(deleteRecipe({ userId, id })).unwrap()
-        .then((response) => dispatch(addFlashMessage({
-            message: response.message,
-            type: 'success'
-        })))
+        .then((response) => {
+            dispatch(fetchRecipes());
+            return dispatch(addFlashMessage({
+                message: response.message,
+                type: 'success'
+            }));
+        })
         .catch((error) => dispatch(addFlashMessage({
             message: error.message,
             type: 'failure'

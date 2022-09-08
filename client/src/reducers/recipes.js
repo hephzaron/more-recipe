@@ -1,13 +1,11 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createRecipe, updateRecipe, fetchRecipes, saveRecipe } from '../actions/recipeActions';
+import {
+    createRecipe, updateRecipe, fetchRecipes, saveRecipe, fetchOneRecipe
+} from '../actions/recipeActions';
 import { initialRecipeState } from './initialState';
 
 const recipeReducer = createReducer(initialRecipeState, (builder) => {
-    builder.addCase(createRecipe.pending, (state) => ({
-        ...state,
-        recipe: {},
-        loading: 'pending'
-    }));
+    builder.addCase(createRecipe.pending, (state) => ({ ...state, loading: 'pending' }));
     builder.addCase(createRecipe.fulfilled, (state, action) => ({
         ...state,
         recipe: action.payload.recipe,
@@ -16,16 +14,11 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     }));
     builder.addCase(createRecipe.rejected, (state, action) => ({
         ...state,
-        recipe: {},
         error: action.error['message'],
         loading: 'failed'
     }));
 
-    builder.addCase(updateRecipe.pending, (state) => ({
-        ...state,
-        recipe: {},
-        loading: 'pending'
-    }));
+    builder.addCase(updateRecipe.pending, (state) => ({ ...state, loading: 'pending' }));
     builder.addCase(updateRecipe.fulfilled, (state, action) => ({
         ...state,
         recipe: action.payload.recipe,
@@ -34,14 +27,13 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     }));
     builder.addCase(updateRecipe.rejected, (state, action) => ({
         ...state,
-        recipe: {},
         error: action.error.message,
         loading: 'failed'
     }));
 
     builder.addCase(fetchRecipes.pending, (state) => ({
         ...state,
-        recipes: [],
+        error: '',
         loading: 'pending'
     }));
     builder.addCase(fetchRecipes.fulfilled, (state, action) => ({
@@ -52,25 +44,37 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     }));
     builder.addCase(fetchRecipes.rejected, (state, action) => ({
         ...state,
-        recipes: [],
         error: action.error['message'],
         loading: 'failed'
     }));
     builder.addCase(saveRecipe.pending, (state) => ({
         ...state,
-        recipe: {},
         error: '',
         loading: 'pending'
     }));
     builder.addCase(saveRecipe.rejected, (state, action) => ({
         ...state,
-        recipe: {},
         error: action.error['message'],
         loading: 'failed'
     }));
     builder.addCase(saveRecipe.fulfilled, (state) => ({
         ...state,
-        recipe: {},
+        error: '',
+        loading: 'fulfilled'
+    }));
+    builder.addCase(fetchOneRecipe.pending, (state) => ({
+        ...state,
+        error: '',
+        loading: 'pending'
+    }));
+    builder.addCase(fetchOneRecipe.rejected, (state, action) => ({
+        ...state,
+        error: action.error['message'],
+        loading: 'failed'
+    }));
+    builder.addCase(fetchOneRecipe.fulfilled, (state, action) => ({
+        ...state,
+        recipe: action.payload.recipe,
         error: '',
         loading: 'fulfilled'
     }));

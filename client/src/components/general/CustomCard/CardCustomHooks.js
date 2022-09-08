@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
-import { updateRecipe, saveRecipe, unsaveRecipe } from '../../../actions/recipeActions';
+import {
+    updateRecipe, saveRecipe, unsaveRecipe, fetchOneRecipe
+} from '../../../actions/recipeActions';
 
 const useCard = (recipe) => {
     const dispatch = useDispatch();

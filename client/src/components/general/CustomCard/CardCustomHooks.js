@@ -23,7 +23,8 @@ const useCard = (recipe) => {
     const unsavePost = () => (
         dispatch(unsaveRecipe({ userId, id })).unwrap()
         .then(() => {
-            dispatch(updateRecipe({ userId, recipe: { id, downVotes: 1 } }));
+            dispatch(updateRecipe({ userId, recipe: { id, downVotes: 1 } }))
+            .then(() => dispatch(fetchRecipes()));
             return dispatch(addFlashMessage({
                 message: 'Recipe has been successfully removed from your saved list',
                 type: 'success'
@@ -39,7 +40,8 @@ const useCard = (recipe) => {
     const savePost = () => (
         dispatch(saveRecipe({ userId, id })).unwrap()
         .then(() => {
-            dispatch(updateRecipe({ userId, recipe: { id, upVotes: 1 } }));
+            dispatch(updateRecipe({ userId, recipe: { id, upVotes: 1 } }))
+            .then(() => dispatch(fetchRecipes()));
             return dispatch(addFlashMessage({
                 message: 'Recipe saved successfully',
                 type: 'success'

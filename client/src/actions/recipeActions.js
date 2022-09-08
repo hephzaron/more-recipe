@@ -115,9 +115,9 @@ export const createRecipe = createAsyncThunk(
  */
 export const updateRecipe = createAsyncThunk(
     'recipes/updateRecipeStatus',
-    async (recipe) => {
+    async ({ userId, recipe }) => {
         try {
-            const response = await axios.put(`${SERVER_URL}/recipes/${recipe.userId}/${recipe.id}`, { ...recipe });
+            const response = await axios.put(`${SERVER_URL}/recipes/${userId}/${recipe.id}`, { ...recipe });
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);

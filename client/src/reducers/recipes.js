@@ -73,7 +73,7 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
         loading: 'failed'
     }));
     builder.addCase(fetchOneRecipe.fulfilled, (state, action) => ({
-        recipes: [...state.recipes, action.payload.recipe],
+        ...state,
         recipe: action.payload.recipe,
         error: '',
         loading: 'fulfilled'

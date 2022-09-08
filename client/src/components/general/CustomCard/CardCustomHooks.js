@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import {
-    updateRecipe, saveRecipe, unsaveRecipe, fetchOneRecipe
+    updateRecipe, saveRecipe, unsaveRecipe, fetchRecipes
 } from '../../../actions/recipeActions';
 
 const useCard = (recipe) => {
     const dispatch = useDispatch();
     const [save, setSave] = useState(false);
-    const { userId, id } = recipe;
+    const userId = useSelector((state) => state.userAuthReducer.user.id);
+    const { id } = recipe;
 
     const reactToPost = (reaction) => (
-        dispatch(updateRecipe({ userId, id, ...reaction })).unwrap()
-        .then(() => (dispatch(fetchOneRecipe({ id }))))
+        dispatch(updateRecipe({ userId, recipe: { ...reaction } })).unwrap()
+        .then(() => (dispatch(fetchRecipes())))
         .catch((error) => (
             dispatch(addFlashMessage({
                 message: error.message,

@@ -15,6 +15,7 @@ const Header = () => {
     const {
         values,
         isAuthenticated,
+        user,
         flashMessageType,
         logOut,
         toggleNav,
@@ -133,7 +134,7 @@ const Header = () => {
               <ul id="profile-menu">
                 <li>
                   <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"/>
-                  <a>Daramola Oluwatobi Daramola Oluwatobi</a>
+                  <a>{user.username}</a>
                 </li>
                 <li>
                   <a>Edit Profile</a>

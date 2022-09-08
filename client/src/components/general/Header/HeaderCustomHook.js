@@ -20,6 +20,7 @@ const useHeader = ({ logoutUser, showModal }) => {
     const navigate = useNavigate();
 
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
+    const user = useSelector((state) => state.userAuthReducer.user);
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
 
     const toggleProfileList = () => {
@@ -53,6 +54,7 @@ const useHeader = ({ logoutUser, showModal }) => {
     return {
         values,
         isAuthenticated,
+        user,
         flashMessageType,
         logOut,
         toggleNav,

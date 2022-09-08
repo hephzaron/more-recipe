@@ -40,12 +40,12 @@ const CustomCard = (props) => {
                 <img src={expUrl} alt={name} className="recipe-img"/>
                 <ul className="recipe-action-list">
                     <li>
-                        <a onClick = {() => reactToPost({ likes: 1 })}>
+                        <a onClick = {() => reactToPost({ id, likes: 1 })}>
                             <FontAwesomeIcon className="fas likes" icon={faThumbsUp}/><span>{likes}</span>
                         </a>
                     </li>
                     <li>
-                        <a onClick = {() => reactToPost({ dislikes: 1 })}>
+                        <a onClick = {() => reactToPost({ id, dislikes: 1 })}>
                             <FontAwesomeIcon className="fas dislikes" icon={faThumbsDown}/><span>{dislikes}</span>
                         </a>
                     </li>

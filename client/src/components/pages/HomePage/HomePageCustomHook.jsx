@@ -15,12 +15,10 @@ const useHomePage = ({
     addFlashMessage
 }) => {
     const [currentRecipes, setCurrentRecipes] = useState([]);
-    const [pageError, setPageError] = useState({});
     const dispatch = useDispatch();
 
     const recipes = useSelector((state) => state.recipeReducer.recipes || []);
     const loading = useSelector((state) => state.recipeReducer.loading);
-    const error = useSelector((state) => state.recipeReducer.error);
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
     const showRecipeModal = useSelector((state) => state.modalReducer.show);
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
@@ -52,11 +50,6 @@ const useHomePage = ({
     const closeForm = (event) => {
         dispatch(hideModal());
     };
-
-    useEffect(() => {
-        setPageError(error);
-        return () => setPageError({});
-    }, [error]);
 
     /** React hook runs once when component mounts */
     useEffect(() => {
@@ -93,7 +86,6 @@ const useHomePage = ({
         showRecipeModal,
         isAuthenticated,
         loading,
-        pageError,
         wrapperRef,
         closeForm
     };

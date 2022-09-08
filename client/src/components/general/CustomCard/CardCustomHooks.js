@@ -10,12 +10,7 @@ const useCard = (recipe) => {
 
     const reactToPost = (reaction) => (
         dispatch(updateRecipe({ userId, id, ...reaction })).unwrap()
-        .then((response) => {
-            dispatch(addFlashMessage({
-                message: response.message,
-                type: 'success'
-            }));
-        })
+        .then(() => {})
         .catch((error) => (
             dispatch(addFlashMessage({
                 message: error.message,
@@ -33,12 +28,16 @@ const useCard = (recipe) => {
                 type: 'success'
             }));
         })
-        .catch((error) => (
-            dispatch(addFlashMessage({
-                message: error.message,
+        .catch((error) => {
+            let { message } = error;
+            if (error.message === 'You are not allowed to vote your own recipe') {
+                message = 'You are not allowed to save your own recipe';
+            }
+            return dispatch(addFlashMessage({
+                message,
                 type: 'failure'
-            }))
-        ));
+            }));
+        });
     };
 
     const unsavePost = () => {

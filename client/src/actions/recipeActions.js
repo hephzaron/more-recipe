@@ -102,7 +102,6 @@ export const updateRecipe = createAsyncThunk(
             const response = await axios.put(`${SERVER_URL}/recipes/${recipe.userId}/${recipe.id}`, { ...recipe });
             return response.data;
         } catch (error) {
-            console.log('actioneror', error.response.data);
             return Promise.reject(error.response.data);
         }
     }
@@ -121,7 +120,6 @@ export const saveRecipe = createAsyncThunk(
             const response = await axios.post(`${SERVER_URL}/recipes/save/${userId}/${id}`, {});
             return response.data;
         } catch (error) {
-            console.log('saveErr', error.response.data);
             return Promise.reject(error.response.data);
         }
     }

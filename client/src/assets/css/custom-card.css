@@ -13,6 +13,7 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
 /*Recipe card image styles*/
 .recipe {
     width: 300px;
+    height: 340px;
     border-radius: 5px 65px;
     box-shadow: 0 5px 20px 10px rgba(0, 0, 0, .2);
     overflow: hidden;
@@ -113,6 +114,8 @@ background-image: linear-gradient(180deg, #A9C9FF 0%, #FFBBEC 100%);
 }
 .user-recipe-time h5{
     color: white;
+    position: relative;
+    bottom: 8px;
     margin-bottom: 4px;
 }
 .user-recipe-time .duration {

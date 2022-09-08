@@ -20,13 +20,6 @@ export const uploadPhoto = createAsyncThunk(
                 signature,
                 cloudName
             } = cloudinaryConfig.data;
-
-            console.log(
-                apiKey,
-                timestamp,
-                signature,
-                cloudName, photoFile );
-
             const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${cloudName}/auto/upload`;
             cloudinaryName = cloudName;
 

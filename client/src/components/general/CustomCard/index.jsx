@@ -32,7 +32,7 @@ const CustomCard = (props) => {
         createdAt
     } = props.recipe;
 
-    const { reactToPost, savePost } = useCard(props.recipe);
+    const { reactToPost, savePost, deletePost } = useCard(props.recipe);
 
     return (
         <figure className="recipe">
@@ -57,7 +57,9 @@ const CustomCard = (props) => {
                         </a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas delete" icon={faTrashCan}/></a>
+                        <a onClick = {() => deletePost()}>
+                            <FontAwesomeIcon className="fas delete" icon={faTrashCan}/>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -65,7 +67,7 @@ const CustomCard = (props) => {
                 {name}
                 <span><FontAwesomeIcon className="fas" icon={faMugHot}/></span>
             </h4>
-            <p>{description.slice(0, 50).concat('...')}</p>
+            <p>{description.slice(0, 70).concat('...')}</p>
             <div className="user-details">
                 <div className="image-overlay"/>
                 <img src={expUrl} alt={name}/>

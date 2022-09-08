@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import {
-    updateRecipe, saveRecipe, unsaveRecipe, fetchRecipes
+    updateRecipe, saveRecipe, unsaveRecipe, fetchRecipes, deleteRecipe
 } from '../../../actions/recipeActions';
 
 const useCard = (recipe) => {
@@ -38,8 +38,9 @@ const useCard = (recipe) => {
         )));
 
     const savePost = () => (
-        dispatch(saveRecipe({ userId, id })).unwrap()
-        .then(() => {
+        dispatch(saveRecipe({ userId, id, creatorId: recipe.userId })).unwrap()
+        .then((response) => {
+            console.log(response);
             dispatch(updateRecipe({ userId, recipe: { id, upVotes: 1 } }))
             .then(() => dispatch(fetchRecipes()));
             return dispatch(addFlashMessage({
@@ -48,6 +49,7 @@ const useCard = (recipe) => {
             }));
         })
         .catch((error) => {
+            console.log(error);
             let { message } = error;
             if (message === 'Duplicate entry not allowed') {
                 return unsavePost();
@@ -61,9 +63,22 @@ const useCard = (recipe) => {
             }));
         }));
 
+    const deletePost = () => (
+        dispatch(deleteRecipe({ userId, id })).unwrap()
+        .then((response) => dispatch(addFlashMessage({
+            message: response.message,
+            type: 'success'
+        })))
+        .catch((error) => dispatch(addFlashMessage({
+            message: error.message,
+            type: 'failure'
+        })))
+    );
+
     return {
         reactToPost,
-        savePost
+        savePost,
+        deletePost
     };
 };
 

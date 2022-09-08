@@ -33,7 +33,7 @@ export const fetchRecipes = createAsyncThunk(
 /**
  * Get one recipe
  * @description Get a recipe from server
- * @param {String} offset - offset query to fetch paginated items
+ * @param {integer} id - recipe id
  * @returns { promise } -Axios http response
  */
  export const fetchOneRecipe = createAsyncThunk(
@@ -52,7 +52,7 @@ export const fetchRecipes = createAsyncThunk(
  * Get user saved recipes
  * @description Get saved recipes from server
  * @param {String} offset - offset query to fetch paginated items
- * @param {String} userId - Id of user that saved recipe
+ * @param {integer} userId - Id of user that saved recipe
  * @returns { promise } -Axios http response
  */
  export const fetchSavedRecipes = createAsyncThunk(
@@ -110,7 +110,8 @@ export const createRecipe = createAsyncThunk(
 /**
  * @function updateRecipe
  * @description updates a recipe
- * @param {object} recipe - recipe payload to be updated
+ * @param {integer} userId - Id of user performing the action
+ * @param {integer} id - recipe id
  * @returns { promise } -Axios http response from the server
  */
 export const updateRecipe = createAsyncThunk(
@@ -128,14 +129,15 @@ export const updateRecipe = createAsyncThunk(
 /**
  * @function saveRecipe
  * @description saves a recipe
- * @param {object} recipe - recipe payload to be saved
+ * @param {integer} userId - Id of user performing the action
+ * @param {integer} id - recipe id
  * @returns { promise } -Axios http response from the server
  */
 export const saveRecipe = createAsyncThunk(
     'recipes/saveRecipeStatus',
-    async ({ userId, id }) => {
+    async ({ userId, id, creatorId }) => {
         try {
-            const response = await axios.post(`${SERVER_URL}/recipes/save/${userId}/${id}`, {});
+            const response = await axios.post(`${SERVER_URL}/recipes/save/${userId}/${id}`, { creatorId });
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);
@@ -146,7 +148,8 @@ export const saveRecipe = createAsyncThunk(
 /**
  * @function unsaveRecipe
  * @description deletes a saved recipe
- * @param {object} recipe - recipe payload to be saved
+ * @param {integer} userId - Id of user performing the action
+ * @param {integer} id - recipe id
  * @returns { promise } -Axios http response from the server
  */
 export const unsaveRecipe = createAsyncThunk(
@@ -154,6 +157,25 @@ export const unsaveRecipe = createAsyncThunk(
     async ({ userId, id }) => {
         try {
             const response = await axios.delete(`${SERVER_URL}/recipes/unsave/${userId}/${id}`);
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
+ * @function deleteRecipe
+ * @description allows a recipe creator to delete recipe
+ * @param {integer} userId - Id of user performing the action
+ * @param {integer} id - recipe id
+ * @returns { promise } -Axios http response from the server
+ */
+ export const deleteRecipe = createAsyncThunk(
+    'recipes/deleteRecipeStatus',
+    async ({ userId, id }) => {
+        try {
+            const response = await axios.delete(`${SERVER_URL}/recipes/${userId}/${id}`);
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);

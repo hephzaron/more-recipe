@@ -19,6 +19,12 @@ class SavedRecipeController {
    */
   static saveRecipe(req, res) {
     const { recipeId, userId } = req.params;
+    const { creatorId } = req.body;
+    if (creatorId === parseInt(userId, 10)) {
+      return res.status(403).send({
+        message: 'You can only save recipe not created by you'
+      });
+    }
     return SavedRecipe
       .create({
         recipeId,

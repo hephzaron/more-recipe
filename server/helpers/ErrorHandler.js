@@ -33,12 +33,14 @@ class ErrorHandler extends Error {
           error.name = 'Conflict';
           error.message = 'Duplicate entry not allowed';
         } else {
+          console.log(name);
           error.statusCode = 500;
           error.message = 'Internal Server Error';
           error.name = 'Server Error';
         }
       }
     } catch (e) {
+      console.log(e);
       error.statusCode = 500;
       error.message = 'Internal Server Error';
       error.name = 'Server Error';

@@ -12,7 +12,7 @@ const useCard = (recipe) => {
 
     const reactToPost = (reaction) => (
         dispatch(updateRecipe({ userId, id, ...reaction })).unwrap()
-        .then(() => {})
+        .then(() => (dispatch(fetchOneRecipe({ id }))))
         .catch((error) => (
             dispatch(addFlashMessage({
                 message: error.message,

@@ -218,7 +218,7 @@ class RecipeController {
         where,
         limit: limit || 8,
         offset: offset || 0,
-        order: [[sort, order]],
+        order: [[sort || 'id', order || 'DESC']],
         include: [{
           model: RecipeVote,
           attributes: [],

@@ -15,7 +15,7 @@ class SavedRecipeController {
    * @memberof SavedRecipeController
    * @param { object } req -request
    * @param { object } res -respone
-   * @returns { obejct } server response
+   * @returns { object } server response
    */
   static saveRecipe(req, res) {
     const { recipeId, userId } = req.params;

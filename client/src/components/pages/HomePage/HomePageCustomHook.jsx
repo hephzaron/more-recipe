@@ -15,6 +15,7 @@ const useHomePage = ({
     addFlashMessage
 }) => {
     const [currentRecipes, setCurrentRecipes] = useState([]);
+    const [pageError, setPageError] = useState({});
     const dispatch = useDispatch();
 
     const recipes = useSelector((state) => state.recipeReducer.recipes || []);
@@ -27,7 +28,6 @@ const useHomePage = ({
 
     const wrapperRef = useRef();
     const previousPage = useRef({ currentPage: [] });
-
     /**
      * Handles outside click event of modal on homepage
      * @function handleClickOutside
@@ -52,6 +52,11 @@ const useHomePage = ({
     const closeForm = (event) => {
         dispatch(hideModal());
     };
+
+    useEffect(() => {
+        setPageError(error);
+        return () => setPageError({});
+    }, [error]);
 
     /** React hook runs once when component mounts */
     useEffect(() => {
@@ -88,7 +93,7 @@ const useHomePage = ({
         showRecipeModal,
         isAuthenticated,
         loading,
-        error,
+        pageError,
         wrapperRef,
         closeForm
     };

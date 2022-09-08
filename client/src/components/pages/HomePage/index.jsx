@@ -15,7 +15,7 @@ const HomePage = () => {
         showRecipeModal,
         isAuthenticated,
         loading,
-        error,
+        pageError,
         wrapperRef,
         closeForm
     } = useHomePage({
@@ -25,12 +25,9 @@ const HomePage = () => {
         addFlashMessage
     });
 
+    console.log('pageerror', pageError);
 
-    if (error) {
-        return <div> Error: {error.message}</div>;
-    }
-
-    if (loading === 'fulfilled') {
+    if (loading === 'fulfilled' || pageError) {
         document.getElementById('loader').style = "display: none;";
     } else {
         document.getElementById('loader').style = "display: block;";

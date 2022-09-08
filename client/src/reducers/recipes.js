@@ -1,5 +1,5 @@
 import { createReducer } from '@reduxjs/toolkit';
-import { createRecipe, updateRecipe, fetchRecipes } from '../actions/recipeActions';
+import { createRecipe, updateRecipe, fetchRecipes, saveRecipe } from '../actions/recipeActions';
 import { initialRecipeState } from './initialState';
 
 const recipeReducer = createReducer(initialRecipeState, (builder) => {
@@ -17,7 +17,7 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     builder.addCase(createRecipe.rejected, (state, action) => ({
         ...state,
         recipe: {},
-        error: action.payload['message'],
+        error: action.error['message'],
         loading: 'failed'
     }));
 
@@ -35,10 +35,10 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     builder.addCase(updateRecipe.rejected, (state, action) => ({
         ...state,
         recipe: {},
-        error: action.payload['message'],
+        error: action.error.message,
         loading: 'failed'
     }));
-    
+
     builder.addCase(fetchRecipes.pending, (state) => ({
         ...state,
         recipes: [],
@@ -53,8 +53,26 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
     builder.addCase(fetchRecipes.rejected, (state, action) => ({
         ...state,
         recipes: [],
-        error: action.payload['message'],
+        error: action.error['message'],
         loading: 'failed'
+    }));
+    builder.addCase(saveRecipe.pending, (state) => ({
+        ...state,
+        recipe: {},
+        error: '',
+        loading: 'pending'
+    }));
+    builder.addCase(saveRecipe.rejected, (state, action) => ({
+        ...state,
+        recipe: {},
+        error: action.error['message'],
+        loading: 'failed'
+    }));
+    builder.addCase(saveRecipe.fulfilled, (state) => ({
+        ...state,
+        recipe: {},
+        error: '',
+        loading: 'fulfilled'
     }));
 });
 

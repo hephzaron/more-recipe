@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faMugHot, faClock, faThumbsUp, faStar, faPen, faTrashCan, faThumbsDown, faCaretRight, faReply
+    faMugHot, faClock, faThumbsUp, faStar, faTrashCan, faThumbsDown, faCaretRight
 } from "@fortawesome/free-solid-svg-icons";
+import useCard from './CardCustomHooks';
 
 const propTypes = {
     recipe: PropTypes.object.isRequired
@@ -18,6 +19,8 @@ const propTypes = {
 const CustomCard = (props) => {
     const expUrl = 'https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all';
     const {
+        id,
+        userId,
         Reviews,
         user,
         photoUrl,
@@ -29,21 +32,29 @@ const CustomCard = (props) => {
         createdAt
     } = props.recipe;
 
+    const { reactToPost, toggleSave } = useCard(props.recipe);
+
     return (
         <figure className="recipe">
             <div className="recipe-img-container">
                 <img src={expUrl} alt={name} className="recipe-img"/>
                 <ul className="recipe-action-list">
                     <li>
-                        <a><FontAwesomeIcon className="fas likes" icon={faThumbsUp}/><span>{likes}</span></a>
+                        <a onClick = {() => reactToPost({ likes: 1 })}>
+                            <FontAwesomeIcon className="fas likes" icon={faThumbsUp}/><span>{likes}</span>
+                        </a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas dislikes" icon={faThumbsDown}/><span>{dislikes}</span></a>
+                        <a onClick = {() => reactToPost({ dislikes: 1 })}>
+                            <FontAwesomeIcon className="fas dislikes" icon={faThumbsDown}/><span>{dislikes}</span>
+                        </a>
                     </li>
                     <li>
-                        <a><FontAwesomeIcon className="fas upvotes" icon={faStar}/>
-                        <FontAwesomeIcon className="fas upvotes-2" icon={faStar}/>
-                        <span>{upVotes}</span></a>
+                        <a onClick = {() => toggleSave()}>
+                            <FontAwesomeIcon className="fas upvotes" icon={faStar}/>
+                            <FontAwesomeIcon className="fas upvotes-2" icon={faStar}/>
+                            <span>{upVotes}</span>
+                        </a>
                     </li>
                     <li>
                         <a><FontAwesomeIcon className="fas delete" icon={faTrashCan}/></a>

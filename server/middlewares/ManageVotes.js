@@ -67,10 +67,12 @@ class ManageVotes {
               likes: likes ? 1 : 0,
               dislikes: dislikes ? 1 : 0
             })
-            .then(userVote => res.status(200).send({
-              userVote,
-              message: (userVote.upVotes || userVote.downVotes) === 1 ? 'Voting successful' : ''
-            }))
+            .then((userVote) => {
+              const message = (userVote.upVotes === 1) ? 'Voting successful' : '';
+              return res.status(200).send({
+                userVote, message
+              });
+            })
             .catch((error) => {
               const e = handleErrors(error);
               return res.status(e.statusCode).send({
@@ -87,10 +89,12 @@ class ManageVotes {
             likes: like,
             dislikes: dislike
           })
-          .then(userVote => res.status(200).send({
-            userVote,
-            message: (userVote.upVotes || userVote.downVotes) ? 'Voting successful' : ''
-          }))
+          .then((userVote) => {
+            const message = (userVote.upVotes || userVote.downVotes) ? 'Voting successful' : '';
+            return res.status(200).send({
+              userVote, message
+            });
+          })
           .catch((error) => {
             const e = handleErrors(error);
             return res.status(e.statusCode).send({

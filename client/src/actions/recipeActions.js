@@ -31,6 +31,30 @@ export const fetchRecipes = createAsyncThunk(
 );
 
 /**
+ * Get user saved recipes
+ * @description Get saved recipes from server
+ * @param {String} offset - offset query to fetch paginated items
+ * @param {String} userId - Id of user that saved recipe
+ * @returns { promise } -Axios http response
+ */
+ export const fetchSavedRecipes = createAsyncThunk(
+    'recipes/fetchSavedRecipesStatus',
+    async (offset = 0, userId) => {
+        try {
+            const limit = 40;
+            const sort = 'createdAt';
+            const order = 'DESC';
+            const response = await axios.get(
+                `${SERVER_URL}/recipes/saved/${userId}?sort=${sort}&order=${order}&offset=${offset}&limit=${limit}`
+                );
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
  * createRecipe
  * @description creates a recipe
  * @param {object} recipe - recipe payload to be created
@@ -75,7 +99,45 @@ export const updateRecipe = createAsyncThunk(
     'recipes/updateRecipeStatus',
     async (recipe) => {
         try {
-            const response = axios.patch(`${SERVER_URL}/recipes/${recipe.userId}/${recipe.id}`, { ...recipe });
+            const response = await axios.put(`${SERVER_URL}/recipes/${recipe.userId}/${recipe.id}`, { ...recipe });
+            return response.data;
+        } catch (error) {
+            console.log('actioneror', error.response.data);
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
+ * @function saveRecipe
+ * @description saves a recipe
+ * @param {object} recipe - recipe payload to be saved
+ * @returns { promise } -Axios http response from the server
+ */
+export const saveRecipe = createAsyncThunk(
+    'recipes/saveRecipeStatus',
+    async ({ userId, id }) => {
+        try {
+            const response = await axios.post(`${SERVER_URL}/recipes/save/${userId}/${id}`, {});
+            return response.data;
+        } catch (error) {
+            console.log('saveErr', error.response.data);
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
+ * @function unsaveRecipe
+ * @description deletes a saved recipe
+ * @param {object} recipe - recipe payload to be saved
+ * @returns { promise } -Axios http response from the server
+ */
+export const unsaveRecipe = createAsyncThunk(
+    'recipes/unsaveRecipeStatus',
+    async ({ userId, id }) => {
+        try {
+            const response = await axios.delete(`${SERVER_URL}/recipes/unsave/${userId}/${id}`);
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);

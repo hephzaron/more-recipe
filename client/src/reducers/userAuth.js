@@ -17,7 +17,7 @@ const userAuthReducer = createReducer(initialUserState, (builder) => {
     builder.addCase(loginUser.rejected, (state, action) => ({
         ...state,
         user: {},
-        error: action.payload['message'],
+        error: action.error['message'],
         isAuthenticated: false
     }));
     builder.addCase(unset, (state) => ({

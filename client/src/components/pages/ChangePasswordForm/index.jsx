@@ -5,15 +5,15 @@ import useChangePasswordForm from './ChangePasswordFormCustomHook';
 
 const ChangePasswordForm = ({ closeChangePasswordModal }) => {
     const {
-        user,
+        userInput,
         formErrors,
-        submitPasswordForm,
+        submitChangePasswordForm,
         handleInputChange
-    } = useChangePasswordForm(changePassword);
+    } = useChangePasswordForm();
 
     return (
         <div className="user-recipe-form">
-            <form onSubmit={submitPasswordForm}>
+            <form onSubmit={submitChangePasswordForm}>
                 <h3>Change Password</h3>
                 <span onClick = {closeChangePasswordModal} className="close-btn">Close</span>
                 <hr/>
@@ -27,7 +27,7 @@ const ChangePasswordForm = ({ closeChangePasswordModal }) => {
                     id="oldPassword" required
                     onChange={handleInputChange}
                     name="oldPassword"
-                    value={user.oldPassword}/>
+                    value={userInput.oldPassword}/>
                 <label htmlFor="newPassword">New Password:</label>
                 {
                     formErrors.newPassword &&
@@ -37,7 +37,7 @@ const ChangePasswordForm = ({ closeChangePasswordModal }) => {
                     type="password"
                     id="newPassword" required
                     onChange={handleInputChange}
-                    value={user.newPassword}
+                    value={userInput.newPassword}
                     name="newPassword"/>
                 <label htmlFor="confirmPassword">Enter Password again:</label>
                 {
@@ -48,7 +48,7 @@ const ChangePasswordForm = ({ closeChangePasswordModal }) => {
                     type="password"
                     id="confirmPassword" required
                     onChange={handleInputChange}
-                    value={user.confirmPassword}
+                    value={userInput.confirmPassword}
                     name="confirmPassword"/>
                 <input type="submit" value="Change"/>
             </form>

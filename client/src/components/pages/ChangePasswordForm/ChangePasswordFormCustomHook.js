@@ -3,7 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { validateUserForm } from '../../../utils/validators/user';
 import { logoutUser } from '../../../actions/authUserActions';
-import { addFlashMessage } from "../../../actions/flashMessageActions";
+import { hideModal } from '../../../actions/modalActions';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
+import { changePassword } from '../../../actions/passwordActions';
 
 /**
  * @function useChangePasswordForm
@@ -11,7 +13,7 @@ import { addFlashMessage } from "../../../actions/flashMessageActions";
  * @param {function} changePassword - dispatch action creators to change a user a password
  * @returns  { object } { userInput, formErrors, flashMesageType, inputChangeHandler, submitAuthForm }
  */
-const useChangePasswordForm = (changePassword) => {
+const useChangePasswordForm = () => {
     const [userInput, setUserInput] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
     const [formErrors, setFormErrors] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
 
@@ -22,15 +24,15 @@ const useChangePasswordForm = (changePassword) => {
 
     /**
      * Submit completed ChangePasswordForm
-     * @memberof LoginForm
+     * @memberof useChangePasswordForm
      * @param {object} event
      * @returns {null} void
      */
-    const submitAuthForm = (event) => {
+    const submitChangePasswordForm = (event) => {
         if (event) {
             event.preventDefault();
         }
-        const { validationErrors } = validateUserForm(userInput);
+        const { validationErrors } = validateUserForm(userInput, 'changePassword');
         const { oldPassword, newPassword, confirmPassword } = validationErrors;
         const isValid = !(oldPassword || newPassword || confirmPassword);
         setFormErrors({
@@ -38,14 +40,16 @@ const useChangePasswordForm = (changePassword) => {
         });
 
         if (isValid) {
-            dispatch(loginUser(userInput)).unwrap()
+            dispatch(changePassword({ userId, ...userInput })).unwrap()
             .then((response) => {
-                const { user } = response;
+                const { message } = response;
                 dispatch(addFlashMessage({
-                    message: response.message,
+                    message: message,
                     type: 'success'
                 }));
-                dispatch(logoutUser()).then(() => navigate('/login'));
+                dispatch(hideModal({}));
+                dispatch(logoutUser());
+                navigate('/login');
             })
             .catch((error) => dispatch(addFlashMessage({
                 message: error.message,
@@ -56,20 +60,20 @@ const useChangePasswordForm = (changePassword) => {
 
     /**
      * Handles input changes in field entries
-     * @function inputChangeHandler
-     * @memberof useLoginForm
+     * @function handleInputChange
+     * @memberof useChangePasswordForm
      * @param {object} event
      * @returns {null} void
      */
-    const inputChangeHandler = (event) => {
+    const handleInputChange = (event) => {
         event.persist();
         setUserInput({ ...userInput, [event.target.name]: event.target.value });
     };
     return {
         userInput,
         formErrors,
-        inputChangeHandler,
-        submitAuthForm
+        handleInputChange,
+        submitChangePasswordForm
     };
 };
 

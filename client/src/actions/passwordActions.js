@@ -20,7 +20,7 @@ export const changePassword = createAsyncThunk(
         } = userPayload;
         try {
             const response = await axios.put(
-                `${SERVER_URL}/users/${userId}`, { oldPassword, newPassword, confirmPassword }
+                `${SERVER_URL}/users/${userId}`, { password: newPassword, oldPassword, confirmPassword }
                 );
             return response.data;
         } catch (error) {

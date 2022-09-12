@@ -47,7 +47,8 @@ const HomePage = () => {
                         }
                         {
                             modalForm === 'changePasswordForm' &&
-                            <ChangePasswordForm/>
+                            <ChangePasswordForm
+                                closeChangePasswordModal={() => closeForm()}/>
                         }
                     </ModalForm>}
                 <div className="recipe-list">

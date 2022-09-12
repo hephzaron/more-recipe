@@ -41,12 +41,6 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     const submitSearchForm = (event) => ({});
 
-    const logOut = () => {
-        dispatch(logoutUser())
-        .then(() => dispatch(fetchRecipes()))
-        .then(() => navigate('/'));
-    };
-
     const displayModal = () => {
         dispatch(showModal());
         toggleNav();
@@ -79,6 +73,11 @@ const useHeader = ({ logoutUser, showModal }) => {
             }));
             getAllRecipes();
         });
+    };
+
+    const logOut = () => {
+        dispatch(logoutUser())
+        .then(() => getAllRecipes());
     };
 
     return {

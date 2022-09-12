@@ -80,7 +80,7 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a>
+                  <a onClick={() => { navigate('/my-recipes'); }}>
                     <FontAwesomeIcon className="header-icon" icon={faLayerGroup}/>
                     <span className="header-content">My Recipes</span>
                   </a>

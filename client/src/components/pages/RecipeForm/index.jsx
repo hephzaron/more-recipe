@@ -4,7 +4,7 @@ import useRecipeForm from './RecipeCustomHooks';
 import { createRecipe } from '../../../actions/recipeActions';
 
 
-const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
+const RecipeForm = ({ closeRecipeModal }) => {
     const {
         recipe,
         formErrors,
@@ -13,7 +13,7 @@ const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
     } = useRecipeForm(createRecipe);
 
     return (
-        <div ref = {recipeFormRef} className="user-recipe-form">
+        <div className="user-recipe-form">
             <form onSubmit={submitRecipeForm}>
                 <h3>Create Recipe</h3>
                 <span onClick = {closeRecipeModal} className="close-btn">Close</span>
@@ -54,8 +54,7 @@ const RecipeForm = ({ closeRecipeModal, recipeFormRef }) => {
 };
 
 RecipeForm.propTypes = {
-    closeRecipeModal: PropTypes.func.isRequired,
-    recipeFormRef: PropTypes.object.isRequired
+    closeRecipeModal: PropTypes.func.isRequired
 };
 
 export default RecipeForm;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import RecipeForm from '../RecipeForm';
+import ChangePasswordForm from '../ChangePasswordForm';
 import ModalForm from '../../general/Modal';
 import Pagination from '../../general/Pagination';
 import CustomCard from '../../general/CustomCard';
@@ -13,7 +14,8 @@ import { addFlashMessage } from '../../../actions/flashMessageActions';
 const HomePage = () => {
     const {
         activeRecipes,
-        showRecipeModal,
+        showModalForm,
+        modalForm,
         isAuthenticated,
         loading,
         wrapperRef,
@@ -26,7 +28,7 @@ const HomePage = () => {
     });
 
     const location = useLocation();
-    const home = location.pathname === '/'
+    const home = location.pathname === '/';
 
     if ((loading === 'fulfilled' || loading === 'failed')) {
         document.getElementById('loader').style = "display: none;";
@@ -36,11 +38,17 @@ const HomePage = () => {
 
     return (
             <div>
-                {(showRecipeModal && isAuthenticated) &&
-                    <ModalForm>
-                        <RecipeForm
-                            recipeFormRef={wrapperRef}
-                            closeRecipeModal={() => closeForm()}/>
+                {(showModalForm && isAuthenticated) &&
+                    <ModalForm wrapperRef={wrapperRef}>
+                        {
+                            modalForm === 'recipeForm' &&
+                            <RecipeForm
+                                closeRecipeModal={() => closeForm()}/>
+                        }
+                        {
+                            modalForm === 'changePasswordForm' &&
+                            <ChangePasswordForm/>
+                        }
                     </ModalForm>}
                 <div className="recipe-list">
                 {activeRecipes && activeRecipes.map(recipe => (
@@ -48,7 +56,7 @@ const HomePage = () => {
                         key = {recipe.id}
                         recipe = {recipe}/>))}
                 </div>
-                {((loading === 'fulfilled' || loading === 'failed') && home)&& <Pagination/>}
+                {((loading === 'fulfilled' || loading === 'failed') && home) && <Pagination/>}
             </div>
         );
 };

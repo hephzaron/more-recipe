@@ -3,13 +3,15 @@ import { initialModalState } from './initialState';
 import { showModal, hideModal } from '../actions/modalActions';
 
 const modalReducer = createReducer(initialModalState, (builder) => {
-    builder.addCase(showModal, (state) => ({
+    builder.addCase(showModal, (state, action) => ({
         ...state,
-        show: true
+        show: true,
+        form: action.payload.form
     }));
     builder.addCase(hideModal, (state) => ({
         ...state,
-        show: false
+        show: false,
+        form: ''
     }));
 });
 

@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const ModalForm = ({ children }) => (
+const ModalForm = ({ children, wrapperRef }) => (
     <div className="modal-overlay">
-        {children}
+        <div ref ={wrapperRef}>
+            {children}
+        </div>
     </div>
 );
 
 ModalForm.propTypes = {
-    children: PropTypes.object.isRequired
+    children: PropTypes.array.isRequired,
+    wrapperRef: PropTypes.object.isRequired
 };
 
 

@@ -19,7 +19,8 @@ const Header = () => {
         flashMessageType,
         logOut,
         toggleNav,
-        displayModal,
+        displayRecipeModal,
+        displayChangePasswordModal,
         toggleProfileList,
         inputChangeHandler,
         submitSearchForm,
@@ -89,7 +90,7 @@ const Header = () => {
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => displayModal()}>
+                  <a onClick={() => displayRecipeModal()}>
                     <FontAwesomeIcon className="header-icon" icon={faCirclePlus}/>
                     <span className="header-content">Create Recipe</span>
                   </a>
@@ -103,7 +104,7 @@ const Header = () => {
                   </a>
                 </li>
                 <li className="hidden-header">
-                  <a>
+                  <a onClick={() => displayChangePasswordModal()}>
                     <FontAwesomeIcon className="header-icon" icon={faKey}/>
                     <span className="header-content">Change Password</span>
                   </a>
@@ -143,7 +144,7 @@ const Header = () => {
                   <a>Edit Profile</a>
                 </li>
                 <li>
-                  <a>Change Password</a>
+                  <a onClick={() => displayChangePasswordModal()}>Change Password</a>
                 </li>
                 <hr/>
                 <li>

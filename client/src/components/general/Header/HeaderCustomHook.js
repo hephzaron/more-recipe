@@ -41,9 +41,17 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     const submitSearchForm = (event) => ({});
 
-    const displayModal = () => {
-        dispatch(showModal());
+    const displayRecipeModal = () => {
+        const form = 'recipeForm';
+        dispatch(showModal({ form }));
         toggleNav();
+    };
+
+    const displayChangePasswordModal = () => {
+        const form = 'changePasswordForm';
+        dispatch(showModal({ form }));
+        toggleNav();
+        toggleProfileList();
     };
 
     const getAllRecipes = () => {
@@ -87,7 +95,8 @@ const useHeader = ({ logoutUser, showModal }) => {
         flashMessageType,
         logOut,
         toggleNav,
-        displayModal,
+        displayRecipeModal,
+        displayChangePasswordModal,
         toggleProfileList,
         inputChangeHandler,
         submitSearchForm,

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
  * @description A custom hook that handles homepage function components
  * @param { function } fetchRecipes - dipatches action creators that fetch recipes
  * @param { function } hideModal - dispatches action creators that hides the Modal component
- * @returns { object } [activeRecipes, showRecipeModal, isAuthenticated, loading, error, wrapperRef, closeForm]
+ * @returns { object } [activeRecipes, showModalForm, isAuthenticated, loading, error, wrapperRef, closeForm]
  */
 const useHomePage = ({
     fetchRecipes,
@@ -20,7 +20,9 @@ const useHomePage = ({
     const recipes = useSelector((state) => state.recipeReducer.recipes || []);
     const loading = useSelector((state) => state.recipeReducer.loading);
     const currentPage = useSelector((state) => state.paginationReducer.currentPage);
-    const showRecipeModal = useSelector((state) => state.modalReducer.show);
+    const showModalForm = useSelector((state) => state.modalReducer.show);
+    const modalForm = useSelector((state) => state.modalReducer.form);
+
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const recipePages = useSelector((state) => state.paginationReducer.recipePages);
 
@@ -37,7 +39,7 @@ const useHomePage = ({
             return null;
         }
         if (wrapperRef && !wrapperRef.current.contains(event.target)) {
-            dispatch(hideModal());
+            dispatch(hideModal({}));
         }
     };
 
@@ -48,7 +50,7 @@ const useHomePage = ({
      * @returns { null }  void
      */
     const closeForm = (event) => {
-        dispatch(hideModal());
+        dispatch(hideModal({}));
     };
 
     /** React hook runs once when component mounts */
@@ -83,7 +85,8 @@ const useHomePage = ({
 
     return {
         activeRecipes,
-        showRecipeModal,
+        showModalForm,
+        modalForm,
         isAuthenticated,
         loading,
         wrapperRef,

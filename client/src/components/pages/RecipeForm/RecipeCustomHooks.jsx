@@ -51,7 +51,7 @@ const useRecipeForm = (callback) => {
             dispatch(uploadPhoto({ photoFile: photoUrl })).unwrap()
             .then((data) => {
                 dispatch(callback({
-                    userId, name, description, photoUrl: data['secured_url']
+                    userId, name, description, photoUrl: data['secure_url']
                 })).unwrap()
                 .then((response) => {
                     dispatch(addFlashMessage({

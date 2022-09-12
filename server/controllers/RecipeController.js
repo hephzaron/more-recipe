@@ -2,10 +2,12 @@ import Sequelize from 'sequelize';
 import models from '../models';
 import ErrorHandler from '../helpers/ErrorHandler';
 import { ManageVotes } from '../middlewares';
+import CloudinaryController from './CloudinaryController';
 
 const { Recipe, Review, RecipeVote } = models;
 const { restrictCreator } = ManageVotes;
 const { handleErrors } = ErrorHandler;
+const { deleteCloudinaryImage } = CloudinaryController;
 /**
  * Handles Recipe request operations
  * @class RecipeController
@@ -173,6 +175,14 @@ class RecipeController {
           return res.status(403).send({
             message: 'You are not allowed to delete this recipe.'
           });
+        }
+        if (recipe.photoUrl) {
+          const re = /(?<=signed_recipe_upload\/).*?(?=\.)/i;
+          const photoName = recipe.photoUrl.match(re);
+          deleteCloudinaryImage(`signed_recipe_upload/${photoName[0]}`)
+          .catch((error) => res.status(500).send({
+            message: error.message
+          }));
         }
         return Recipe
           .destroy({

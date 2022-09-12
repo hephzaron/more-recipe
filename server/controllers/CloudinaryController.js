@@ -34,6 +34,17 @@ class CloudinaryController {
       });
     }
   }
+
+  /**
+    * Delete cloudinary image
+    * @method deleteCloudinaryImage
+    * @memberof CloudinaryController
+    * @param { string } imageName
+    * @returns { object } server response
+    */
+  static deleteCloudinaryImage(imageName) {
+    return cloudinary.uploader.destroy(imageName, response => ({response}));
+  }
 }
 
 export default CloudinaryController;

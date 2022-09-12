@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 /**
@@ -17,7 +16,6 @@ const useHomePage = ({
 }) => {
     const [currentRecipes, setCurrentRecipes] = useState([]);
     const dispatch = useDispatch();
-    const location = useLocation();
 
     const recipes = useSelector((state) => state.recipeReducer.recipes || []);
     const loading = useSelector((state) => state.recipeReducer.loading);
@@ -25,7 +23,6 @@ const useHomePage = ({
     const showRecipeModal = useSelector((state) => state.modalReducer.show);
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const recipePages = useSelector((state) => state.paginationReducer.recipePages);
-    const user = useSelector((state) => state.userAuthReducer.user);
 
     const wrapperRef = useRef();
     const previousPage = useRef({ currentPage: [] });
@@ -82,11 +79,7 @@ const useHomePage = ({
     }, [currentPage]);
 
     /**Display only requested recipes per page */
-    let activeRecipes = currentRecipes.length === 0 ? recipes.slice(0, 8) : currentRecipes;
-
-    if (location.pathname === '/my-recipes') {
-        activeRecipes = activeRecipes.filter((recipe) => (recipe.userId === user.id));
-    }
+    const activeRecipes = currentRecipes.length === 0 ? recipes.slice(0, 8) : currentRecipes;
 
     return {
         activeRecipes,

@@ -31,6 +31,26 @@ export const fetchRecipes = createAsyncThunk(
 );
 
 /**
+ * Get my recipes
+ * @description Get creator recipes from server
+ * @param {String} userId - Id of user
+ * @returns { promise } -Axios http response
+ */
+ export const fetchMyRecipes = createAsyncThunk(
+    'recipes/fetchMyRecipesStatus',
+    async (userId) => {
+        try {
+            const response = await axios.get(
+                `${SERVER_URL}/recipes?userId=${userId}`
+                );
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
+/**
  * Get one recipe
  * @description Get a recipe from server
  * @param {integer} id - recipe id
@@ -57,7 +77,7 @@ export const fetchRecipes = createAsyncThunk(
  */
  export const fetchSavedRecipes = createAsyncThunk(
     'recipes/fetchSavedRecipesStatus',
-    async (offset = 0, userId) => {
+    async ({ offset, userId }) => {
         try {
             const limit = 40;
             const sort = 'createdAt';

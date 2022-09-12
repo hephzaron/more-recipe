@@ -22,7 +22,10 @@ const Header = () => {
         displayModal,
         toggleProfileList,
         inputChangeHandler,
-        submitSearchForm
+        submitSearchForm,
+        getAllRecipes,
+        getSavedRecipes,
+        getMyRecipes
     } = useHeader({ logoutUser, showModal });
     return (
         <div>
@@ -34,7 +37,7 @@ const Header = () => {
             <ul className="auth-header left">
               <hr className ="hidden-header"/>
               <li>
-                <a onClick={() => { navigate('/'); }}>
+                <a onClick={getAllRecipes}>
                   <FontAwesomeIcon className="header-icon" icon={faHome}/>
                   <span className="header-content">Home</span>
                 </a>
@@ -74,13 +77,13 @@ const Header = () => {
               isAuthenticated &&
               <ul className="auth-header">
                 <li>
-                  <a>
+                  <a onClick={getSavedRecipes}>
                     <FontAwesomeIcon className="header-icon" icon={faStar}/>
                     <span className="header-content">My Favorites</span>
                   </a>
                 </li>
                 <li>
-                  <a onClick={() => { navigate('/my-recipes'); }}>
+                  <a onClick={getMyRecipes}>
                     <FontAwesomeIcon className="header-icon" icon={faLayerGroup}/>
                     <span className="header-content">My Recipes</span>
                   </a>

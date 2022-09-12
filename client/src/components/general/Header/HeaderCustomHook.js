@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { addFlashMessage } from '../../../actions/flashMessageActions';
+import { fetchRecipes, fetchSavedRecipes, fetchMyRecipes } from '../../../actions/recipeActions';
 
 /**
  * @function useHeader
@@ -40,13 +42,43 @@ const useHeader = ({ logoutUser, showModal }) => {
     const submitSearchForm = (event) => ({});
 
     const logOut = () => {
-        dispatch(logoutUser());
-        navigate('/');
+        dispatch(logoutUser())
+        .then(() => dispatch(fetchRecipes()))
+        .then(() => navigate('/'));
     };
 
     const displayModal = () => {
         dispatch(showModal());
         toggleNav();
+    };
+
+    const getAllRecipes = () => {
+        dispatch(fetchRecipes())
+        .then(() => navigate('/'));
+    };
+
+    const getSavedRecipes = () => {
+        dispatch(fetchSavedRecipes({ userId: user.id })).unwrap()
+        .then(() => navigate('saved-recipes'))
+        .catch((error) => {
+            dispatch(addFlashMessage({
+                message: error.message,
+                type: 'failure'
+            }));
+            getAllRecipes();
+        });
+    };
+
+    const getMyRecipes = () => {
+        dispatch(fetchMyRecipes(user.id)).unwrap()
+        .then(() => navigate('my-recipes'))
+        .catch((error) => {
+            dispatch(addFlashMessage({
+                message: error.message,
+                type: 'failure'
+            }));
+            getAllRecipes();
+        });
     };
 
     return {
@@ -59,7 +91,10 @@ const useHeader = ({ logoutUser, showModal }) => {
         displayModal,
         toggleProfileList,
         inputChangeHandler,
-        submitSearchForm
+        submitSearchForm,
+        getAllRecipes,
+        getSavedRecipes,
+        getMyRecipes
     };
 };
 

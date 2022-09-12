@@ -219,10 +219,11 @@ class RecipeController {
       sort,
       order,
       limit,
-      offset
+      offset,
+      userId
     } = req.query;
     const { recipeId } = req.params;
-    const where = recipeId ? { id: recipeId } : {};
+    const where = recipeId ? { id: recipeId } : (userId ? {userId: parseInt(userId, 10)} : {});
     return Recipe
       .findAll({
         where,

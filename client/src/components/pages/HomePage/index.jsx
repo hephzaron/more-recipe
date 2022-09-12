@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import RecipeForm from '../RecipeForm';
 import ModalForm from '../../general/Modal';
 import Pagination from '../../general/Pagination';
@@ -24,6 +25,9 @@ const HomePage = () => {
         addFlashMessage
     });
 
+    const location = useLocation();
+    const home = location.pathname === '/'
+
     if ((loading === 'fulfilled' || loading === 'failed')) {
         document.getElementById('loader').style = "display: none;";
     } else {
@@ -44,7 +48,7 @@ const HomePage = () => {
                         key = {recipe.id}
                         recipe = {recipe}/>))}
                 </div>
-                {(loading === 'fulfilled' || loading === 'failed') && <Pagination/>}
+                {((loading === 'fulfilled' || loading === 'failed') && home)&& <Pagination/>}
             </div>
         );
 };

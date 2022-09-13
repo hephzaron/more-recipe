@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 import { addFlashMessage } from "../../../actions/flashMessageActions";
 import { createNewPassword } from "../../../actions/passwordActions";
@@ -8,11 +8,12 @@ import { createNewPassword } from "../../../actions/passwordActions";
 const usePasswordForm = () => {
     const [userInput, setUserInput] = useState({ email: '', password: '', confirmPassword: '' });
     const [formErrors, setFormErrors] = useState({ email: '', password: '', confirmPassword: '' });
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const dispatch = useDispatch();
-    const params = useParams();
+    const navigate = useNavigate();
 
-    const { token } = params;
+    const token = searchParams.get('token');
 
     /**
      * Handles input changes in field entries
@@ -43,6 +44,8 @@ const usePasswordForm = () => {
                     message: response.message,
                     type: 'success'
                 }));
+                setSearchParams('');
+                navigate('/login');
             })
             .catch((error) => dispatch(addFlashMessage({
                 message: error.message,

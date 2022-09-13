@@ -35,7 +35,7 @@ const App = () => (
             <Route path="register" element={<SignupForm/>}/>
             <Route path="login" element={<LoginForm/>}/>
             <Route path="forgot-password" element={<ResetForm/>}/>
-            <Route path="auth/reset_password" element={<ResetForm/>}/>
+            <Route path="auth/reset_password" element={<PasswordForm/>}/>
             <Route path="*"
                   element={
                   <div style={{ padding: "20rem" }}>

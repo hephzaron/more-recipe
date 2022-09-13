@@ -12,7 +12,7 @@ const ChangePasswordForm = ({ closeChangePasswordModal }) => {
     } = useChangePasswordForm();
 
     return (
-        <div className="user-recipe-form">
+        <div className="changepassword-form">
             <form onSubmit={submitChangePasswordForm}>
                 <h3>Change Password</h3>
                 <span onClick = {closeChangePasswordModal} className="close-btn">Close</span>

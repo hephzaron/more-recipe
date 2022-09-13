@@ -61,6 +61,7 @@ const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
         event.persist();
         setUserInput({ ...userInput, [event.target.name]: event.target.value });
     };
+
     return {
         userInput,
         formErrors,

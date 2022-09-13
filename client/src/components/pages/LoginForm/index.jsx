@@ -40,6 +40,10 @@ const LoginForm = () => {
                 <input
                     type="submit"
                     value={"Login"}/>
+                <ul>
+                    <li><a>Forgot Password ?</a></li>
+                    <li><a>Google Signin</a></li>
+                </ul>
             </form>
         </div>
     );

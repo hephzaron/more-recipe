@@ -26,7 +26,8 @@ const Header = () => {
         submitSearchForm,
         getAllRecipes,
         getSavedRecipes,
-        getMyRecipes
+        getMyRecipes,
+        wrapperRef
     } = useHeader({ logoutUser, showModal });
     return (
         <div>
@@ -118,7 +119,7 @@ const Header = () => {
                     className="profile-img"
                     onClick={() => toggleProfileList()}/>
                   <FontAwesomeIcon className={classnames("hidden-header header-icon")} icon={faUser}/>
-                  <span className="hidden-header header-content" >Daramola Oluwatobi</span>
+                  <span className="hidden-header header-content">Daramola Oluwatobi</span>
                   </a>
                 </li>
                 <hr className ="hidden-header"/>
@@ -133,7 +134,7 @@ const Header = () => {
           </div>
           {
             isAuthenticated &&
-            <div className="profile-dropdown" id="profile-dropdown">
+            <div ref = {wrapperRef} className="profile-dropdown" id="profile-dropdown">
               <FontAwesomeIcon className="profile-dropdown-caret" icon={faCaretUp}/>
               <ul id="profile-menu">
                 <li>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
@@ -17,9 +17,12 @@ import { fetchRecipes, fetchSavedRecipes, fetchMyRecipes } from '../../../action
  * @returns { function } inputChangeHandler
  */
 const useHeader = ({ logoutUser, showModal }) => {
-    const [values, setValues] = useState({ });
+    const [values, setValues] = useState({});
+    const [drop, setDrop] = useState(true);
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const wrapperRef = useRef();
 
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const user = useSelector((state) => state.userAuthReducer.user);
@@ -88,11 +91,33 @@ const useHeader = ({ logoutUser, showModal }) => {
         .then(() => getAllRecipes());
     };
 
+    /**
+     * Handles outside click event of dropdown on homepage
+     * @function handleClickOutside
+     * @param {object} event
+     * @returns { null }  void
+     */
+    const handleClickOutside = (event) => {
+        if (!wrapperRef.current) {
+            return null;
+        }
+        if (wrapperRef && !wrapperRef.current.contains(event.target)) {
+            const profileDropdown = document.getElementById('profile-dropdown');
+            profileDropdown.style.display = "";
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return (() => document.removeEventListener("mousedown", handleClickOutside));
+    }, []);
+
     return {
         values,
         isAuthenticated,
         user,
         flashMessageType,
+        wrapperRef,
         logOut,
         toggleNav,
         displayRecipeModal,

@@ -89,3 +89,24 @@
     border-radius: 4px;
     margin-left: 5px;
 }
+
+.user-page.login ul{
+    list-style-type: none;
+}
+
+.user-page.login ul li{
+    float: left;
+}
+
+.user-page.login ul li a{
+    font-size: 13px;
+    font-weight: bold;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 5px
+}
+
+.user-page.login ul li a:hover{
+    text-decoration: underline;
+    color: rgb(238, 83, 44);
+    cursor: pointer;
+}

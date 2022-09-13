@@ -37,7 +37,7 @@ const usePasswordForm = () => {
 
         if (isValid) {
             dispatch(createNewPassword({
-                token, email, password, confirmPassword
+                token, ...userInput
             })).unwrap()
             .then((response) => {
                 dispatch(addFlashMessage({

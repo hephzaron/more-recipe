@@ -268,11 +268,10 @@ class UserController {
                 message: 'Your credentials could not be updated please try again'
               });
             }
-            const { BASE_URL } = process.env;
-            const resetUrl = `${BASE_URL}/auth/reset_password?token=${resetPasswordToken}`;
+            const { CLIENT_URL, EMAIL_FROM } = process.env;
+            const resetUrl = `${CLIENT_URL}/auth/reset_password?token=${resetPasswordToken}`;
             const { username } = updatedUser;
             const mailer = new Mailer();
-            const { EMAIL_FROM } = process.env;
             ejs.renderFile(forgotPasswordTemplateDir, {
               date: moment().format('MMM Do YYYY'),
               username,

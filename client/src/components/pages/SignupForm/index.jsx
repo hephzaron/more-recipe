@@ -10,7 +10,9 @@ const SignupForm = () => {
         formErrors,
         inputChangeHandler,
         submitUserForm
-    } = useSignupForm({ addFlashMessage, registerUser, loginUser, set });
+    } = useSignupForm({
+        addFlashMessage, registerUser, loginUser, set
+    });
     return (
         <div className="user-page signup">
             <form onSubmit={submitUserForm}>
@@ -79,7 +81,7 @@ const SignupForm = () => {
                 </select>
                 <label htmlFor="password">Password *</label>
                 {
-                    formErrors.pasword &&
+                    formErrors.password &&
                     <p className="error-text">{formErrors.password}</p>
                 }
                 <input

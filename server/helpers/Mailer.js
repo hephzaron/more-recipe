@@ -19,7 +19,7 @@ class Mailer {
       }
     } = process;
     this.transporter = nodemailer.createTransport({
-      service: 'Gmail',
+      service: 'gmail',
       auth: {
         user: GMAIL_USERNAME,
         pass: GMAIL_PASSWORD
@@ -99,6 +99,7 @@ class Mailer {
         this.mailParams(),
         (error, info) => {
           if (error) {
+            console.log(error);
             return console.log(error.message);
           }
           return console.log('Message sent: %s', info.response);

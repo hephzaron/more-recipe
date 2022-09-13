@@ -11,6 +11,8 @@ import './assets/css/password-form.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/SignupForm';
 import LoginForm from './components/pages/LoginForm';
+import ResetForm from './components/pages/ResetForm';
+import PasswordForm from './components/pages/PasswordForm';
 import Header from './components/general/Header';
 
 
@@ -32,6 +34,8 @@ const App = () => (
             <Route path="my-recipes" element={<HomePage/>}/>
             <Route path="register" element={<SignupForm/>}/>
             <Route path="login" element={<LoginForm/>}/>
+            <Route path="forgot-password" element={<ResetForm/>}/>
+            <Route path="auth/reset_password" element={<ResetForm/>}/>
             <Route path="*"
                   element={
                   <div style={{ padding: "20rem" }}>

@@ -1,22 +1,17 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import useLoginForm from './LoginFormCustomHook';
-import { loginUser, set } from '../../../actions/authUserActions';
-import { addFlashMessage } from '../../../actions/flashMessageActions';
+import usePasswordForm from './PasswordFormCustomHook';
 
-const LoginForm = () => {
+const PasswordForm = () => {
     const {
         userInput,
         formErrors,
         inputChangeHandler,
-        submitAuthForm
-    } = useLoginForm({ loginUser, addFlashMessage, set });
-
-    const navigate = useNavigate();
+        submitPasswordForm
+    } = usePasswordForm();
     return (
         <div className="user-page login">
-            <form onSubmit={submitAuthForm}>
-                <h3>Login</h3>
+            <form onSubmit={submitPasswordForm}>
+                <h3>Create a new password</h3>
                 <hr/>
                 <label htmlFor="email">Email *</label>
                 {
@@ -40,16 +35,23 @@ const LoginForm = () => {
                     name="password"
                     value={userInput.password || ''}
                     onChange={inputChangeHandler}/>
+                <label htmlFor="confirmPassword">Confirm Password *</label>
+                {
+                    formErrors.confirmPassword &&
+                    <p className="error-text">{formErrors.confirmPassword}</p>
+                }
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    value={userInput.confirmPassword || ''}
+                    onChange={inputChangeHandler}/>
                 <input
                     type="submit"
-                    value={"Login"}/>
-                <ul>
-                    <li><a onClick={() => navigate('/forgot-password')}>Forgot Password ?</a></li>
-                    <li><a>Google Signin</a></li>
-                </ul>
+                    value={"Create"}/>
             </form>
         </div>
     );
 };
 
-export default LoginForm;
+export default PasswordForm;

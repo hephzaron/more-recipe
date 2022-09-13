@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 import { addFlashMessage } from "../../../actions/flashMessageActions";
-import { sendResetLink } from "../../../actions/passwordActions";
+import { createNewPassword } from "../../../actions/passwordActions";
 
-const useResetForm = () => {
-    const [userInput, setUserInput] = useState({ email: '' });
-    const [formErrors, setFormErrors] = useState({ email: '' });
+const usePasswordForm = () => {
+    const [userInput, setUserInput] = useState({ email: '', password: '', confirmPassword: '' });
+    const [formErrors, setFormErrors] = useState({ email: '', password: '', confirmPassword: '' });
 
     const dispatch = useDispatch();
+    const params = useParams();
+
+    const { token } = params;
 
     /**
      * Handles input changes in field entries
@@ -21,17 +25,19 @@ const useResetForm = () => {
         event.persist();
         setUserInput({ ...userInput, [event.target.name]: event.target.value });
     };
-    const submitResetForm = (event) => {
+    const submitPasswordForm = (event) => {
         if (event) {
             event.preventDefault();
         }
         const { validationErrors } = validateUserForm(userInput);
-        const { email } = validationErrors;
-        const isValid = !email;
-        setFormErrors({ email });
+        const { email, password, confirmPassword } = validationErrors;
+        const isValid = !(email || password || confirmPassword);
+        setFormErrors({ email, password, confirmPassword });
 
         if (isValid) {
-            dispatch(sendResetLink(userInput)).unwrap()
+            dispatch(createNewPassword({
+                token, email, password, confirmPassword
+            })).unwrap()
             .then((response) => {
                 dispatch(addFlashMessage({
                     message: response.message,
@@ -49,8 +55,8 @@ const useResetForm = () => {
         userInput,
         formErrors,
         inputChangeHandler,
-        submitResetForm
+        submitPasswordForm
     };
 };
 
-export default useResetForm;
+export default usePasswordForm;

@@ -8,6 +8,7 @@ export default (io) => {
   const onlineUsers = new Map();
   const recipients = [];
   io.on('connection', (socket) => {
+    console.log(`⚡: ${socket.id} user just connected`);
     const notifications = new Notifications(io);
     const {
       fetchUserNotifications,

@@ -33,12 +33,14 @@ const DefinePlugin = new webpack.DefinePlugin({
   "process.env": {
     PORT: JSON.stringify(process.env.PORT),
     NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-    API_VERSION: JSON.stringify(process.env.API_VERSION)
+    API_VERSION: JSON.stringify(process.env.API_VERSION),
+    SOCKET_URL: JSON.stringify(process.env.SOCKET_URL)
   }
 });
 
 module.exports = {
   entry: {
+    asocket: path.resolve(__dirname,'../src/assets/js/socket/config'),
     bloader: path.resolve(__dirname, '../src/assets/js/loader/js/loader.js'),
     chelper: path.resolve(__dirname, '../src/assets/helper.js'),
     dmain: path.resolve(__dirname, '../src/index.jsx')

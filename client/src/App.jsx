@@ -8,11 +8,13 @@ import './assets/css/recipe-form.css';
 import './assets/css/modal.css';
 import './assets/css/custom-card.css';
 import './assets/css/password-form.css';
+import './assets/css/notification.css';
 import HomePage from './components/pages/HomePage';
 import SignupForm from './components/pages/SignupForm';
 import LoginForm from './components/pages/LoginForm';
 import ResetForm from './components/pages/ResetForm';
 import PasswordForm from './components/pages/PasswordForm';
+import Notification from './components/general/Notification';
 import Header from './components/general/Header';
 
 
@@ -30,6 +32,7 @@ const App = () => (
         <Routes>
           <Route path="/">
             <Route path="" element={<HomePage/>}/>
+            <Route path="about-us" element={<Notification/>}/>
             <Route path="saved-recipes" element={<HomePage/>}/>
             <Route path="my-recipes" element={<HomePage/>}/>
             <Route path="register" element={<SignupForm/>}/>

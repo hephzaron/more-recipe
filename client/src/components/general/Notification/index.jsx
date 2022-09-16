@@ -24,7 +24,7 @@ const Notification = () => {
                 <hr/>
                 {
                     notifications.map((notification) => (
-                        <li>
+                        <li key={notification.id}>
                             <a>
                                 <img alt = {user.id} src={profilePhoto}/>
                                 <div className="user-on"/>

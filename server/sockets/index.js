@@ -8,7 +8,6 @@ export default (io) => {
   const onlineUsers = new Map();
   const recipients = [];
   io.on('connection', (socket) => {
-    console.log(`⚡: ${socket.id} user just connected`);
     const notifications = new Notifications(io);
     const {
       fetchUserNotifications,
@@ -16,8 +15,9 @@ export default (io) => {
       notifyContributors
     } = notifications;
 
-    socket.on('JOIN', (client) => {
+    socket.on('event:join', (client) => {
       onlineUsers.set(socket.id, client);
+      console.log(`⚡: ${socket.id} joined in`);
       fetchUserNotifications.call(notifications, {
         socketId: socket.id,
         recipientId: client.userId,
@@ -25,7 +25,29 @@ export default (io) => {
       });
     });
 
-    socket.on('REVIEW_ADDED', async(data) => {
+    socket.on('event:recipeLiked', async(data) => {
+      const notification = saveNotification.call(notifications, data);
+      await notification
+        .then((recipeData) => {
+          if (recipeData) {
+            const recipeNotifications = recipeData.notification.Notifications;
+            const recipientId = recipeData.notification.userId;
+            const contributors = recipeNotifications.map(recipeNotification => (
+              recipeNotification.userId));
+
+            contributors.push(recipientId);
+            onlineUsers.forEach((client, socketId) => {
+              if (contributors.includes(client.userId)) {
+                notifyContributors.call(notifications, socketId);
+              }
+            });
+          }
+          return false;
+        })
+        .catch(error => socket.emit('error', error));
+    });
+
+    socket.on('event:reviewAdded', async(data) => {
       const notification = saveNotification.call(notifications, data);
       await notification
         .then((savedNotification) => {

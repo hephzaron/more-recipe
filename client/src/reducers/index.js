@@ -5,6 +5,7 @@ import flashMessageReducer from './flashMessage';
 import modalReducer from './modal';
 import photoReducer from './photo';
 import recipeReducer from './recipes';
+import notificationReducer from './notification';
 
 const reducer = combineReducers({
     recipeReducer,
@@ -12,7 +13,8 @@ const reducer = combineReducers({
     userAuthReducer,
     flashMessageReducer,
     modalReducer,
-    photoReducer
+    photoReducer,
+    notificationReducer
 });
 
 export default reducer;

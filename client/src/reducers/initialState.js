@@ -31,3 +31,7 @@ export const initialPhotoState = {
     error: null,
     loading: 'idle' | 'pending' | 'succeeded' | 'failed'
 };
+
+export const initialNotificationState = {
+    notification: {}
+};

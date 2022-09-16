@@ -34,20 +34,60 @@ class Notifications {
     return Notification
       .create(data)
       .then((notification) => {
+        const { notificationType, recipeId } = notification;
         if (!notification) return {};
+        if (notificationType === 'Likes') {
+          return Recipe
+            .findAll({
+              where: {
+                id: recipeId
+              },
+              include: [
+                {
+                  model: User,
+                  as: 'user',
+                  attributes: [
+                    'id',
+                    'username',
+                    'profilePhotoUrl'
+                  ]
+                },
+                {
+                  model: Notification,
+                  where: {
+                    notificationType: {
+                      [Op.eq]: 'Likes'
+                    }
+                  }
+                }
+              ]
+            })
+            .then((recipe) => {
+              if (!recipe) return;
+              const recipeData = JSON.parse(JSON.stringify(recipe[0]));
+              this.contributionData = { notification: recipeData };
+              return { notification: recipeData };
+            })
+            .catch((error) => {
+              const { name, message } = error;
+              this.socket.emit('error', { name, message });
+              return {};
+            });
+        }
         return Review
           .findAll({
             where: {
-              recipeId: notification.recipeId,
+              recipeId,
               [Op.not]: {
                 userId
               }
             }
           })
-          .then((review) => {
-            if (!review) return;
-            this.contributionData = review;
-            return review;
+          .then((reviews) => {
+            if (!reviews) return;
+            const reviewData = JSON.parse(JSON.stringify(reviews));
+            this.contributionData = reviewData;
+            return reviews;
           })
           .catch((error) => {
             const { name, message } = error;
@@ -119,7 +159,7 @@ class Notifications {
    * @returns {undefined}
    */
   sendNotification() {
-    this.socket.emit('NEW_NOTIFICATIONS', this.notificationData);
+    this.socket.emit('event:newNotifications', this.notificationData);
   }
 
   /**
@@ -129,7 +169,7 @@ class Notifications {
    * @returns {undefined}
    */
   notifyContributors(socketId) {
-    this.socket.to(socketId).emit('NOTIFY_CONTRIBUTORS', this.contributionData);
+    this.socket.to(socketId).emit('event:notifyContributors', this.contributionData);
   }
 }
 

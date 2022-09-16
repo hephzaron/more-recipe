@@ -87,6 +87,11 @@ export default (sequelize, DataTypes) => {
     return parseInt(this.upVotes, 10) - parseInt(this.downVotes, 10);
   };
   Recipe.associate = (models) => {
+    Recipe.belongsTo(models.User, {
+      foreignKey: 'userId',
+      as: 'user',
+      targetKey: 'id'
+    });
     Recipe.belongsToMany(models.User, {
       through: models.SavedRecipe,
       foreignKey: 'recipeId',

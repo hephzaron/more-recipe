@@ -1,46 +1,49 @@
 import React from 'react';
 import Moment from "react-moment";
+import useNotification from './NotificationCustomHook';
 
 const pixUrl = "https://res.cloudinary.com/power-mobile/image/upload/v1663155102/signed_recipe_upload/profile-avatar.jpg";
-const Notification = () => (
-    <ul id="notification">
-        <h5> Notifications </h5>
-        <span><i>2</i></span>
-        <hr/>
-        <li>
-            <a>
-                <img src={pixUrl}/>
-                <div className="user-on"/>
-                <span>Jane and 5 others liked your post</span>
-            </a>
-            <Moment className="duration" fromNow>
-                "2022-09-12"
-            </Moment>
-            <div className="ellipsis">&#10095;</div>
-        </li>
-        <li>
-            <a>
-                <img src={pixUrl}/>
-                <div className="user-on"/>
-                <span>Hephzaron added a review to Macroni</span>
-            </a>
-            <Moment className="duration" fromNow>
-                "2022-09-12"
-            </Moment>
-            <div className="ellipsis">&#10095;</div>
-        </li>
-        <li>
-            <a>
-                <img src={pixUrl}/>
-                <div className="user-on"/>
-                <span>Sunday commented on your post</span>
-            </a>
-            <Moment className="duration" fromNow>
-                "2022-09-12"
-            </Moment>
-            <div className="ellipsis">&#10095;</div>
-        </li>
-    </ul>
-);
+
+const Notification = () => {
+    const notificationHook = useNotification();
+
+    const {
+        user, notifications, recipeName, recipePhoto
+    } = notificationHook;
+
+    const profilePhoto = recipePhoto === null ? pixUrl : recipePhoto;
+
+    const lastUpdate = notifications[0];
+    const totalUpdate = notifications.length;
+
+    if (totalUpdate > 0) {
+        return (
+            <ul id="notification">
+                <h5> Notifications </h5>
+                <span><i>{`${totalUpdate}`}</i></span>
+                <hr/>
+                {
+                    notifications.map((notification) => (
+                        <li>
+                            <a>
+                                <img alt = {user.id} src={profilePhoto}/>
+                                <div className="user-on"/>
+                                <span>{`${lastUpdate.userId} and ${totalUpdate} others liked your post on ${recipeName}`}</span>
+                            </a>
+                            <Moment className="duration" fromNow>
+                                "2022-09-12"
+                            </Moment>
+                            <span className="ellipsis">&#8942;</span>
+                        </li>
+                    ))
+                }
+            </ul>);
+        }
+        return (
+            <div>
+                No notifications to show
+            </div>
+        );
+    };
 
 export default Notification;

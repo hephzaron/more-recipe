@@ -12,23 +12,15 @@ import { showModal } from '../../../actions/modalActions';
 
 const Header = () => {
     const navigate = useNavigate();
+    const headerHook = useHeader({ logoutUser, showModal });
+
     const {
-        values,
-        isAuthenticated,
-        user,
-        flashMessageType,
-        logOut,
-        toggleNav,
-        displayRecipeModal,
-        displayChangePasswordModal,
-        toggleProfileList,
-        inputChangeHandler,
-        submitSearchForm,
-        getAllRecipes,
-        getSavedRecipes,
-        getMyRecipes,
-        wrapperRef
-    } = useHeader({ logoutUser, showModal });
+      values, isAuthenticated, user, flashMessageType, isNew,
+      isAvailable, logOut, toggleNav, displayRecipeModal,
+      displayChangePasswordModal, toggleProfileList, inputChangeHandler,
+      submitSearchForm, getAllRecipes, getSavedRecipes, getMyRecipes,
+      wrapperRef
+    } = headerHook;
     return (
         <div>
           { flashMessageType && <FlashMessage/>}
@@ -100,7 +92,7 @@ const Header = () => {
                 <li>
                   <a id="user-notification">
                     <FontAwesomeIcon className="header-icon" icon={faBell}/>
-                    <i className="no-of-notification"/>
+                    { (isNew || isAvailable) && <i className="no-of-notification"/>}
                     <span className="header-content">Notifications</span>
                   </a>
                 </li>

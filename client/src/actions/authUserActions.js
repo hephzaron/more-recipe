@@ -1,6 +1,8 @@
 import axios from 'axios';
 import dotEnv from 'dotenv';
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
+import moment from 'moment';
+import socket from '../assets/js/socket/config';
 import setAccessToken from '../utils/setAccessToken';
 
 dotEnv.config();
@@ -26,6 +28,8 @@ export const loginUser = createAsyncThunk(
             localStorage.setItem('x-access-token', token);
             localStorage.setItem('userPayload', JSON.stringify(user));
             setAccessToken(token);
+            const updatedAt = moment.utc();
+            socket.emit('event:join', { userId: user.id, updatedAt });
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);

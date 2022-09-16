@@ -1,18 +1,26 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
+import { likeRecipe } from '../../../actions/notificationActions';
 import {
     updateRecipe, saveRecipe, unsaveRecipe, fetchRecipes, deleteRecipe
 } from '../../../actions/recipeActions';
 
 const useCard = (recipe) => {
     const dispatch = useDispatch();
-    const userId = useSelector((state) => state.userAuthReducer.user.id);
+    const user = useSelector((state) => state.userAuthReducer.user);
     const { id } = recipe;
+    const userId = user.id;
 
     const reactToPost = (reaction) => (
         dispatch(updateRecipe({ userId, recipe: { ...reaction } })).unwrap()
-        .then(() => (dispatch(fetchRecipes())))
+        .then(() => {
+            if (reaction.likes === 1) {
+                //userId: current user; recipientId: Id of creator; recipeId: Id of recipe
+                dispatch(likeRecipe({ userId, recipientId: recipe.userId, recipeId: id }));
+            }
+            return dispatch(fetchRecipes());
+        })
         .catch((error) => (
             dispatch(addFlashMessage({
                 message: error.message,

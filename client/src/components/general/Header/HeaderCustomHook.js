@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { fetchRecipes, fetchSavedRecipes, fetchMyRecipes } from '../../../actions/recipeActions';
+import { setNotifications } from '../../../actions/notificationActions';
+import socket from '../../../assets/js/socket/config';
 
 /**
  * @function useHeader
@@ -18,7 +20,7 @@ import { fetchRecipes, fetchSavedRecipes, fetchMyRecipes } from '../../../action
  */
 const useHeader = ({ logoutUser, showModal }) => {
     const [values, setValues] = useState({});
-    const [drop, setDrop] = useState(true);
+    const [isNew, setIsNew] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -27,6 +29,15 @@ const useHeader = ({ logoutUser, showModal }) => {
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const user = useSelector((state) => state.userAuthReducer.user);
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
+    const notification = useSelector((state) => state.notificationReducer.notification);
+
+    const isAvailable = notification.Notifications ? notification.Notifications.length > 0 : false;
+
+    socket.on('event:newNotifications', (notificationData) => {
+        if (notificationData.isNew) {
+            setIsNew(true);
+        }
+    });
 
     const toggleProfileList = () => {
         const profileDropdown = document.getElementById('profile-dropdown');
@@ -112,12 +123,28 @@ const useHeader = ({ logoutUser, showModal }) => {
         return (() => document.removeEventListener("mousedown", handleClickOutside));
     }, []);
 
+    useEffect(() => {
+        socket.on('event:notifyContributors', (data) => {
+            dispatch(setNotifications(data));
+        });
+
+        socket.on('event:newNotifications', (notificationData) => {
+            console.log(notificationData);
+        });
+
+        socket.on('event:error', (error) => {
+            console.log(error);
+        });
+    });
+
     return {
         values,
         isAuthenticated,
         user,
         flashMessageType,
         wrapperRef,
+        isNew,
+        isAvailable,
         logOut,
         toggleNav,
         displayRecipeModal,

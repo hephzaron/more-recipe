@@ -10,39 +10,43 @@ export default (io) => {
   io.on('connection', (socket) => {
     const notifications = new Notifications(io);
     const {
-      fetchUserNotifications,
+      fetchRecipeNotifications,
       saveNotification,
-      notifyContributors
+      sendNotification
     } = notifications;
 
     socket.on('event:join', (client) => {
       onlineUsers.set(socket.id, client);
       console.log(`⚡: ${socket.id} joined in`);
-      fetchUserNotifications.call(notifications, {
-        socketId: socket.id,
-        recipientId: client.userId,
-        updatedAt: client.updatedAt || null
-      });
     });
 
     socket.on('event:recipeLiked', async(data) => {
+      console.log('Ilike', data);
       const notification = saveNotification.call(notifications, data);
       await notification
-        .then((recipeData) => {
-          if (recipeData) {
-            const recipeNotifications = recipeData.notification.Notifications;
-            const recipientId = recipeData.notification.userId;
-            const contributors = recipeNotifications.map(recipeNotification => (
-              recipeNotification.userId));
+        .then((notificationData) => {
+          console.log('notificationData', notificationData);
+          if (notificationData) {
+            const { recipeId, updatedAt } = notificationData;
+            return fetchRecipeNotifications.call(notifications, { recipeId, updatedAt })
+              .then((recipeNotifications) => {
+                const contributors = recipeNotifications.map(recipeNotification => (
+                  recipeNotification.userId));
+                contributors.push(notificationData.recipientId);
 
-            contributors.push(recipientId);
-            onlineUsers.forEach((client, socketId) => {
-              if (contributors.includes(client.userId)) {
-                notifyContributors.call(notifications, socketId);
-              }
-            });
+                console.log('recipeNotifications', recipeNotifications);
+
+                console.log('onlineUsers', onlineUsers);
+                console.log('contributors', contributors);
+
+                onlineUsers.forEach((client, socketId) => {
+                  if (contributors.includes(client.userId)) {
+                    sendNotification.call(notifications, socketId);
+                  }
+                });
+              })
+              .catch(error => socket.emit('error', error));
           }
-          return false;
         })
         .catch(error => socket.emit('error', error));
     });
@@ -63,7 +67,7 @@ export default (io) => {
         const { userId } = client;
         const clientIndex = _.findIndex(recipients, { id: userId });
         if (clientIndex >= 0) {
-          notifyContributors.call(notifications, socketId);
+          fetchRecipeNotifications.call(notifications, socketId);
         }
       });
     });

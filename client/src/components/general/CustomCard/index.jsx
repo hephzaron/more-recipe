@@ -20,10 +20,6 @@ const CustomCard = (props) => {
     const expUrl = 'https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all';
     const {
         id,
-        userId,
-        Reviews,
-        user,
-        photoUrl,
         name,
         likes,
         dislikes,

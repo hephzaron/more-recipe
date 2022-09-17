@@ -1,24 +1,18 @@
-import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 const useNotification = () => {
-    const [notifications, setNotifications] = useState([]);
-
-    const notification = useSelector((state) => state.notificationReducer.notification);
+    const notifications = useSelector((state) => state.notificationReducer.notifications);
     const {
-        name, photoUrl, user, Notifications
-    } = notification;
+        Recipe, User, creator, updatedAt
+    } = notifications[0];
 
-    useEffect(() => {
-        if (Notifications) {
-            setNotifications([...Notifications]);
-        }
-    }, [notification]);
     return {
-        user,
+        User,
+        username: creator.username,
         notifications,
-        recipeName: name,
-        recipePhoto: photoUrl,
+        recipeName: Recipe.name,
+        recipePhoto: Recipe.photoUrl,
+        updatedAt
     };
 };
 

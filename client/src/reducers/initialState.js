@@ -33,5 +33,5 @@ export const initialPhotoState = {
 };
 
 export const initialNotificationState = {
-    notification: {}
+    notifications: []
 };

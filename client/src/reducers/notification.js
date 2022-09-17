@@ -5,7 +5,7 @@ import { setNotifications } from '../actions/notificationActions';
 const notificationReducer = createReducer(initialNotificationState, (builder) => {
     builder.addCase(setNotifications, (state, action) => ({
         ...state,
-        notification: action.payload.notification
+        notifications: action.payload.notifications
     }));
 });
 

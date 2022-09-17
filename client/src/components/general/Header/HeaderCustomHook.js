@@ -29,9 +29,9 @@ const useHeader = ({ logoutUser, showModal }) => {
     const isAuthenticated = useSelector((state) => state.userAuthReducer.isAuthenticated);
     const user = useSelector((state) => state.userAuthReducer.user);
     const flashMessageType = useSelector((state) => state.flashMessageReducer.type);
-    const notification = useSelector((state) => state.notificationReducer.notification);
+    const notifications = useSelector((state) => state.notificationReducer.notifications);
 
-    const isAvailable = notification.Notifications ? notification.Notifications.length > 0 : false;
+    const isAvailable = notifications ? notifications.length > 0 : false;
 
     socket.on('event:newNotifications', (notificationData) => {
         if (notificationData.isNew) {
@@ -125,6 +125,7 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     useEffect(() => {
         socket.on('event:notifyContributors', (data) => {
+            console.log(data);
             dispatch(setNotifications(data));
         });
 

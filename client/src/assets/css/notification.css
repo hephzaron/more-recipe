@@ -50,13 +50,14 @@ ul#notification li a>span {
     margin-top: 2px;
     padding: 5px;
     display: inline-block;
+    font-size: 13px;
     width: 310px;
 }
 ul#notification li .duration {
     font-size: small;
     color: rgb(128, 128, 128);
     float: right;
-    width: 50px;
+    width: 35px;
 }
 
 .ellipsis {

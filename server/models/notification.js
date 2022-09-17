@@ -77,6 +77,11 @@ export default (sequelize, DataTypes) => {
       foreignKey: 'recipeId',
       targetKey: 'id'
     });
+    Notification.belongsTo(models.User, {
+      foreignKey: 'userId',
+      targetKey: 'id',
+      as: 'creator',
+    });
   };
   return Notification;
 };

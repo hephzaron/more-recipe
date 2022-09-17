@@ -6,3 +6,4 @@ template
 client/node_modules
 header.jsx
 client/.env
+server/sockets/notifications/backup.js

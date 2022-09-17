@@ -8,12 +8,9 @@ const Notification = () => {
     const notificationHook = useNotification();
 
     const {
-        user, notifications, recipeName, recipePhoto
+        User, username, notifications, recipeName, updatedAt
     } = notificationHook;
 
-    const profilePhoto = recipePhoto === null ? pixUrl : recipePhoto;
-
-    const lastUpdate = notifications[0];
     const totalUpdate = notifications.length;
 
     if (totalUpdate > 0) {
@@ -23,19 +20,24 @@ const Notification = () => {
                 <span><i>{`${totalUpdate}`}</i></span>
                 <hr/>
                 {
-                    notifications.map((notification) => (
-                        <li key={notification.id}>
-                            <a>
-                                <img alt = {user.id} src={profilePhoto}/>
-                                <div className="user-on"/>
-                                <span>{`${lastUpdate.userId} and ${totalUpdate} others liked your post on ${recipeName}`}</span>
-                            </a>
-                            <Moment className="duration" fromNow>
-                                "2022-09-12"
-                            </Moment>
-                            <span className="ellipsis">&#8942;</span>
-                        </li>
-                    ))
+                    notifications.map((notification) => {
+                        const creatorPhoto = (notification.creator.profilePhotoUrl === null) ? pixUrl :
+                        notification.creator.profilePhotoUrl;
+                        const otherCount = totalUpdate - 1;
+                        return (
+                            <li key={notification.id}>
+                                <a>
+                                    <img alt = {User.id} src={creatorPhoto}/>
+                                    <div className="user-on"/>
+                                    <span>{`${username} ${otherCount > 0 ? `and ${otherCount} others` : ''} liked your post on ${recipeName}`}</span>
+                                </a>
+                                <Moment className="duration" fromNow>
+                                    {updatedAt}
+                                </Moment>
+                                <span className="ellipsis">&#8942;</span>
+                            </li>
+                        );
+                    })
                 }
             </ul>);
         }

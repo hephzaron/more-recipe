@@ -1,12 +1,7 @@
 import Sequelize from 'sequelize';
 import models from '../../models';
 
-const {
-  User,
-  Recipe,
-  Review,
-  Notification
-} = models;
+const { User, Recipe, Notification } = models;
 const { Op } = Sequelize;
 
 /**
@@ -30,70 +25,11 @@ class Notifications {
    * @returns { undefined }
    */
   saveNotification(data) {
-    const { userId } = data;
     return Notification
       .create(data)
       .then((notification) => {
-        const { notificationType, recipeId } = notification;
         if (!notification) return {};
-        if (notificationType === 'Likes') {
-          return Recipe
-            .findAll({
-              where: {
-                id: recipeId
-              },
-              include: [
-                {
-                  model: User,
-                  as: 'user',
-                  attributes: [
-                    'id',
-                    'username',
-                    'profilePhotoUrl'
-                  ]
-                },
-                {
-                  model: Notification,
-                  where: {
-                    notificationType: {
-                      [Op.eq]: 'Likes'
-                    }
-                  }
-                }
-              ]
-            })
-            .then((recipe) => {
-              if (!recipe) return;
-              const recipeData = JSON.parse(JSON.stringify(recipe[0]));
-              this.contributionData = { notification: recipeData };
-              return { notification: recipeData };
-            })
-            .catch((error) => {
-              const { name, message } = error;
-              this.socket.emit('error', { name, message });
-              return {};
-            });
-        }
-        return Review
-          .findAll({
-            where: {
-              recipeId,
-              [Op.not]: {
-                userId
-              }
-            }
-          })
-          .then((reviews) => {
-            if (!reviews) return;
-            const reviewData = JSON.parse(JSON.stringify(reviews));
-            this.contributionData = reviewData;
-            return reviews;
-          })
-          .catch((error) => {
-            const { name, message } = error;
-            this.socket.emit('error', { name, message });
-            return {};
-          });
+        return JSON.parse(JSON.stringify(notification));
       })
       .catch((error) => {
         const { name, message } = error;
@@ -108,11 +44,11 @@ class Notifications {
    * @memberof Notifications
    * @returns { event } notifications
    */
-  fetchUserNotifications(options) {
-    const { recipientId, updatedAt } = options;
+  fetchRecipeNotifications(options) {
+    const { recipeId, updatedAt } = options;
     const query = {
       where: {
-        recipientId,
+        recipeId,
         updatedAt: updatedAt ? {
           [Op.gte]: updatedAt
         } : {}
@@ -124,6 +60,7 @@ class Notifications {
       include: [{
         model: User,
         attributes: [
+          'id',
           'username',
           'firstName',
           'lastName',
@@ -132,7 +69,19 @@ class Notifications {
       }, {
         model: Recipe,
         attributes: [
-          'name'
+          'id',
+          'name',
+          'photoUrl'
+        ]
+      }, {
+        model: User,
+        as: 'creator',
+        attributes: [
+          'id',
+          'username',
+          'firstName',
+          'lastName',
+          'profilePhotoUrl'
         ]
       }]
     };
@@ -140,36 +89,32 @@ class Notifications {
       .findAll(query)
       .then((notifications) => {
         if (notifications.length !== 0) {
-          this.notificationData = { notifications };
+          console.log('length', notifications.length);
+          const result = JSON.parse(JSON.stringify(notifications));
+          console.log('result', result);
+          this.notificationData = { notifications: result };
           this.notificationData.isNew = !!updatedAt;
-          this.sendNotification();
+          return result;
         }
-        return false;
+        return [];
       })
       .catch((error) => {
+        console.log('error', error);
         const { name, message } = error;
         this.socket.emit('error', { name, message });
+        return error;
       });
   }
 
   /**
    * @method sendNotification
    * @memberof Notifications
-   * @param { object } socketId
+   * @param { number } socketId
    * @returns {undefined}
    */
-  sendNotification() {
-    this.socket.emit('event:newNotifications', this.notificationData);
-  }
-
-  /**
-   * @method notifyContributors
-   * @param {number } socketId
-   * @memberof Notifications
-   * @returns {undefined}
-   */
-  notifyContributors(socketId) {
-    this.socket.to(socketId).emit('event:notifyContributors', this.contributionData);
+  sendNotification(socketId) {
+    console.log('data', this.notificationData);
+    this.socket.to(socketId).emit('event:notifyContributors', this.notificationData);
   }
 }
 

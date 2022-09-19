@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { likeRecipe } from '../../../actions/notificationActions';
@@ -8,14 +8,18 @@ import {
 
 const useCard = (recipe) => {
     const dispatch = useDispatch();
+    const [likeReaction, setLikeReaction] = useState({ id: -1, likes: 0, like: false });
     const user = useSelector((state) => state.userAuthReducer.user);
     const { id } = recipe;
     const userId = user.id;
 
-    const reactToPost = (reaction) => (
-        dispatch(updateRecipe({ userId, recipe: { ...reaction } })).unwrap()
+    useEffect(() => {
+        if (likeReaction.id < 0) {
+            return;
+        }
+        dispatch(updateRecipe({ userId, recipe: { ...likeReaction } })).unwrap()
         .then(() => {
-            if (reaction.likes === 1) {
+            if (likeReaction.like) {
                 //userId: current user; recipientId: Id of creator; recipeId: Id of recipe
                 dispatch(likeRecipe({ userId, recipientId: recipe.userId, recipeId: id }));
             }
@@ -26,7 +30,16 @@ const useCard = (recipe) => {
                 message: error.message,
                 type: 'failure'
             }))
-        )));
+        ));
+
+        return (() => {
+            setLikeReaction({ id: -1, likes: 0, like: false });
+        });
+    }, [likeReaction]);
+
+    const reactToPost = (reaction) => {
+        setLikeReaction({ ...reaction, like: !likeReaction.like });
+    };
 
     const unsavePost = () => (
         dispatch(unsaveRecipe({ userId, id })).unwrap()

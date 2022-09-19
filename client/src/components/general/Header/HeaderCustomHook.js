@@ -136,7 +136,7 @@ const useHeader = ({ logoutUser, showModal }) => {
         socket.on('event:error', (error) => {
             console.log(error);
         });
-    });
+    }, []);
 
     return {
         values,

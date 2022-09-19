@@ -14,7 +14,7 @@ const useCard = (recipe) => {
     const userId = user.id;
 
     useEffect(() => {
-        if (likeReaction.id < 0) {
+        if (likeReaction.id < 0 || !likeReaction.like) {
             return;
         }
         dispatch(updateRecipe({ userId, recipe: { ...likeReaction } })).unwrap()

@@ -1,5 +1,6 @@
 import React from 'react';
 import Moment from "react-moment";
+import _ from "lodash";
 import useNotification from './NotificationCustomHook';
 
 const pixUrl = "https://res.cloudinary.com/power-mobile/image/upload/v1663155102/signed_recipe_upload/profile-avatar.jpg";
@@ -7,11 +8,22 @@ const pixUrl = "https://res.cloudinary.com/power-mobile/image/upload/v1663155102
 const Notification = () => {
     const notificationHook = useNotification();
 
-    const {
-        User, username, notifications, recipeName, updatedAt
-    } = notificationHook;
+    const { userId, notificationList } = notificationHook;
 
-    const totalUpdate = notifications.length;
+    /**
+     * This groups the list of notification by recipe Id's and the type
+     */
+    const notificationGroups = _(notificationList).groupBy(
+        (item) => ([item['recipeId'], item['notificationType']])
+        ).map((value, key) => ({
+            uniqueId: value[0]['recipeId'],
+            notificationType: value[0]['notificationType'],
+            count: value.length,
+            notifications: value
+        })).value();
+    console.log(notificationGroups);
+
+    const totalUpdate = notificationGroups.length;
 
     if (totalUpdate > 0) {
         return (
@@ -20,19 +32,40 @@ const Notification = () => {
                 <span><i>{`${totalUpdate}`}</i></span>
                 <hr/>
                 {
-                    notifications.map((notification) => {
-                        const creatorPhoto = (notification.creator.profilePhotoUrl === null) ? pixUrl :
-                        notification.creator.profilePhotoUrl;
-                        const otherCount = totalUpdate - 1;
+                    notificationGroups.map((group) => {
+                        const {
+                            count, notifications, uniqueId, notificationType
+                        } = group;
+                        const { User, creator, Recipe } = notifications[0];
+                        const creatorPhoto = (User.profilePhotoUrl === null) ? pixUrl : creator.profilePhotoUrl;
                         return (
-                            <li key={notification.id}>
+                            <li key={uniqueId}>
                                 <a>
                                     <img alt = {User.id} src={creatorPhoto}/>
                                     <div className="user-on"/>
-                                    <span>{`${username} ${otherCount > 0 ? `and ${otherCount} others` : ''} liked your post on ${recipeName}`}</span>
+                                    {
+                                        (notificationType === 'Likes') &&
+                                        <span>
+                                            {
+                                                `${creator.username}
+                                                ${count > 1 ? `and ${count - 1} others` : ''} liked 
+                                                ${(User.id === userId) ? 'your post on' : ''} ${Recipe.name}`
+                                            }
+                                        </span>
+                                    }
+                                    {
+                                        (notificationType === 'Reviews') &&
+                                        <span>
+                                            {
+                                                `${creator.username}
+                                                ${count > 1 ? `and ${count - 1} others` : ''} added a review to
+                                                ${(User.id === userId) ? 'your post on' : ''} ${Recipe.name}`
+                                            }
+                                        </span>
+                                    }
                                 </a>
                                 <Moment className="duration" fromNow>
-                                    {updatedAt}
+                                    {Recipe.updatedAt}
                                 </Moment>
                                 <span className="ellipsis">&#8942;</span>
                             </li>

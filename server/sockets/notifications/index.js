@@ -25,16 +25,46 @@ class Notifications {
    * @returns { undefined }
    */
   saveNotification(data) {
+    const {
+      userId, recipeId, recipientId, notificationType
+    } = data;
     return Notification
-      .create(data)
+      .findOne({
+        where: {
+          userId,
+          recipeId,
+          recipientId,
+          notificationType
+        }
+      })
       .then((notification) => {
-        if (!notification) return {};
-        return JSON.parse(JSON.stringify(notification));
+        if (!notification) {
+          return Notification
+            .create(data)
+            .then((newNotification) => {
+              if (!newNotification) return {};
+              return JSON.parse(JSON.stringify(newNotification));
+            })
+            .catch((error) => {
+              const { name, message } = error;
+              this.socket.emit('error', { name, message });
+              return {};
+            });
+        }
+        return Notification
+          .update(
+            data,
+            {
+              returning: true,
+              where: { id: notification.id}
+            }
+          )
+          .then(updatedNotification => (JSON.parse(JSON.stringify(updatedNotification[1][0]))));
       })
       .catch((error) => {
         const { name, message } = error;
         this.socket.emit('error', { name, message });
-        return {};
+        return error;
       });
   }
 

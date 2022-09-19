@@ -21,7 +21,6 @@ export default (io) => {
     });
 
     socket.on('event:recipeLiked', async(data) => {
-      console.log('Ilike', data);
       const notification = saveNotification.call(notifications, data);
       await notification
         .then((notificationData) => {

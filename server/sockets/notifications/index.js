@@ -119,9 +119,7 @@ class Notifications {
       .findAll(query)
       .then((notifications) => {
         if (notifications.length !== 0) {
-          console.log('length', notifications.length);
           const result = JSON.parse(JSON.stringify(notifications));
-          console.log('result', result);
           this.notificationData = { notifications: result };
           this.notificationData.isNew = !!updatedAt;
           return result;
@@ -129,7 +127,6 @@ class Notifications {
         return [];
       })
       .catch((error) => {
-        console.log('error', error);
         const { name, message } = error;
         this.socket.emit('error', { name, message });
         return error;
@@ -143,7 +140,6 @@ class Notifications {
    * @returns {undefined}
    */
   sendNotification(socketId) {
-    console.log('data', this.notificationData);
     this.socket.to(socketId).emit('event:notifyContributors', this.notificationData);
   }
 }

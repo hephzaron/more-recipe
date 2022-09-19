@@ -54,7 +54,6 @@ const useSignupForm = ({
         setFormErrors({ ...validationErrors });
 
         if (isValid) {
-            console.log(isValid);
             dispatch(registerUser({ ...userInput, age: parseInt(userInput.age, 10) })).unwrap()
                 .then((response) => {
                     const { email, password } = userInput;

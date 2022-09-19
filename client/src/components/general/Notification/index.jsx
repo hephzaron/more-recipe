@@ -21,7 +21,6 @@ const Notification = () => {
             count: value.length,
             notifications: value
         })).value();
-    console.log(notificationGroups);
 
     const totalUpdate = notificationGroups.length;
 

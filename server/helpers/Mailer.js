@@ -99,7 +99,6 @@ class Mailer {
         this.mailParams(),
         (error, info) => {
           if (error) {
-            console.log(error);
             return console.log(error.message);
           }
           return console.log('Message sent: %s', info.response);

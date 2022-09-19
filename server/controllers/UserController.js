@@ -313,7 +313,6 @@ class UserController {
    */
   static resetPassword(req, res) {
     const { password, confirmPassword, email } = req.body;
-    console.log(req.body);
     const now = moment();
     const resetPasswordToken = req.query.token;
     if (!resetPasswordToken) {

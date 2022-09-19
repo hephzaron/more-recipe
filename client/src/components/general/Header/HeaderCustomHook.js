@@ -125,16 +125,13 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     useEffect(() => {
         socket.on('event:notifyContributors', (data) => {
-            console.log(data);
             dispatch(setNotifications(data));
         });
 
         socket.on('event:newNotifications', (notificationData) => {
-            console.log(notificationData);
         });
 
         socket.on('event:error', (error) => {
-            console.log(error);
         });
     }, []);
 

@@ -17,14 +17,12 @@ export default (io) => {
 
     socket.on('event:join', (client) => {
       onlineUsers.set(socket.id, client);
-      console.log(`⚡: ${socket.id} joined in`);
     });
 
     socket.on('event:recipeLiked', async(data) => {
       const notification = saveNotification.call(notifications, data);
       await notification
         .then((notificationData) => {
-          console.log('notificationData', notificationData);
           if (notificationData) {
             const { recipeId, updatedAt } = notificationData;
             return fetchRecipeNotifications.call(notifications, { recipeId, updatedAt })
@@ -32,11 +30,6 @@ export default (io) => {
                 const contributors = recipeNotifications.map(recipeNotification => (
                   recipeNotification.userId));
                 contributors.push(notificationData.recipientId);
-
-                console.log('recipeNotifications', recipeNotifications);
-
-                console.log('onlineUsers', onlineUsers);
-                console.log('contributors', contributors);
 
                 onlineUsers.forEach((client, socketId) => {
                   if (contributors.includes(client.userId)) {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { likeRecipe } from '../../../actions/notificationActions';
@@ -12,6 +13,10 @@ const useCard = (recipe) => {
     const user = useSelector((state) => state.userAuthReducer.user);
     const { id } = recipe;
     const userId = user.id;
+
+    useEffect(() => {
+        moment.locale();
+    }, []);
 
     useEffect(() => {
         if (likeReaction.id < 0 || !likeReaction.like) {

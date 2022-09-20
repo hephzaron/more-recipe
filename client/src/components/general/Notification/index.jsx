@@ -1,7 +1,27 @@
 import React from 'react';
-import Moment from "react-moment";
+import moment from 'moment';
+import Moment from 'react-moment';
 import _ from "lodash";
 import useNotification from './NotificationCustomHook';
+
+moment.locale('en', {
+    relativeTime: {
+      future: 'in %s',
+      past: '%s ago',
+      s: '1s',
+      ss: '%ss',
+      m: '1m',
+      mm: '%dm',
+      h: '1h',
+      hh: '%dh',
+      d: '1d',
+      dd: '%dd',
+      M: '1M',
+      MM: '%dM',
+      y: '1Y',
+      yy: '%dY'
+    }
+  });
 
 const pixUrl = "https://res.cloudinary.com/power-mobile/image/upload/v1663155102/signed_recipe_upload/profile-avatar.jpg";
 

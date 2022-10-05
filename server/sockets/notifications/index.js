@@ -134,6 +134,71 @@ class Notifications {
   }
 
   /**
+   * fetchUserNotifications
+   * @param {object} options
+   * @memberof Notifications
+   * @returns { event } notifications
+   */
+  fetchUserNotifications(options) {
+    const { updatedAt } = options;
+    const query = {
+      where: {
+        updatedAt: updatedAt ? {
+          [Op.gte]: updatedAt
+        } : {}
+      },
+      order: [
+        ['updatedAt', 'DESC']
+      ],
+      limit: 5,
+      include: [{
+        model: User,
+        attributes: [
+          'id',
+          'username',
+          'firstName',
+          'lastName',
+          'profilePhotoUrl'
+        ]
+      }, {
+        model: Recipe,
+        attributes: [
+          'id',
+          'name',
+          'photoUrl'
+        ]
+      }, {
+        model: User,
+        as: 'creator',
+        attributes: [
+          'id',
+          'username',
+          'firstName',
+          'lastName',
+          'profilePhotoUrl'
+        ]
+      }]
+    };
+    return Notification
+      .findAll(query)
+      .then((notifications) => {
+        if (notifications.length !== 0) {
+          const result = JSON.parse(JSON.stringify(notifications));
+          this.notificationData = { notifications: result };
+          this.notificationData.isNew = !!updatedAt;
+          return result;
+        }
+        return [];
+      })
+      .catch((error) => {
+        const { name, message } = error;
+        this.socket.emit('error', { name, message });
+        return error;
+      });
+  }
+
+
+  /**
    * @method sendNotification
    * @memberof Notifications
    * @param { number } socketId

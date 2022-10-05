@@ -45,7 +45,7 @@ const useRecipeForm = (callback) => {
         const { name, description } = recipe;
         const { photoUrl } = imageFile;
         const { validationErrors, isValid } = validateRecipeForm({ name, description, photoUrl });
-        setFormErrors({ ...formErrors, ...validationErrors });
+        setFormErrors(prevErrors => ({ ...prevErrors, ...validationErrors }));
 
         if (isValid) {
             dispatch(uploadPhoto({ photoFile: photoUrl })).unwrap()

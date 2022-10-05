@@ -56,7 +56,7 @@ ul#notification li a>span {
 ul#notification li .duration {
     font-size: small;
     color: rgb(128, 128, 128);
-    margin-right: 8px;
+    margin-right: 8 px;
     float: right;
     width: 20px;
 }

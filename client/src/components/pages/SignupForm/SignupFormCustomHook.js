@@ -36,7 +36,7 @@ const useSignupForm = ({
     const inputChangeHandler = (event) => {
         event.persist();
         const { name, value } = event.target;
-        setUserInput({ ...userInput, [name]: value });
+        setUserInput(prevState => ({ ...prevState, [name]: value }));
     };
 
     /**

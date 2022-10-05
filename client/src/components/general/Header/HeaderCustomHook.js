@@ -120,10 +120,6 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
-        return (() => document.removeEventListener("mousedown", handleClickOutside));
-    }, []);
-
-    useEffect(() => {
         socket.on('event:notifyContributors', (data) => {
             dispatch(setNotifications(data));
         });
@@ -133,6 +129,7 @@ const useHeader = ({ logoutUser, showModal }) => {
 
         socket.on('event:error', (error) => {
         });
+        return (() => document.removeEventListener("mousedown", handleClickOutside));
     }, []);
 
     return {

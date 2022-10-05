@@ -24,7 +24,8 @@ const usePasswordForm = () => {
      */
     const inputChangeHandler = (event) => {
         event.persist();
-        setUserInput({ ...userInput, [event.target.name]: event.target.value });
+        const { name, value } = event.target;
+        setUserInput(prevState => ({ ...prevState, [name]: value }));
     };
     const submitPasswordForm = (event) => {
         if (event) {

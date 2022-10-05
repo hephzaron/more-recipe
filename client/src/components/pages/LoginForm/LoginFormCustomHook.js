@@ -30,7 +30,7 @@ const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
         const { validationErrors } = validateUserForm(userInput);
         const { email, password } = validationErrors;
         const isValid = !(email || password);
-        setFormErrors({ ...formErrors, email, password });
+        setFormErrors(prevErrors => ({ ...prevErrors, email, password }));
 
         if (isValid) {
             dispatch(loginUser(userInput)).unwrap()
@@ -59,7 +59,8 @@ const useLoginForm = ({ loginUser, addFlashMessage, set }) => {
      */
     const inputChangeHandler = (event) => {
         event.persist();
-        setUserInput({ ...userInput, [event.target.name]: event.target.value });
+        const { name, value } = event.target;
+        setUserInput(prevState => ({ ...prevState, [name]: value }));
     };
 
     return {

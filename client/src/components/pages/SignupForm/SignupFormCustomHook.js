@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 
 /**
@@ -13,23 +13,25 @@ import { validateUserForm } from "../../../utils/validators/user";
 const useSignupForm = ({
     addFlashMessage, registerUser, loginUser, set
 }) => {
+    const userProfile = useSelector((state) => state.userAuthReducer.user);
     const [userInput, setUserInput] = useState({
-        username: '',
-        email: '',
-        firstName: '',
-        lastName: '',
-        age: '',
+        username: userProfile.username || '',
+        email: userProfile.email || '',
+        firstName: userProfile.firstName || '',
+        lastName: userProfile.lastName || '',
+        age: userProfile.age || '',
         password: '',
         confirmPassword: ''
     });
     const [formErrors, setFormErrors] = useState({});
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { pathname } = useLocation();
 
     /**
      * Handles input changes in field entries
      * @function inputChangeHandler
-     * @memberof usSignupForm
+     * @memberof useSignupForm
      * @param {object} event
      * @returns {null} void
      */
@@ -76,6 +78,7 @@ const useSignupForm = ({
     return {
         userInput,
         formErrors,
+        pathname,
         inputChangeHandler,
         submitUserForm
     };

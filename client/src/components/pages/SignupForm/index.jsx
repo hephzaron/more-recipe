@@ -8,6 +8,7 @@ const SignupForm = () => {
     const {
         userInput,
         formErrors,
+        pathname,
         inputChangeHandler,
         submitUserForm
     } = useSignupForm({
@@ -79,31 +80,53 @@ const SignupForm = () => {
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                 </select>
-                <label htmlFor="password">Password *</label>
                 {
-                    formErrors.password &&
-                    <p className="error-text">{formErrors.password}</p>
+                    (pathname === '/register') &&
+                    <>
+                        <label htmlFor="password">Password *</label>
+                        {
+                            formErrors.password &&
+                            <p className="error-text">{formErrors.password}</p>
+                        }
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            value={userInput.password || ''}
+                            onChange={inputChangeHandler}/>
+                        <label htmlFor="confirmPassword">Confirm Password *</label>
+                        {
+                            formErrors.confirmPassword &&
+                            <p className="error-text">{formErrors.confirmPassword}</p>
+                        }
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            name="confirmPassword"
+                            value={userInput.confirmPassword || ''}
+                            onChange={inputChangeHandler}/>
+                        <input
+                            type="submit"
+                            value={"Create an Account"}/>
+                    </>
                 }
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    value={userInput.password || ''}
-                    onChange={inputChangeHandler}/>
-                <label htmlFor="confirmPassword">Confirm Password *</label>
                 {
-                    formErrors.confirmPassword &&
-                    <p className="error-text">{formErrors.confirmPassword}</p>
+                    (pathname === '/edit-profile') &&
+                    <>
+                        <label htmlFor="profilePhotoUrl">Upload picture:</label>
+                        { formErrors.profilePhotoUrl &&
+                           <p className="error-text">{formErrors.profilePhotoUrl}</p> }
+                        <input
+                            type="file"
+                            id="profilePhotoUrl" required
+                            onChange={inputChangeHandler}
+                            value={userInput.profilePhotoUrl}
+                            name="profilePhotoUrl" accept="image/*"/>
+                        <input
+                            type="submit"
+                            value={"Update Profile"}/>
+                    </>
                 }
-                <input
-                    type="password"
-                    id="confirmPassword"
-                    name="confirmPassword"
-                    value={userInput.confirmPassword || ''}
-                    onChange={inputChangeHandler}/>
-                <input
-                    type="submit"
-                    value={"Create an Account"}/>
             </form>
         </div>
     );

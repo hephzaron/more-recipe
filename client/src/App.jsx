@@ -36,6 +36,7 @@ const App = () => (
             <Route path="saved-recipes" element={<HomePage/>}/>
             <Route path="my-recipes" element={<HomePage/>}/>
             <Route path="register" element={<SignupForm/>}/>
+            <Route path="edit-profile" element={<SignupForm/>}/>
             <Route path="login" element={<LoginForm/>}/>
             <Route path="forgot-password" element={<ResetForm/>}/>
             <Route path="auth/reset_password" element={<PasswordForm/>}/>

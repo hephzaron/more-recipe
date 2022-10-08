@@ -134,7 +134,7 @@ const Header = () => {
                   <a>{user.username}</a>
                 </li>
                 <li>
-                  <a>Edit Profile</a>
+                  <a onClick={() => { navigate('edit-profile'); }}>Edit Profile</a>
                 </li>
                 <li>
                   <a onClick={() => displayChangePasswordModal()}>Change Password</a>

@@ -11,12 +11,22 @@ export default (io) => {
     const notifications = new Notifications(io);
     const {
       fetchRecipeNotifications,
+      fetchUserNotifications,
       saveNotification,
       sendNotification
     } = notifications;
 
-    socket.on('event:join', (client) => {
+    socket.on('event:join', async(client) => {
       onlineUsers.set(socket.id, client);
+      console.log(`⚡ 🔥 ${socket.id} ${client.userId} ${client.updatedAt} is logged in`);
+      const { userId, updatedAt } = client;
+      const notificationList = fetchUserNotifications.call(notifications, { userId, updatedAt });
+      await notificationList
+        .then((result) => {
+          if (result) {
+            return sendNotification.call(notifications, socket.id);
+          }
+        });
     });
 
     socket.on('event:recipeLiked', async(data) => {

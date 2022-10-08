@@ -15,7 +15,7 @@ if (localStorage['x-access-token']) {
     const user = JSON.parse(userPayload);
     setAccessToken(accessToken);
     store.dispatch(set({ user }));
-    const updatedAt = moment(new Date());
+    const updatedAt = moment().subtract(5, 'w').format();
     socket.emit('event:join', { userId: user.id, updatedAt });
 }
 /**

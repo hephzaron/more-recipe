@@ -121,12 +121,10 @@ const useHeader = ({ logoutUser, showModal }) => {
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
         socket.on('event:notifyContributors', (data) => {
-            dispatch(setNotifications(data));
+            if (data) {
+                dispatch(setNotifications(data));
+            }
         });
-
-        socket.on('event:newNotifications', (notificationData) => {
-        });
-
         socket.on('event:error', (error) => {
         });
         return (() => document.removeEventListener("mousedown", handleClickOutside));

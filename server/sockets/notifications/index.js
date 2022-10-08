@@ -173,9 +173,8 @@ class Notifications {
         if (notifications.length !== 0) {
           const result = JSON.parse(JSON.stringify(notifications));
           const recipeIds = result.map(obj => obj.recipeId);
-          this.fetchRecipeNotifications({recipeIds, updatedAt});
-          return result;
-        }  
+          return this.fetchRecipeNotifications({recipeIds, updatedAt});
+        }
         return [];
       })
       .catch((error) => {

@@ -124,6 +124,9 @@ body {
  }
 
 @media screen and (max-width: 802px) {
+    #notification {
+        top: 5px !important
+    }
     #toggle-nav {
         padding: 10px;
         display: block;
@@ -131,7 +134,7 @@ body {
         background-color: #08262e;
         color:white;
         font-weight:bold;
-        z-index: 112;
+        z-index: 125;
     }
 
     .profile-dropdown, .profile-img {
@@ -153,7 +156,7 @@ body {
         padding-bottom: 20px;
         height: auto !important;
         background-color: white;
-        z-index: 111;
+        z-index: 124;
         border: 1px solid rgba(0, 0, 0, 0.432);
     }
     .topnav .hidden-header{
@@ -298,7 +301,7 @@ ul.auth-header li a{
     top: 54px;
     right: 10px;
     background-color: white;
-    z-index: 110;
+    z-index: 123;
     display: none; 
 }
 

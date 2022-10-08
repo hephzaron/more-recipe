@@ -115,9 +115,15 @@ var useHeader = function useHeader(_ref) {
     toggleProfileList();
   };
 
+  var showNotifications = function showNotifications() {
+    toggleNav();
+    navigate('notifications');
+  };
+
   var getAllRecipes = function getAllRecipes() {
     dispatch((0, _recipeActions.fetchRecipes)()).then(function () {
-      return navigate('/');
+      toggleNav();
+      navigate('/');
     });
   };
 
@@ -125,7 +131,8 @@ var useHeader = function useHeader(_ref) {
     dispatch((0, _recipeActions.fetchSavedRecipes)({
       userId: user.id
     })).unwrap().then(function () {
-      return navigate('saved-recipes');
+      navigate('saved-recipes');
+      toggleNav();
     })["catch"](function (error) {
       dispatch((0, _flashMessageActions.addFlashMessage)({
         message: error.message,
@@ -137,7 +144,8 @@ var useHeader = function useHeader(_ref) {
 
   var getMyRecipes = function getMyRecipes() {
     dispatch((0, _recipeActions.fetchMyRecipes)(user.id)).unwrap().then(function () {
-      return navigate('my-recipes');
+      navigate('my-recipes');
+      toggleNav();
     })["catch"](function (error) {
       dispatch((0, _flashMessageActions.addFlashMessage)({
         message: error.message,
@@ -198,6 +206,7 @@ var useHeader = function useHeader(_ref) {
     toggleNav: toggleNav,
     displayRecipeModal: displayRecipeModal,
     displayChangePasswordModal: displayChangePasswordModal,
+    showNotifications: showNotifications,
     toggleProfileList: toggleProfileList,
     inputChangeHandler: inputChangeHandler,
     submitSearchForm: submitSearchForm,

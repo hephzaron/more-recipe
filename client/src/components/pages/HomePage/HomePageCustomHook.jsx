@@ -28,6 +28,7 @@ const useHomePage = ({
 
     const wrapperRef = useRef();
     const previousPage = useRef({ currentPage: [] });
+
     /**
      * Handles outside click event of modal on homepage
      * @function handleClickOutside
@@ -78,7 +79,7 @@ const useHomePage = ({
             setCurrentRecipes(recipes.slice(start, end));
         }
         previousPage.current = currentPage;
-    }, [currentPage]);
+    }, [currentPage, recipes]);
 
     /**Display only requested recipes per page */
     const activeRecipes = currentRecipes.length === 0 ? recipes.slice(0, 8) : currentRecipes;

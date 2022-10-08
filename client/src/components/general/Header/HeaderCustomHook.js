@@ -68,14 +68,25 @@ const useHeader = ({ logoutUser, showModal }) => {
         toggleProfileList();
     };
 
+    const showNotifications = () => {
+        toggleNav();
+        navigate('notifications');
+    };
+
     const getAllRecipes = () => {
         dispatch(fetchRecipes())
-        .then(() => navigate('/'));
+        .then(() => {
+            toggleNav();
+            navigate('/');
+        });
     };
 
     const getSavedRecipes = () => {
         dispatch(fetchSavedRecipes({ userId: user.id })).unwrap()
-        .then(() => navigate('saved-recipes'))
+        .then(() => {
+            navigate('saved-recipes');
+            toggleNav();
+        })
         .catch((error) => {
             dispatch(addFlashMessage({
                 message: error.message,
@@ -87,7 +98,10 @@ const useHeader = ({ logoutUser, showModal }) => {
 
     const getMyRecipes = () => {
         dispatch(fetchMyRecipes(user.id)).unwrap()
-        .then(() => navigate('my-recipes'))
+        .then(() => {
+            navigate('my-recipes');
+            toggleNav();
+        })
         .catch((error) => {
             dispatch(addFlashMessage({
                 message: error.message,
@@ -142,6 +156,7 @@ const useHeader = ({ logoutUser, showModal }) => {
         toggleNav,
         displayRecipeModal,
         displayChangePasswordModal,
+        showNotifications,
         toggleProfileList,
         inputChangeHandler,
         submitSearchForm,

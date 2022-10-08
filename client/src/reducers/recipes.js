@@ -47,7 +47,6 @@ const recipeReducer = createReducer(initialRecipeState, (builder) => {
         error: action.error['message'],
         loading: 'failed'
     }));
-
     builder.addCase(fetchMyRecipes.pending, (state) => ({
         ...state,
         error: '',

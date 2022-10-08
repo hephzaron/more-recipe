@@ -19,7 +19,7 @@ const Header = () => {
       isAvailable, logOut, toggleNav, displayRecipeModal,
       displayChangePasswordModal, toggleProfileList, inputChangeHandler,
       submitSearchForm, getAllRecipes, getSavedRecipes, getMyRecipes,
-      wrapperRef
+      wrapperRef, showNotifications
     } = headerHook;
     return (
         <div>
@@ -90,7 +90,7 @@ const Header = () => {
                 </li>
                 <hr className ="hidden-header"/>
                 <li>
-                  <a id="user-notification">
+                  <a id="user-notification" onClick={() => showNotifications()}>
                     <FontAwesomeIcon className="header-icon" icon={faBell}/>
                     { (isNew || isAvailable) && <i className="no-of-notification"/>}
                     <span className="header-content">Notifications</span>

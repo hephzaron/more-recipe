@@ -25,7 +25,8 @@ export default (io) => {
         .then((notificationData) => {
           if (notificationData) {
             const { recipeId, updatedAt } = notificationData;
-            return fetchRecipeNotifications.call(notifications, { recipeId, updatedAt })
+            return fetchRecipeNotifications
+              .call(notifications, { recipeIds: [recipeId], updatedAt })
               .then((recipeNotifications) => {
                 const contributors = recipeNotifications.map(recipeNotification => (
                   recipeNotification.userId));

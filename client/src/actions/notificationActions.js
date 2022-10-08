@@ -48,4 +48,7 @@ export const reviewRecipe = createAction('recipe/review', (reviewInfo) => {
  * @param { object } notification - Info of recipe liked
  * @returns { null } void
  */
-export const setNotifications = createAction('recipe/notification', (notifications) => ({ payload: notifications }));
+export const setNotifications = createAction(
+    'recipe/notification',
+    (notifications) => ({ payload: notifications })
+    );

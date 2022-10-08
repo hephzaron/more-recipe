@@ -19,6 +19,58 @@ class Notifications {
   }
 
   /**
+   * @method getQueryParam
+   * @description Returns query parameters
+   * @param {integer} recipeId - id of recipe to be queried
+   * @param {string} updatedAt - date notification was updated
+   * @memberof Notifications
+   * @returns {object} query parameters
+   */
+  static getQueryParam ({recipeIds, updatedAt}) {
+    return (
+      {
+        where: {
+          recipeId: {[Op.in]: recipeIds},
+          updatedAt: updatedAt ? {
+            [Op.gte]: updatedAt
+          } : {}
+        },
+        order: [
+          ['updatedAt', 'DESC']
+        ],
+        limit: 5,
+        include: [{
+          model: User,
+          attributes: [
+            'id',
+            'username',
+            'firstName',
+            'lastName',
+            'profilePhotoUrl'
+          ]
+        }, {
+          model: Recipe,
+          attributes: [
+            'id',
+            'name',
+            'photoUrl'
+          ]
+        }, {
+          model: User,
+          as: 'creator',
+          attributes: [
+            'id',
+            'username',
+            'firstName',
+            'lastName',
+            'profilePhotoUrl'
+          ]
+        }]
+      }
+    );
+  }
+
+  /**
    * saveNotification
    * @param {object} data
    * @memberof Notifications
@@ -75,46 +127,8 @@ class Notifications {
    * @returns { event } notifications
    */
   fetchRecipeNotifications(options) {
-    const { recipeId, updatedAt } = options;
-    const query = {
-      where: {
-        recipeId,
-        updatedAt: updatedAt ? {
-          [Op.gte]: updatedAt
-        } : {}
-      },
-      order: [
-        ['updatedAt', 'DESC']
-      ],
-      limit: 5,
-      include: [{
-        model: User,
-        attributes: [
-          'id',
-          'username',
-          'firstName',
-          'lastName',
-          'profilePhotoUrl'
-        ]
-      }, {
-        model: Recipe,
-        attributes: [
-          'id',
-          'name',
-          'photoUrl'
-        ]
-      }, {
-        model: User,
-        as: 'creator',
-        attributes: [
-          'id',
-          'username',
-          'firstName',
-          'lastName',
-          'profilePhotoUrl'
-        ]
-      }]
-    };
+    const { recipeIds, updatedAt } = options;
+    const query = Notifications.getQueryParam({recipeIds, updatedAt});
     return Notification
       .findAll(query)
       .then((notifications) => {
@@ -140,54 +154,28 @@ class Notifications {
    * @returns { event } notifications
    */
   fetchUserNotifications(options) {
-    const { updatedAt } = options;
+    const { userId, updatedAt } = options;
     const query = {
       where: {
-        updatedAt: updatedAt ? {
-          [Op.gte]: updatedAt
-        } : {}
+        [Op.and]: [
+          {userId},
+          {recipientId: userId}
+        ]
       },
-      order: [
-        ['updatedAt', 'DESC']
-      ],
-      limit: 5,
-      include: [{
-        model: User,
-        attributes: [
-          'id',
-          'username',
-          'firstName',
-          'lastName',
-          'profilePhotoUrl'
-        ]
-      }, {
-        model: Recipe,
-        attributes: [
-          'id',
-          'name',
-          'photoUrl'
-        ]
-      }, {
-        model: User,
-        as: 'creator',
-        attributes: [
-          'id',
-          'username',
-          'firstName',
-          'lastName',
-          'profilePhotoUrl'
-        ]
-      }]
+      attributes: [
+        'id',
+        'recipeId'
+      ]
     };
     return Notification
       .findAll(query)
       .then((notifications) => {
         if (notifications.length !== 0) {
           const result = JSON.parse(JSON.stringify(notifications));
-          this.notificationData = { notifications: result };
-          this.notificationData.isNew = !!updatedAt;
+          const recipeIds = result.map(obj => obj.recipeId);
+          this.fetchRecipeNotifications({recipeIds, updatedAt});
           return result;
-        }
+        }  
         return [];
       })
       .catch((error) => {

@@ -3,10 +3,18 @@ import { uniqBy } from 'lodash';
 import { initialNotificationState } from './initialState';
 import { setNotifications } from '../actions/notificationActions';
 
+/**
+ * Make list of notifications unique
+ * @param {array} notifications
+ * @returns {bool} 1 1
+ */
 const uniqueNotifications = (notifications) => (
     uniqBy(
         notifications.sort((prev, next) => {
-            return (prev.updatedAt - next.updatedAt) ? -1 : 1;
+            if ((prev.updatedAt - next.updatedAt) > 0) {
+                return -1;
+            }
+            return 1;
         }), 'id'
     )
 );

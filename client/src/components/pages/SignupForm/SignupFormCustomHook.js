@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { validateUserForm } from "../../../utils/validators/user";
 
@@ -13,13 +13,12 @@ import { validateUserForm } from "../../../utils/validators/user";
 const useSignupForm = ({
     addFlashMessage, registerUser, loginUser, set
 }) => {
-    const userProfile = useSelector((state) => state.userAuthReducer.user);
     const [userInput, setUserInput] = useState({
-        username: userProfile.username || '',
-        email: userProfile.email || '',
-        firstName: userProfile.firstName || '',
-        lastName: userProfile.lastName || '',
-        age: userProfile.age || '',
+        username: '',
+        email: '',
+        firstName: '',
+        lastName: '',
+        age: '',
         password: '',
         confirmPassword: ''
     });
@@ -31,7 +30,7 @@ const useSignupForm = ({
     /**
      * Handles input changes in field entries
      * @function inputChangeHandler
-     * @memberof useSignupForm
+     * @memberof usSignupForm
      * @param {object} event
      * @returns {null} void
      */

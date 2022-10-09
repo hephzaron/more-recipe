@@ -11,6 +11,12 @@ var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
 
+var _signupActions = require("../../../actions/signupActions");
+
+var _flashMessageActions = require("../../../actions/flashMessageActions");
+
+var _uploadActions = require("../../../actions/uploadActions");
+
 var _user = require("../../../utils/validators/user");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -28,24 +34,26 @@ function _iterableToArrayLimit(arr, i) { if (!(Symbol.iterator in Object(arr) ||
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 /**
- * @function useSignupForm
+ * @function useUserUpdateForm
  * @description A custom hook to handle user registration
  * @param {function} registerUser - dispatch action creator to register a user
  * @param {function} addFlashMessage - dispatch action creators to add flash message page
  * @returns  { object } { userInput, formErrors, flashMesageType, inputChangeHandler, submitUserForm }
  */
-var useSignupForm = function useSignupForm(_ref) {
-  var addFlashMessage = _ref.addFlashMessage,
-      registerUser = _ref.registerUser,
-      loginUser = _ref.loginUser,
-      set = _ref.set;
+var useUserUpdateForm = function useUserUpdateForm() {
+  var userProfile = (0, _reactRedux.useSelector)(function (state) {
+    return state.userAuthReducer.user;
+  });
+  var deleteToken = (0, _reactRedux.useSelector)(function (state) {
+    return state.photoReducer.deleteToken;
+  });
 
   var _useState = (0, _react.useState)({
-    username: '',
-    email: '',
-    firstName: '',
-    lastName: '',
-    age: '',
+    username: userProfile.username || '',
+    email: userProfile.email || '',
+    firstName: userProfile.firstName || '',
+    lastName: userProfile.lastName || '',
+    age: userProfile.age || '',
     password: '',
     confirmPassword: ''
   }),
@@ -55,34 +63,42 @@ var useSignupForm = function useSignupForm(_ref) {
 
   var _useState3 = (0, _react.useState)({}),
       _useState4 = _slicedToArray(_useState3, 2),
-      formErrors = _useState4[0],
-      setFormErrors = _useState4[1];
+      imageFile = _useState4[0],
+      setImageFile = _useState4[1];
+
+  var _useState5 = (0, _react.useState)({}),
+      _useState6 = _slicedToArray(_useState5, 2),
+      formErrors = _useState6[0],
+      setFormErrors = _useState6[1];
 
   var dispatch = (0, _reactRedux.useDispatch)();
   var navigate = (0, _reactRouterDom.useNavigate)();
-
-  var _useLocation = (0, _reactRouterDom.useLocation)(),
-      pathname = _useLocation.pathname;
   /**
    * Handles input changes in field entries
    * @function inputChangeHandler
-   * @memberof usSignupForm
+   * @memberof useSignupForm
    * @param {object} event
    * @returns {null} void
    */
-
 
   var inputChangeHandler = function inputChangeHandler(event) {
     event.persist();
     var _event$target = event.target,
         name = _event$target.name,
         value = _event$target.value;
-    setUserInput(function (prevState) {
-      return _objectSpread({}, prevState, _defineProperty({}, name, value));
-    });
+
+    if (event.target.name !== 'profilePhotoUrl') {
+      setUserInput(function (prevState) {
+        return _objectSpread({}, prevState, _defineProperty({}, name, value));
+      });
+    } else {
+      setImageFile(function (prevImageFile) {
+        return _objectSpread({}, prevImageFile, _defineProperty({}, event.target.name, event.target.files[0]));
+      });
+    }
   };
   /**
-   * Submit completed SignupForm
+   * Submit completed UserForm
    * @function submitUserForm
    * @memberof SignupForm
    * @param {object} event
@@ -95,6 +111,8 @@ var useSignupForm = function useSignupForm(_ref) {
       event.preventDefault();
     }
 
+    var profilePhotoUrl = imageFile.profilePhotoUrl;
+
     var _validateUserForm = (0, _user.validateUserForm)(userInput),
         validationErrors = _validateUserForm.validationErrors,
         isValid = _validateUserForm.isValid;
@@ -102,41 +120,41 @@ var useSignupForm = function useSignupForm(_ref) {
     setFormErrors(_objectSpread({}, validationErrors));
 
     if (isValid) {
-      dispatch(registerUser(_objectSpread({}, userInput, {
-        age: parseInt(userInput.age, 10)
-      }))).unwrap().then(function (response) {
-        var email = userInput.email,
-            password = userInput.password;
-        var user = response.userPayload.user;
-        dispatch(addFlashMessage({
-          message: response.message,
-          type: 'success'
-        }));
-        dispatch(loginUser({
-          email: email,
-          password: password
-        }));
-        dispatch(set({
-          user: user
-        }));
-        navigate('/');
+      dispatch((0, _uploadActions.uploadPhoto)({
+        photoFile: profilePhotoUrl
+      })).unwrap().then(function (data) {
+        dispatch((0, _signupActions.updateUser)(_objectSpread({}, userInput, {
+          profilePhotoUrl: data['secure_url']
+        }))).unwrap().then(function (response) {
+          dispatch((0, _flashMessageActions.addFlashMessage)({
+            message: response.message,
+            type: 'success'
+          }));
+          navigate('/');
+        });
       })["catch"](function (error) {
-        return dispatch(addFlashMessage({
+        if (deleteToken) {
+          dispatch((0, _uploadActions.deletePhotoByToken)({
+            deleteToken: deleteToken
+          }));
+        }
+
+        dispatch((0, _flashMessageActions.addFlashMessage)({
           message: error.message,
           type: 'failure'
         }));
       });
+      setFormErrors({});
     }
   };
 
   return {
     userInput: userInput,
     formErrors: formErrors,
-    pathname: pathname,
     inputChangeHandler: inputChangeHandler,
     submitUserForm: submitUserForm
   };
 };
 
-var _default = useSignupForm;
+var _default = useUserUpdateForm;
 exports["default"] = _default;

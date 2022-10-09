@@ -1,10 +1,12 @@
 import React from 'react';
 import useSignupForm from './SignupFormCustomHook';
+import useUserUpdateForm from './UpdateUserCustomHook';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { registerUser } from '../../../actions/signupActions';
 import { loginUser, set } from '../../../actions/authUserActions';
 
 const SignupForm = () => {
+    const userUpdate = useUserUpdateForm();
     const {
         userInput,
         formErrors,
@@ -14,69 +16,76 @@ const SignupForm = () => {
     } = useSignupForm({
         addFlashMessage, registerUser, loginUser, set
     });
+
+
+    const onSubmit = (pathname === '/register') ? submitUserForm : userUpdate.submitUserForm;
+    const userField = (pathname === '/register') ? userInput : userUpdate.userInput;
+    const onChange = (pathname === '/register') ? inputChangeHandler : userUpdate.inputChangeHandler;
+    const fieldErrors = (pathname === '/register') ? formErrors : userUpdate.formErrors;
+
     return (
         <div className="user-page signup">
-            <form onSubmit={submitUserForm}>
-                <h3>Sign Up</h3>
+            <form onSubmit={onSubmit}>
+                { pathname === '/register' && <h3>Sign Up</h3>}
                 <hr/>
                 <label htmlFor="username">Username *</label>
                 {
-                    formErrors.username &&
-                    <p className="error-text">{formErrors.username}</p>
+                    fieldErrors.username &&
+                    <p className="error-text">{fieldErrors.username}</p>
                 }
                 <input
                     type="text"
                     id="username"
                     name="username"
-                    value={userInput.username || ''}
-                    onChange={inputChangeHandler}/>
+                    value={userField.username || ''}
+                    onChange={onChange}/>
                 <label htmlFor="email">Email *</label>
                 {
-                    formErrors.email &&
-                    <p className="error-text">{formErrors.email}</p>
+                    fieldErrors.email &&
+                    <p className="error-text">{fieldErrors.email}</p>
                 }
                 <input
                     type="text"
                     id="email"
                     name="email"
-                    value={userInput.email || ''}
-                    onChange={inputChangeHandler}/>
+                    value={userField.email || ''}
+                    onChange={onChange}/>
                 <label htmlFor="firstName">Firstname *</label>
                 {
-                    formErrors.firstName &&
-                    <p className="error-text">{formErrors.firstName}</p>
+                    fieldErrors.firstName &&
+                    <p className="error-text">{fieldErrors.firstName}</p>
                 }
                 <input
                     type="text"
                     id="firstName"
                     name="firstName"
-                    value={userInput.firstName || ''}
-                    onChange={inputChangeHandler}/>
+                    value={userField.firstName || ''}
+                    onChange={onChange}/>
                 <label htmlFor="lastName">Lastname *</label>
                 {
-                    formErrors.lastName &&
-                    <p className="error-text">{formErrors.lastName}</p>
+                    fieldErrors.lastName &&
+                    <p className="error-text">{fieldErrors.lastName}</p>
                 }
                 <input
                     type="text"
                     id="lastName"
                     name="lastName"
-                    value={userInput.lastName || ''}
-                    onChange={inputChangeHandler}/>
+                    value={userField.lastName || ''}
+                    onChange={onChange}/>
                 <label htmlFor="age">Age *</label>
                 {
-                    formErrors.age &&
-                    <p className="error-text">{formErrors.age}</p>
+                    fieldErrors.age &&
+                    <p className="error-text">{fieldErrors.age}</p>
                 }
                 <input
                     type="number"
                     id="age"
                     name="age"
-                    value={userInput.age || ''}
-                    onChange={inputChangeHandler}/>
+                    value={userField.age || ''}
+                    onChange={onChange}/>
                 <label htmlFor="sex">Gender *</label>
                 <select id="sex" name="sex"
-                    onChange={inputChangeHandler}>
+                    onChange={onChange}>
                     <option value="Female">Female</option>
                     <option value="Male">Male</option>
                 </select>
@@ -85,26 +94,26 @@ const SignupForm = () => {
                     <>
                         <label htmlFor="password">Password *</label>
                         {
-                            formErrors.password &&
-                            <p className="error-text">{formErrors.password}</p>
+                            fieldErrors.password &&
+                            <p className="error-text">{fieldErrors.password}</p>
                         }
                         <input
                             type="password"
                             id="password"
                             name="password"
-                            value={userInput.password || ''}
-                            onChange={inputChangeHandler}/>
+                            value={userField.password || ''}
+                            onChange={onChange}/>
                         <label htmlFor="confirmPassword">Confirm Password *</label>
                         {
-                            formErrors.confirmPassword &&
-                            <p className="error-text">{formErrors.confirmPassword}</p>
+                            fieldErrors.confirmPassword &&
+                            <p className="error-text">{fieldErrors.confirmPassword}</p>
                         }
                         <input
                             type="password"
                             id="confirmPassword"
                             name="confirmPassword"
-                            value={userInput.confirmPassword || ''}
-                            onChange={inputChangeHandler}/>
+                            value={userField.confirmPassword || ''}
+                            onChange={onChange}/>
                         <input
                             type="submit"
                             value={"Create an Account"}/>
@@ -114,13 +123,13 @@ const SignupForm = () => {
                     (pathname === '/edit-profile') &&
                     <>
                         <label htmlFor="profilePhotoUrl">Upload picture:</label>
-                        { formErrors.profilePhotoUrl &&
-                           <p className="error-text">{formErrors.profilePhotoUrl}</p> }
+                        { fieldErrors.profilePhotoUrl &&
+                           <p className="error-text">{fieldErrors.profilePhotoUrl}</p> }
                         <input
                             type="file"
                             id="profilePhotoUrl" required
-                            onChange={inputChangeHandler}
-                            value={userInput.profilePhotoUrl}
+                            onChange={onChange}
+                            value={userField.profilePhotoUrl}
                             name="profilePhotoUrl" accept="image/*"/>
                         <input
                             type="submit"

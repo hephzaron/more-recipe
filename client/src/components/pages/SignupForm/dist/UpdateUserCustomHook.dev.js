@@ -11,13 +11,11 @@ var _reactRedux = require("react-redux");
 
 var _reactRouterDom = require("react-router-dom");
 
-var _signupActions = require("../../../actions/signupActions");
+var _userActions = require("../../../actions/userActions");
 
 var _flashMessageActions = require("../../../actions/flashMessageActions");
 
 var _uploadActions = require("../../../actions/uploadActions");
-
-var _userActions = require("../../../actions/userActions");
 
 var _user = require("../../../utils/validators/user");
 
@@ -122,7 +120,7 @@ var useUserUpdateForm = function useUserUpdateForm() {
       dispatch((0, _uploadActions.uploadPhoto)({
         photoFile: profilePhotoUrl
       })).unwrap().then(function (data) {
-        dispatch((0, _signupActions.updateUser)(_objectSpread({}, userInput, {
+        dispatch((0, _userActions.updateUser)(_objectSpread({}, userInput, {
           id: userProfile.id,
           profilePhotoUrl: data['secure_url']
         }))).unwrap().then(function (response) {

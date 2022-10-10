@@ -1,8 +1,7 @@
 import { createReducer } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { loginUser, unset, set } from '../actions/authUserActions';
-import { updateUser } from '../actions/signupActions';
-import { fetchOneUser } from '../actions/userActions';
+import { fetchOneUser, updateUser } from '../actions/userActions';
 import { initialUserState } from './initialState';
 
 const userAuthReducer = createReducer(initialUserState, (builder) => {

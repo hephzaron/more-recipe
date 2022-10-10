@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.updateUser = exports.registerUser = void 0;
+exports["default"] = exports.registerUser = void 0;
 
 var _toolkit = require("@reduxjs/toolkit");
 
@@ -12,12 +12,6 @@ var _axios = _interopRequireDefault(require("axios"));
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 _dotenv["default"].config();
 
@@ -54,38 +48,6 @@ var registerUser = (0, _toolkit.createAsyncThunk)('user/signupStatus', function 
     }
   }, null, null, [[0, 7]]);
 });
-/**
- * @function updateUser
- * @description updates a user
- * @param {integer} userId - Id of user performing the action
- * @returns { promise } -Axios http response from the server
- */
-
 exports.registerUser = registerUser;
-var updateUser = (0, _toolkit.createAsyncThunk)('user/updateUserStatus', function _callee2(user) {
-  var response;
-  return regeneratorRuntime.async(function _callee2$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.prev = 0;
-          _context2.next = 3;
-          return regeneratorRuntime.awrap(_axios["default"].put("".concat(SERVER_URL, "/users/").concat(user.id), _objectSpread({}, user)));
-
-        case 3:
-          response = _context2.sent;
-          return _context2.abrupt("return", response.data);
-
-        case 7:
-          _context2.prev = 7;
-          _context2.t0 = _context2["catch"](0);
-          return _context2.abrupt("return", Promise.reject(_context2.t0.response.data));
-
-        case 10:
-        case "end":
-          return _context2.stop();
-      }
-    }
-  }, null, null, [[0, 7]]);
-});
-exports.updateUser = updateUser;
+var _default = {};
+exports["default"] = _default;

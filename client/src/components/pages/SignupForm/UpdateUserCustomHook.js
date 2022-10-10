@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { updateUser } from '../../../actions/signupActions';
+import { updateUser, fetchOneUser } from '../../../actions/userActions';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { uploadPhoto, deletePhotoByToken } from "../../../actions/uploadActions";
-import { fetchOneUser } from "../../../actions/userActions";
 import { validateUserForm } from '../../../utils/validators/user';
 
 /**

@@ -26,4 +26,22 @@ const { SERVER_URL } = process.env;
     }
 );
 
+/**
+ * @function updateUser
+ * @description updates a user
+ * @param {integer} userId - Id of user performing the action
+ * @returns { promise } -Axios http response from the server
+ */
+ export const updateUser = createAsyncThunk(
+    'user/updateUserStatus',
+    async (user) => {
+        try {
+            const response = await axios.put(`${SERVER_URL}/users/${user.id}`, { ...user });
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error.response.data);
+        }
+    }
+);
+
 export default {};

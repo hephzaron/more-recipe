@@ -11,8 +11,6 @@ var _lodash = _interopRequireDefault(require("lodash"));
 
 var _authUserActions = require("../actions/authUserActions");
 
-var _signupActions = require("../actions/signupActions");
-
 var _userActions = require("../actions/userActions");
 
 var _initialState = require("./initialState");
@@ -52,12 +50,12 @@ var userAuthReducer = (0, _toolkit.createReducer)(_initialState.initialUserState
       error: null
     });
   });
-  builder.addCase(_signupActions.updateUser.fulfilled, function (state, action) {
+  builder.addCase(_userActions.updateUser.fulfilled, function (state, action) {
     return _objectSpread({}, state, {
       error: ''
     });
   });
-  builder.addCase(_signupActions.updateUser.rejected, function (state, action) {
+  builder.addCase(_userActions.updateUser.rejected, function (state, action) {
     return _objectSpread({}, state, {
       error: action.error['message']
     });

@@ -18,6 +18,7 @@ const { SERVER_URL } = process.env;
     async ({ id }) => {
         try {
             const response = await axios.get(`${SERVER_URL}/users/${id}`);
+            localStorage.setItem('userPayload', JSON.stringify(response.data.user));
             return response.data;
         } catch (error) {
             return Promise.reject(error.response.data);

@@ -37,19 +37,20 @@ var fetchOneUser = (0, _toolkit.createAsyncThunk)('users/fetchOneUserStatus', fu
 
         case 4:
           response = _context.sent;
+          localStorage.setItem('userPayload', JSON.stringify(response.data.user));
           return _context.abrupt("return", response.data);
 
-        case 8:
-          _context.prev = 8;
+        case 9:
+          _context.prev = 9;
           _context.t0 = _context["catch"](1);
           return _context.abrupt("return", Promise.reject(_context.t0.response.data));
 
-        case 11:
+        case 12:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[1, 8]]);
+  }, null, null, [[1, 9]]);
 });
 exports.fetchOneUser = fetchOneUser;
 var _default = {};

@@ -17,6 +17,8 @@ var _flashMessageActions = require("../../../actions/flashMessageActions");
 
 var _uploadActions = require("../../../actions/uploadActions");
 
+var _userActions = require("../../../actions/userActions");
+
 var _user = require("../../../utils/validators/user");
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
@@ -50,12 +52,9 @@ var useUserUpdateForm = function useUserUpdateForm() {
 
   var _useState = (0, _react.useState)({
     username: userProfile.username || '',
-    email: userProfile.email || '',
     firstName: userProfile.firstName || '',
     lastName: userProfile.lastName || '',
-    age: userProfile.age || '',
-    password: '',
-    confirmPassword: ''
+    age: userProfile.age || ''
   }),
       _useState2 = _slicedToArray(_useState, 2),
       userInput = _useState2[0],
@@ -113,7 +112,7 @@ var useUserUpdateForm = function useUserUpdateForm() {
 
     var profilePhotoUrl = imageFile.profilePhotoUrl;
 
-    var _validateUserForm = (0, _user.validateUserForm)(userInput),
+    var _validateUserForm = (0, _user.validateUserForm)(userInput, 'update'),
         validationErrors = _validateUserForm.validationErrors,
         isValid = _validateUserForm.isValid;
 
@@ -124,13 +123,28 @@ var useUserUpdateForm = function useUserUpdateForm() {
         photoFile: profilePhotoUrl
       })).unwrap().then(function (data) {
         dispatch((0, _signupActions.updateUser)(_objectSpread({}, userInput, {
+          id: userProfile.id,
           profilePhotoUrl: data['secure_url']
         }))).unwrap().then(function (response) {
+          dispatch((0, _userActions.fetchOneUser)({
+            id: userProfile.id
+          }));
           dispatch((0, _flashMessageActions.addFlashMessage)({
             message: response.message,
             type: 'success'
           }));
           navigate('/');
+        })["catch"](function (error) {
+          if (data) {
+            dispatch((0, _uploadActions.deletePhotoByToken)({
+              deleteToken: data['delete_token']
+            }));
+          }
+
+          dispatch((0, _flashMessageActions.addFlashMessage)({
+            message: error.message,
+            type: 'failure'
+          }));
         });
       })["catch"](function (error) {
         if (deleteToken) {

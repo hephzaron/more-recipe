@@ -156,11 +156,8 @@ var useHeader = function useHeader(_ref) {
   };
 
   var logOut = function logOut() {
-    dispatch(logoutUser()).then(function () {
-      return getAllRecipes();
-    }).then(function () {
-      return navigate('/');
-    });
+    dispatch(logoutUser());
+    getAllRecipes();
   };
   /**
    * Handles outside click event of dropdown on homepage

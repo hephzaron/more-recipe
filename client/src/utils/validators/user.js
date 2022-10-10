@@ -61,6 +61,11 @@ export const validateUserForm = (user, type = '') => {
             validationErrors.newPassword = 'Password must contain at least one number, one lowercase and uppercase and minimum of 8 digit';
         }
     }
+    if (type === 'update') {
+        delete validationErrors.password;
+        delete validationErrors.confirmPassword;
+        delete validationErrors.email;
+    }
     return { validationErrors, isValid: isEmpty(validationErrors) };
 };
 

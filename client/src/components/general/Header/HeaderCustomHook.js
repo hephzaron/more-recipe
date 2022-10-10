@@ -112,9 +112,8 @@ const useHeader = ({ logoutUser, showModal }) => {
     };
 
     const logOut = () => {
-        dispatch(logoutUser())
-        .then(() => getAllRecipes())
-        .then(() => navigate('/'));
+        dispatch(logoutUser());
+        getAllRecipes();
     };
 
     /**

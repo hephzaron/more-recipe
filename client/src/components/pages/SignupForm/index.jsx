@@ -39,18 +39,21 @@ const SignupForm = () => {
                     name="username"
                     value={userField.username || ''}
                     onChange={onChange}/>
-                <label htmlFor="email">Email *</label>
                 {
-                    fieldErrors.email &&
-                    <p className="error-text">{fieldErrors.email}</p>
+                    (pathname === '/register') &&
+                    <>
+                        <label htmlFor="email">Email *</label>
+                        {fieldErrors.email &&
+                        <p className="error-text">{fieldErrors.email}</p>}
+                        <input
+                            type="text"
+                            id="email"
+                            name="email"
+                            value={userField.email || ''}
+                            onChange={onChange}/>
+                        <label htmlFor="firstName">Firstname *</label>
+                    </>
                 }
-                <input
-                    type="text"
-                    id="email"
-                    name="email"
-                    value={userField.email || ''}
-                    onChange={onChange}/>
-                <label htmlFor="firstName">Firstname *</label>
                 {
                     fieldErrors.firstName &&
                     <p className="error-text">{fieldErrors.firstName}</p>

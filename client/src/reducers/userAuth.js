@@ -1,6 +1,8 @@
 import { createReducer } from '@reduxjs/toolkit';
 import _ from 'lodash';
 import { loginUser, unset, set } from '../actions/authUserActions';
+import { updateUser } from '../actions/signupActions';
+import { fetchOneUser } from '../actions/userActions';
 import { initialUserState } from './initialState';
 
 const userAuthReducer = createReducer(initialUserState, (builder) => {
@@ -25,6 +27,24 @@ const userAuthReducer = createReducer(initialUserState, (builder) => {
         user: {},
         isAuthenticated: false,
         error: null
+    }));
+    builder.addCase(updateUser.fulfilled, (state, action) => ({
+        ...state,
+        error: ''
+    }));
+    builder.addCase(updateUser.rejected, (state, action) => ({
+        ...state,
+        error: action.error['message']
+    }));
+    builder.addCase(fetchOneUser.fulfilled, (state, action) => ({
+        ...state,
+        user: action.payload.user,
+        error: ''
+    }));
+    builder.addCase(fetchOneUser.rejected, (state, action) => ({
+        ...state,
+        user: {},
+        error: action.error['message']
     }));
 });
 

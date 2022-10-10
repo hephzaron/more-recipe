@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { updateUser } from '../../../actions/signupActions';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
 import { uploadPhoto, deletePhotoByToken } from "../../../actions/uploadActions";
+import { fetchOneUser } from "../../../actions/userActions";
 import { validateUserForm } from '../../../utils/validators/user';
 
 /**
@@ -19,12 +20,9 @@ const useUserUpdateForm = () => {
 
     const [userInput, setUserInput] = useState({
         username: userProfile.username || '',
-        email: userProfile.email || '',
         firstName: userProfile.firstName || '',
         lastName: userProfile.lastName || '',
         age: userProfile.age || '',
-        password: '',
-        confirmPassword: ''
     });
     const [imageFile, setImageFile] = useState({});
     const [formErrors, setFormErrors] = useState({});
@@ -62,21 +60,31 @@ const useUserUpdateForm = () => {
             event.preventDefault();
         }
         const { profilePhotoUrl } = imageFile;
-        const { validationErrors, isValid } = validateUserForm(userInput);
+        const { validationErrors, isValid } = validateUserForm(userInput, 'update');
         setFormErrors({ ...validationErrors });
 
         if (isValid) {
             dispatch(uploadPhoto({ photoFile: profilePhotoUrl })).unwrap()
             .then((data) => {
                 dispatch(updateUser({
-                    ...userInput, profilePhotoUrl: data['secure_url']
+                    ...userInput, id: userProfile.id, profilePhotoUrl: data['secure_url']
                 })).unwrap()
                 .then((response) => {
+                    dispatch(fetchOneUser({ id: userProfile.id }));
                     dispatch(addFlashMessage({
                         message: response.message,
                         type: 'success'
                     }));
                     navigate('/');
+                })
+                .catch((error) => {
+                    if (data) {
+                        dispatch(deletePhotoByToken({ deleteToken: data['delete_token'] }));
+                    }
+                    dispatch(addFlashMessage({
+                        message: error.message,
+                        type: 'failure'
+                    }));
                 });
             })
             .catch((error) => {

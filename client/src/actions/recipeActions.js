@@ -56,7 +56,7 @@ export const fetchRecipes = createAsyncThunk(
  * @param {integer} id - recipe id
  * @returns { promise } -Axios http response
  */
- export const fetchOneRecipe = createAsyncThunk(
+export const fetchOneRecipe = createAsyncThunk(
     'recipes/fetchOneRecipeStatus',
     async ({ id }) => {
         try {

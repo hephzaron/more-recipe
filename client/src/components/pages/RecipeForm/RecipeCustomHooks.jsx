@@ -61,6 +61,15 @@ const useRecipeForm = (callback) => {
                     dispatch(hideModal());
                     dispatch(fetchRecipes());
                     navigate('/');
+                })
+                .catch((error) => {
+                    if (data) {
+                        dispatch(deletePhotoByToken({ deleteToken: data['delete_token'] }));
+                    }
+                    dispatch(addFlashMessage({
+                        message: error.message,
+                        type: 'failure'
+                    }));
                 });
             })
             .catch((error) => {

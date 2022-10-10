@@ -21,8 +21,6 @@ var _recipes = _interopRequireDefault(require("./recipes"));
 
 var _notification = _interopRequireDefault(require("./notification"));
 
-var _user = _interopRequireDefault(require("./user"));
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var reducer = (0, _redux.combineReducers)({
@@ -32,8 +30,7 @@ var reducer = (0, _redux.combineReducers)({
   flashMessageReducer: _flashMessage["default"],
   modalReducer: _modal["default"],
   photoReducer: _photo["default"],
-  notificationReducer: _notification["default"],
-  userReducer: _user["default"]
+  notificationReducer: _notification["default"]
 });
 var _default = reducer;
 exports["default"] = _default;

@@ -13,6 +13,7 @@ import { showModal } from '../../../actions/modalActions';
 const Header = () => {
     const navigate = useNavigate();
     const headerHook = useHeader({ logoutUser, showModal });
+    const defaultPhotoUrl = "https://res.cloudinary.com/power-mobile/image/upload/v1663155102/signed_recipe_upload/profile-avatar.jpg";
 
     const {
       values, isAuthenticated, user, flashMessageType, isNew,
@@ -21,6 +22,10 @@ const Header = () => {
       submitSearchForm, getAllRecipes, getSavedRecipes, getMyRecipes,
       wrapperRef, showNotifications
     } = headerHook;
+
+    const { profilePhotoUrl, username } = user;
+
+    const userPhoto = profilePhotoUrl || defaultPhotoUrl;
     return (
         <div>
           { flashMessageType && <FlashMessage/>}
@@ -106,7 +111,7 @@ const Header = () => {
                 <li>
                   <a>
                   <img
-                    src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"
+                    src={userPhoto}
                     alt="Recipe"
                     className="profile-img"
                     onClick={() => toggleProfileList()}/>
@@ -130,8 +135,8 @@ const Header = () => {
               <FontAwesomeIcon className="profile-dropdown-caret" icon={faCaretUp}/>
               <ul id="profile-menu">
                 <li>
-                  <img src="https://www.mensjournal.com/wp-content/uploads/2018/10/rambo-main-3.jpg?quality=86&strip=all"/>
-                  <a>{user.username}</a>
+                  <img src={userPhoto}/>
+                  <a>{username}</a>
                 </li>
                 <li>
                   <a onClick={() => { navigate('edit-profile'); }}>Edit Profile</a>

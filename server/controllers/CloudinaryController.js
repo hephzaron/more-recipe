@@ -39,11 +39,20 @@ class CloudinaryController {
     * Delete cloudinary image
     * @method deleteCloudinaryImage
     * @memberof CloudinaryController
-    * @param { string } imageName
+    * @param { object } req -request
+    * @param { object } res -respone
     * @returns { object } server response
     */
-  static deleteCloudinaryImage(imageName) {
-    return cloudinary.uploader.destroy(imageName, response => ({response}));
+  static deleteCloudinaryImage(req, res) {
+    const { imageName } = req;
+    try {
+      return cloudinary.uploader.destroy(imageName, response =>
+        res.status(200).send({response}));
+    } catch (error) {
+      return res.status(400).send({
+        message: error.message
+      });
+    }
   }
 }
 

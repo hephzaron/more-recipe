@@ -73,6 +73,11 @@ const useHeader = ({ logoutUser, showModal }) => {
         navigate('notifications');
     };
 
+    const showUserForm = () => {
+        toggleNav();
+        navigate('edit-profile');
+    };
+
     const getAllRecipes = () => {
         dispatch(fetchRecipes())
         .then(() => {
@@ -162,7 +167,8 @@ const useHeader = ({ logoutUser, showModal }) => {
         submitSearchForm,
         getAllRecipes,
         getSavedRecipes,
-        getMyRecipes
+        getMyRecipes,
+        showUserForm
     };
 };
 

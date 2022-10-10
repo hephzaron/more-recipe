@@ -130,7 +130,7 @@ const SignupForm = () => {
                            <p className="error-text">{fieldErrors.profilePhotoUrl}</p> }
                         <input
                             type="file"
-                            id="profilePhotoUrl" required
+                            id="profilePhotoUrl"
                             onChange={onChange}
                             value={userField.profilePhotoUrl}
                             name="profilePhotoUrl" accept="image/*"/>

@@ -20,7 +20,7 @@ const Header = () => {
       isAvailable, logOut, toggleNav, displayRecipeModal,
       displayChangePasswordModal, toggleProfileList, inputChangeHandler,
       submitSearchForm, getAllRecipes, getSavedRecipes, getMyRecipes,
-      wrapperRef, showNotifications
+      wrapperRef, showNotifications, showUserForm
     } = headerHook;
 
     const { profilePhotoUrl, username } = user;
@@ -116,7 +116,9 @@ const Header = () => {
                     className="profile-img"
                     onClick={() => toggleProfileList()}/>
                   <FontAwesomeIcon className={classnames("hidden-header header-icon")} icon={faUser}/>
-                  <span className="hidden-header header-content">Daramola Oluwatobi</span>
+                  <span
+                    className="hidden-header header-content"
+                    onClick={() => showUserForm()} >Edit Profile</span>
                   </a>
                 </li>
                 <hr className ="hidden-header"/>

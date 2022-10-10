@@ -37,7 +37,7 @@ const {
   getSavedRecipe
 } = SavedRecipeController;
 
-const { getCloudinarySignature } = CloudinaryController;
+const { getCloudinarySignature, deleteCloudinaryImage } = CloudinaryController;
 
 const { verifyUser } = UserAuth;
 
@@ -86,5 +86,6 @@ router.post('/auth/reset_password', resetPassword);
  * Get cloudinary credentials
  */
 router.get('/upload/sign', verifyUser, getCloudinarySignature);
+router.post('/delete/upload', verifyUser, deleteCloudinaryImage);
 
 export default router;

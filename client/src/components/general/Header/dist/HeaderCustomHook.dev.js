@@ -120,6 +120,11 @@ var useHeader = function useHeader(_ref) {
     navigate('notifications');
   };
 
+  var showUserForm = function showUserForm() {
+    toggleNav();
+    navigate('edit-profile');
+  };
+
   var getAllRecipes = function getAllRecipes() {
     dispatch((0, _recipeActions.fetchRecipes)()).then(function () {
       toggleNav();
@@ -211,7 +216,8 @@ var useHeader = function useHeader(_ref) {
     submitSearchForm: submitSearchForm,
     getAllRecipes: getAllRecipes,
     getSavedRecipes: getSavedRecipes,
-    getMyRecipes: getMyRecipes
+    getMyRecipes: getMyRecipes,
+    showUserForm: showUserForm
   };
 };
 

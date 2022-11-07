@@ -77,19 +77,19 @@ function () {
   }, {
     key: "deleteCloudinaryImage",
     value: function deleteCloudinaryImage(req, res) {
-      var imageName = req.imageName;
-
-      try {
-        return _cloudinary.v2.uploader.destroy(imageName, function (response) {
-          return res.status(200).send({
-            response: response
-          });
+      var imageName = req.query.imageName;
+      return _cloudinary.v2.uploader.destroy("signed_recipe_upload/".concat(imageName), {
+        invalidate: true,
+        resource_type: 'image'
+      }).then(function (response) {
+        return res.status(200).send({
+          response: response
         });
-      } catch (error) {
+      })["catch"](function (error) {
         return res.status(400).send({
           message: error.message
         });
-      }
+      });
     }
   }]);
 

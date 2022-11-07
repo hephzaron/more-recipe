@@ -47,6 +47,8 @@ var useUserUpdateForm = function useUserUpdateForm() {
   var deleteToken = (0, _reactRedux.useSelector)(function (state) {
     return state.photoReducer.deleteToken;
   });
+  var imageNameRe = /(?<=signed_recipe_upload\/).+?(?=.jpg)/i;
+  var imageName = userProfile.profilePhotoUrl.match(imageNameRe);
 
   var _useState = (0, _react.useState)({
     username: userProfile.username || '',
@@ -117,6 +119,14 @@ var useUserUpdateForm = function useUserUpdateForm() {
     setFormErrors(_objectSpread({}, validationErrors));
 
     if (isValid) {
+      console.log('pr', userProfile.profilePhotoUrl);
+
+      if (userProfile.profilePhotoUrl) {
+        dispatch((0, _uploadActions.deletePhotoByName)({
+          imageName: imageName
+        }));
+      }
+
       dispatch((0, _uploadActions.uploadPhoto)({
         photoFile: profilePhotoUrl
       })).unwrap().then(function (data) {

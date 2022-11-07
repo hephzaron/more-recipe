@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { initialPhotoState } from './initialState';
-import { uploadPhoto, deletePhotoByToken } from '../actions/uploadActions';
+import { uploadPhoto, deletePhotoByToken, deletePhotoByName } from '../actions/uploadActions';
 
 const photoReducer = createReducer(initialPhotoState, (builder) => {
     builder.addCase(uploadPhoto.fulfilled, (state, action) => ({
@@ -31,6 +31,16 @@ const photoReducer = createReducer(initialPhotoState, (builder) => {
         loading: 'pending'
     }));
     builder.addCase(deletePhotoByToken.rejected, (state) => ({
+        ...state,
+        data: '',
+        loading: 'failed'
+    }));
+    builder.addCase(deletePhotoByName.fulfilled, (state, action) => ({
+        ...state,
+        data: action.payload['data'],
+        loading: 'fulfilled'
+    }));
+    builder.addCase(deletePhotoByName.rejected, (state) => ({
         ...state,
         data: '',
         loading: 'failed'

@@ -44,15 +44,13 @@ class CloudinaryController {
     * @returns { object } server response
     */
   static deleteCloudinaryImage(req, res) {
-    const { imageName } = req;
-    try {
-      return cloudinary.uploader.destroy(imageName, response =>
-        res.status(200).send({response}));
-    } catch (error) {
-      return res.status(400).send({
-        message: error.message
-      });
-    }
+    const { imageName } = req.query;
+    return cloudinary.uploader.destroy(
+      `signed_recipe_upload/${imageName}`,
+      { invalidate: true, resource_type: 'image' }
+    )
+      .then(response => res.status(200).send({response}))
+      .catch(error => res.status(400).send({ message: error.message }));
   }
 }
 

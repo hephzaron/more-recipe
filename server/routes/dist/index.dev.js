@@ -78,6 +78,6 @@ router.post('/auth/reset_password', resetPassword);
  */
 
 router.get('/upload/sign', verifyUser, getCloudinarySignature);
-router.post('/delete/upload', verifyUser, deleteCloudinaryImage);
+router["delete"]('/upload/delete', verifyUser, deleteCloudinaryImage);
 var _default = router;
 exports["default"] = _default;

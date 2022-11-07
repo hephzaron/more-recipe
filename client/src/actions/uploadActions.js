@@ -63,3 +63,21 @@ export const deletePhotoByToken = createAsyncThunk(
         }
     }
 );
+
+/**
+ * deletePhotoByName
+ * @description deletes a photo with call to the backend
+ * @param { string } imageName - Name of image
+ * @returns { promise } -Axios http response from the server
+ */
+ export const deletePhotoByName = createAsyncThunk(
+    'photos/deletePhotoByNameStatus',
+    async ({ imageName }) => {
+        try {
+            const response = await axios.delete(`${SERVER_URL}/upload/delete?imageName=${imageName}`);
+            return response.data;
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
+);

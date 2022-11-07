@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { updateUser, fetchOneUser } from '../../../actions/userActions';
 import { addFlashMessage } from '../../../actions/flashMessageActions';
-import { uploadPhoto, deletePhotoByToken } from "../../../actions/uploadActions";
+import { uploadPhoto, deletePhotoByToken, deletePhotoByName } from "../../../actions/uploadActions";
 import { validateUserForm } from '../../../utils/validators/user';
 
 /**
@@ -16,6 +16,8 @@ import { validateUserForm } from '../../../utils/validators/user';
 const useUserUpdateForm = () => {
     const userProfile = useSelector((state) => state.userAuthReducer.user);
     const deleteToken = useSelector((state) => state.photoReducer.deleteToken);
+    const imageNameRe = /(?<=signed_recipe_upload\/).+?(?=.jpg)/i;
+    const imageName = userProfile.profilePhotoUrl.match(imageNameRe);
 
     const [userInput, setUserInput] = useState({
         username: userProfile.username || '',
@@ -63,6 +65,10 @@ const useUserUpdateForm = () => {
         setFormErrors({ ...validationErrors });
 
         if (isValid) {
+            console.log('pr', userProfile.profilePhotoUrl);
+            if (userProfile.profilePhotoUrl) {
+                dispatch(deletePhotoByName({ imageName }));
+            }
             dispatch(uploadPhoto({ photoFile: profilePhotoUrl })).unwrap()
             .then((data) => {
                 dispatch(updateUser({
